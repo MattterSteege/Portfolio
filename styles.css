@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: sans-serif;
+    background-color: powderblue;
+
+    /* Aspect ratio 1:1.5 */
+    --book-size: calc(0.75 * 100vh);
+    --book-border: 12px;
+
+    overflow: hidden;
+}
+
+/* Book */
+.book {
+    position: relative;
+    width: fit-content;
+    height: var(--book-size);
+    transition: transform 0.5s;
+    z-index: 100000;
+    display: flex;
+    flex-direction: row;
+    background: #dbd1c0;
+}
+
+.paper {
+    /* position: absolute; */
+    width: 0;
+    height: var(--book-size);
+    perspective: 1500px;
+    transition: all 0.25s;
+}
+
+.front,
+.back {
+    background-color: #faf1e0;
+    position: absolute;
+    width: calc(var(--book-size)* 0.66);
+    height: var(--book-size);
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s;
+    overflow: hidden;
+    box-shadow: 1px 0 20px -15px black;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.front {
+    z-index: 1;
+    backface-visibility: hidden;
+}
+
+.back {
+    z-index: 0;
+}
+
+.front-content,
+.back-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-content {
+    transform: rotateY(180deg)
+}
+
+/* Paper flip effect */
+.flipped .front,
+.flipped .back {
+    transform: rotateY(-180deg);
+}
+
+.mirror {
+    transform: rotateY(180deg);
+    width: 100%;
+    height: 100%;
+}
+
+/* Controller Buttons */
+button {
+    position: relative;
+    bottom: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.75s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#prev-btn {
+    right: calc(var(--book-size) * 0.33 + 10px)
+}
+#next-btn {
+    left: calc(var(--book-size) * 0.33 + 10px)
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover i {
+    color: #636363;
+}
+
+i {
+    font-size: 50px;
+    color: gray;
+}
+
+.arrow {
+    position: absolute;
+    right: -250px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 300px;
+    width: 300px;
+    background: #fdf0dd;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px -5px black;
+    justify-content: flex-start;
+}
+
+.mirror .arrow {
+    position: absolute;
+    left: -250px;
+    top: 50%;
+    justify-content: flex-end;
+}
+
+.arrow i {
+    font-size: 25px;
+    color: gray;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.first-page-arrow {
+    right: -75px;
+    bottom: -150px;
+    transform: translateY(-50%);
+    height: 150px;
+    width: 150px;
+    top: unset;
+    justify-content: center;
+}
+
+.first-page-arrow i {
+    transform: translate(-50%, -50%);
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mirror .last-page-arrow {
+    left: -75px;
+    bottom: -150px;
+    transform: translateY(-50%);
+    height: 150px;
+    width: 150px;
+    top: unset;
+    justify-content: center;
+}
+
+.mirror .last-page-arrow i {
+    transform: translate(50%, -50%);
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

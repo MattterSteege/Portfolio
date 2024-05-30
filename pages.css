@@ -4,3 +4,27 @@
     flex-direction: column;
     color: #e59e24;
 }
+
+.front-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(leather.png);
+    z-index: 1;
+    opacity: 0.3;
+}
+
+.front-page .heading-title {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.subtitle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

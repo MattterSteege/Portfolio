@@ -1,0 +1,6 @@
+/*FRONT PAGE*/
+.front-page {
+    display: flex;
+    flex-direction: column;
+    color: #e59e24;
+}

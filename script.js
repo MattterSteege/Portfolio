@@ -51,6 +51,7 @@ function closeBook(isAtBeginning) {
 }
 
 function goNextPage() {
+    if (isEasing) return;
     if (currentLocation < maxLocation) {
         if (currentLocation === 1) {
             openBook();
@@ -64,7 +65,7 @@ function goNextPage() {
         //currentPaper.classList.add("flipped");
 
         var temp = -1 * currentPaper.style.zIndex
-        ease(0, -180, 250, (value) => {
+        ease(0, -180, 500, (value) => {
             frontPaper.style.transform = "rotateY(" + value + "deg)";
             backPaper.style.transform = "rotateY(" + value + "deg)";
 
@@ -78,6 +79,8 @@ function goNextPage() {
 }
 
 function goPrevPage() {
+    if (isEasing) return;
+
     if (currentLocation > 1) {
         currentLocation--;
 
@@ -94,7 +97,7 @@ function goPrevPage() {
 
 
 
-        ease(-180, 0, 250, (value) => {
+        ease(-180, 0, 500, (value) => {
             frontPaper.style.transform = "rotateY(" + value + "deg)";
             backPaper.style.transform = "rotateY(" + value + "deg)";
 
@@ -110,6 +113,7 @@ function goPrevPage() {
 var isEasing = false;
 
 function ease(start, end, time, callback) {
+    if (isEasing) return;
     isEasing = true;
     start = Number(start);
     end = Number(end);
@@ -117,21 +121,21 @@ function ease(start, end, time, callback) {
     const duration = time;
 
     function update() {
+        if (!isEasing) return;
+
         const currentTime = Date.now();
         const elapsed = currentTime - startTime;
 
         if (elapsed >= duration) {
-            clearInterval(interval);
             callback(end);
             isEasing = false;
-        }
-        else {
+        } else {
             const progress = elapsed / duration;
             const easedValue = start + (end - start) * (progress * (2 - progress));
-            if (!isEasing) return;
             callback(easedValue);
+            requestAnimationFrame(update);
         }
     }
 
-    const interval = setInterval(update, 10); // Update approximately every 16 milliseconds
+    requestAnimationFrame(update);
 }

@@ -11,10 +11,14 @@ body {
     align-items: center;
 
     font-family: sans-serif;
-    background-color: powderblue;
+    background: url('background.png');
+    background-size: 6px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 
     /* Aspect ratio 1:1.5 */
     --book-size: calc(0.75 * 100vh);
+    --book-width: calc(var(--book-size) * (662 / 864));
     --book-border: 12px;
 
     overflow: hidden;
@@ -28,6 +32,11 @@ body {
     -o-user-select: none;
 }
 
+.pixelart {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
 /* Book */
 .book {
     position: relative;
@@ -38,9 +47,11 @@ body {
     display: flex;
     flex-direction: row;
     background: #dbd1c0;
-    border-top: 9px solid #711325;
-    border-bottom: 9px solid #711325;
+    border-top: 9px solid #633d18;
+    border-bottom: 9px solid #633d18;
 }
+
+div#book {}
 
 .paper {
     /* position: absolute; */
@@ -54,14 +65,12 @@ body {
 .back {
     background-color: #faf1e0;
     position: absolute;
-    width: calc(var(--book-size)* 0.66);
+    width: var(--book-width);
     height: var(--book-size);
     top: 0;
     left: 0;
     transform-origin: left;
-    /*transition: transform 0.5s;*/
-    /* overflow: hidden; */
-    box-shadow: 1px 0 20px -15px black;
+    /* box-shadow: 0 0 10px -8px black; */
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -111,13 +120,6 @@ button {
     cursor: pointer;
     margin: 10px;
     transition: all 0.75s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-#prev-btn {
-    right: calc(var(--book-size) * 0.33 + 10px)
-}
-#next-btn {
-    left: calc(var(--book-size) * 0.33 + 10px)
 }
 
 button:focus {
@@ -227,7 +229,7 @@ i {
     display: flex;
     align-items: center;
     border-radius: 0 50% 0 10px;
-    box-shadow: inset 3px 3px 10px -5px black;
+    box-shadow: inset -3px 3px 10px -5px black;
 }
 
 .mirror .last-page-arrow i {
@@ -275,4 +277,61 @@ i {
     border-left: 9px solid #711325;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+.mirror .fade {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: unset;
+    height: 100%;
+    width: 104px;
+    background: url(fade.png);
+    opacity: 50%;
+    transform: scaleX(1);
+}
+
+.fade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 104px;
+    background: url(fade.png);
+    opacity: 50%;
+    transform: scaleX(-1);
+}
+
+.sowing {
+    position: fixed;
+    top: 84px;
+    height: 12px;
+    width: 100%;
+    background: url(sowing-line.png);
+    background-size: 30px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.sowing.bottom {
+    top: unset;
+    bottom: 84px;
+    transform: rotate(180deg);
+}
+
+.spine {
+    height: 100%;
+    width: 120px;
+    position: absolute;
+    left: -20px;
+    top: 0;
+    background: url(spine.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.spine.back {
+    left: unset;
+    right: calc(-120px - 20px);
+    transform: scaleX(-1);
 }

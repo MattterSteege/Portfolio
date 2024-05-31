@@ -2,8 +2,8 @@
 // References to DOM Elements
 const book = document.querySelector("#book");
 
-const bookSize = 0.75 * window.innerHeight; // 75% of the window height, width == 75% * 0.66 * window.innerHeight
-const bookWidth = bookSize * 2 / 3;
+const bookSize = 0.75 * window.innerHeight; // 75% of the window height / 864h x 662w = 100 : 75
+const bookWidth = bookSize * (662 / 864); //864h x 662w = 100 : 75
 const pageOffset = 7.5; //px
 
 const papers = document.querySelectorAll(".paper");

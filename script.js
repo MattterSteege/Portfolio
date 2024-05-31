@@ -1,113 +1,67 @@
-// https://www.gameuidatabase.com/gameData.php?id=322
-// References to DOM Elements
-const book = document.querySelector("#book");
+var pages = document.querySelectorAll(".page");
+pages.forEach(function (page, index) {
+    page.style.zIndex = pages.length - index;
 
-const bookSize = 0.75 * window.innerHeight; // 75% of the window height / 864h x 662w = 100 : 75
-const bookWidth = bookSize * (662 / 864); //864h x 662w = 100 : 75
-const pageOffset = 7.5; //px
-
-const papers = document.querySelectorAll(".paper");
-papers.forEach((paper, index) => {
-    paper.style.zIndex = -index;
-    paper.style.width = "0.0001px";
-});
-const paperWidth = papers[0].clientWidth;
-
-// Event Listener
-document.querySelectorAll('div:has(> .fas.fa-arrow-left)').forEach((el) => {
-    el.addEventListener('click', goPrevPage)
+    if (page.classList.contains('left')){
+        page.children[0].style.transform = `scaleX(-1)`;
+    }
 });
 
-//div:has(> .fas.fa-arrow-right)
+currentPage = 0;
 
-document.querySelectorAll('div:has(> .fas.fa-arrow-right)').forEach((el) => {
-    el.addEventListener('click', goNextPage)
-});
-
-// Business Logic
-let currentLocation = 1;
-const numOfPapers = papers.length;
-const maxLocation = numOfPapers + 1;
-
-book.style.transform = "translateX(" + (-bookWidth / 2) + "px)";
+const isBookOpen = () => document.body.style.getPropertyValue('--page-gap') === '3.75px';
 
 function openBook() {
-    book.style.transform = "translateX(0)";
-    papers.forEach((paper, index) => {
-        paper.style.width = pageOffset + "px";
-    });
+    document.body.style.setProperty('--page-gap', `3.75px`);
 }
 
-function closeBook(isAtBeginning) {
-    if (isAtBeginning) {
-        book.style.transform = "translateX(" + (-bookWidth / 2) + "px)";
-    } else {
-        book.style.transform = "translateX(" + (bookWidth / 2) + "px)";
-    }
-
-    papers.forEach((paper, index) => {
-        paper.style.width = "0.0001px";
-    });
+function closeBook() {
+    document.body.style.setProperty('--page-gap', `0`);
 }
 
-function goNextPage() {
+function nextPage() {
     if (isEasing) return;
-    if (currentLocation < maxLocation) {
-        if (currentLocation === 1) {
-            openBook();
-        } else if (currentLocation === numOfPapers) {
-            closeBook(false);
+    if (currentPage >= pages.length - 1) return;
+    if (!isBookOpen()) openBook();
+    var page1 = pages[currentPage];
+    var page2 = pages[currentPage + 1];
+
+    ease(0, -180, 500, function (value) {
+        page1.style.transform = `rotateY(${value}deg)`;
+        page2.style.transform = `rotateY(${value}deg)`;
+
+        if (value * -1 > 90) {
+            page1.style.zIndex = currentPage + 1;
+            page2.style.zIndex = currentPage;
         }
+    });
 
-        const currentPaper = papers[currentLocation - 1];
-        const frontPaper = currentPaper.querySelector(".front");
-        const backPaper = currentPaper.querySelector(".back");
-        //currentPaper.classList.add("flipped");
+    currentPage += 2;
 
-        var temp = -1 * currentPaper.style.zIndex
-        ease(0, -180, 500, (value) => {
-            frontPaper.style.transform = "rotateY(" + value + "deg)";
-            backPaper.style.transform = "rotateY(" + value + "deg)";
-
-            //if ease is halfway done, change z-index
-            if ((value * -1) < 90) {
-                currentPaper.style.zIndex = temp
-            }
-        });
-        currentLocation++;
-    }
+    if (currentPage >= pages.length) closeBook();
 }
 
-function goPrevPage() {
+function prevPage() {
     if (isEasing) return;
+    if (currentPage === 0) return;
+    if (currentPage >= 0) openBook();
 
-    if (currentLocation > 1) {
-        currentLocation--;
+    var page1 = pages[currentPage - 2];
+    var page2 = pages[currentPage - 1];
 
-        if (currentLocation === 1) {
-            closeBook(true);
-        } else if (currentLocation === numOfPapers) {
-            openBook();
+    ease(-180, 0, 500, function (value) {
+        page1.style.transform = `rotateY(${value}deg)`;
+        page2.style.transform = `rotateY(${value}deg)`;
+
+        if (value * -1 < 90) {
+            page1.style.zIndex = pages.length - currentPage;
+            page2.style.zIndex = pages.length - currentPage - 1;
         }
+    });
 
-        const currentPaper = papers[currentLocation - 1];
-        const frontPaper = currentPaper.querySelector(".front");
-        const backPaper = currentPaper.querySelector(".back");
-        //currentPaper.classList.remove("flipped");
+    currentPage -= 2;
 
-
-
-        ease(-180, 0, 500, (value) => {
-            frontPaper.style.transform = "rotateY(" + value + "deg)";
-            backPaper.style.transform = "rotateY(" + value + "deg)";
-
-            //if ease is halfway done, change z-index
-            if (value === 0) {
-                console.log(value)
-                currentPaper.style.zIndex = 1 - currentLocation
-            }
-        });
-    }
+    if (isBookOpen() && currentPage === 0) closeBook();
 }
 
 var isEasing = false;
@@ -138,4 +92,23 @@ function ease(start, end, time, callback) {
     }
 
     requestAnimationFrame(update);
+}
+
+function changeTransform(element, type, value) {
+    //type = 'rotateY'
+    //value = 90
+    //style.transform = `rotateY(180deg) translateX(100px)`;
+    //will become style.transform = `rotateY(90deg) translateX(100px)`;
+
+    var transform = element.style.transform;
+    var transformArray = transform.split(' ');
+    var newTransform = '';
+    transformArray.forEach(function (item) {
+        if (item.includes(type)) {
+            newTransform += `${type}(${value}deg) `;
+        } else {
+            newTransform += `${item} `;
+        }
+    });
+    element.style.transform = newTransform;
 }

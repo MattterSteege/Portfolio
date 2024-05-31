@@ -11,14 +11,12 @@ body {
     align-items: center;
 
     font-family: sans-serif;
-    background: url('background.png');
-    background-size: 6px;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+
 
     /* Aspect ratio 1:1.5 */
     --book-size: calc(0.75 * 100vh);
     --book-width: calc(var(--book-size) * (662 / 864));
+    --page-gap: 0px;
     --book-border: 12px;
 
     overflow: hidden;
@@ -39,100 +37,79 @@ body {
 
 /* Book */
 .book {
-    position: relative;
     width: fit-content;
-    height: calc(var(--book-size) + 18px);
-    transition: transform 0.5s;
-    z-index: 100000;
-    display: flex;
-    flex-direction: row;
-    background: #dbd1c0;
-    border-top: 9px solid #633d18;
-    border-bottom: 9px solid #633d18;
-}
-
-div#book {}
-
-.paper {
-    /* position: absolute; */
-    width: 0;
     height: var(--book-size);
-    perspective: 1500px;
-    transition: all 0.25s;
-}
-
-.front,
-.back {
-    background-color: #faf1e0;
-    position: absolute;
-    width: var(--book-width);
-    height: var(--book-size);
-    top: 0;
-    left: 0;
-    transform-origin: left;
-    /* box-shadow: 0 0 10px -8px black; */
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.front {
-    z-index: 1;
-    backface-visibility: hidden;
-}
-
-.back {
-    z-index: 0;
-}
-
-.front-content,
-.back-content {
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.back-content {
-    transform: rotateY(180deg)
+.page {
+    width: var(--page-gap);
+    height: var(--book-size);
+    transform-style: preserve-3d;
+    position: relative;
+    backface-visibility: hidden;
+    transition: width 0.5s ease;
 }
 
-/* Paper flip effect */
-.flipped .front,
-.flipped .back {
+.paper {
+    position: relative;
+    width: var(--book-width);
+    height: var(--book-size);
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.page.flipped {
     transform: rotateY(-180deg);
 }
 
-.mirror {
-    transform: rotateY(180deg);
-    width: 100%;
-    height: 100%;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+.page.left {
+    transform-origin: 0 50%;
 }
 
-/* Controller Buttons */
-button {
-    position: relative;
-    bottom: 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    margin: 10px;
-    transition: all 0.75s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+.page.left {
+    right: var(--page-gap);
 }
 
-button:focus {
-    outline: none;
+.page.right {
+    transform-origin: 100% 50%;
 }
 
-button:hover i {
-    color: #636363;
+#book .page:nth-child(1) .paper {
+    background: red;
 }
 
-i {
-    font-size: 50px;
-    color: gray;
+#book .page:nth-child(2) .paper {
+    background: blue;
+}
+
+#book .page:nth-child(3) .paper {
+    background: green;
+}
+
+#book .page:nth-child(4) .paper {
+    background: yellow;
+}
+
+#book .page:nth-child(5) .paper {
+    background: purple;
+}
+
+#book .page:nth-child(6) .paper {
+    background: orange;
+}
+
+#book .page:nth-child(7) .paper {
+    background: pink;
+}
+
+#book .page:nth-child(8) .paper {
+    background: brown;
 }
 
 .arrow {
@@ -150,7 +127,7 @@ i {
     justify-content: flex-start;
 }
 
-.mirror .arrow {
+.left .arrow {
     position: absolute;
     left: -250px;
     top: 50%;
@@ -166,18 +143,23 @@ i {
 }
 
 .first-page-arrow {
-    right: -9px;
-    bottom: -9px;
+    right: 0;
+    bottom: 0;
     transform: unset;
     height: 84px;
     width: 84px;
     top: unset;
-    justify-content: center;
     z-index: 10000000000000000;
     display: flex;
     align-items: center;
-    border-radius: 50% 0 10px 0;
-    box-shadow: inset 3px 3px 10px -5px black;
+    border-radius: 50% 0 0 0;
+    background: #fdf0dd;
+    box-shadow: inset 0 0 10px -5px black;
+    position: absolute;
+    justify-content: center;
+    color: gray;
+    font-size: 25px;
+    text-align: center;
 }
 
 .first-page-arrow i {
@@ -186,152 +168,30 @@ i {
     line-height: 50px;
 }
 
-.front .front-page, .mirror .front-page-outline {
-    position: relative;
-    width: calc(100% + 9px);
-    height: calc(100% + 18px);
-    top: -9px;
+.last-page-arrow {
     left: 0;
-    background: #711325;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    box-shadow: 1px 0 20px -15px black;
-}
-
-.side-button {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 300px;
-    width: 50px;
-    overflow: hidden;
-    z-index: 10000000000;
-}
-
-.side-button.right {
-    left: unset;
-    right: 0;
-}
-
-.mirror .last-page-arrow {
-    left: -9px;
-    bottom: -9px;
+    bottom: 0;
     transform: unset;
     height: 84px;
     width: 84px;
     top: unset;
-    justify-content: center;
     z-index: 10000000000000000;
     display: flex;
     align-items: center;
-    border-radius: 0 50% 0 10px;
-    box-shadow: inset -3px 3px 10px -5px black;
+    border-radius: 0 50% 0 0;
+    background: #fdf0dd;
+    box-shadow: inset 0 0 10px -5px black;
+    position: absolute;
+    justify-content: center;
+    color: gray;
+    font-size: 25px;
+    text-align: center;
 }
 
-.mirror .last-page-arrow i {
+.last-page-arrow i {
     width: 55px;
     height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.back .back-page {
-    position: relative;
-    width: calc(100% + 9px);
-    height: calc(100% + 18px);
-    top: -9px;
-    left: -9px;
-    background: #711325;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    box-shadow: 1px 0 20px -15px black;
-}
-
-.back-page-outline {
-    position: absolute;
-    top: -9px;
-    width: calc(100% + 9px);
-    height: calc(100% + 18px);
-    border-top: 9px solid #6f1324;
-    border-right: 9px solid #6f1324;
-    border-bottom: 9px solid #6f1324;
-    border-radius: 10px;
-}
-
-.outline {
-    position: absolute;
-    top: -9px;
-    left: -9px;
-    width: calc(100% + 9px);
-    height: calc(100% + 18px);
-    border-top: 9px solid #711325;
-    border-bottom: 9px solid #711325;
-    border-left: 9px solid #711325;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.mirror .fade {
-    position: absolute;
-    right: 0;
-    top: 0;
-    left: unset;
-    height: 100%;
-    width: 104px;
-    background: url(fade.png);
-    opacity: 50%;
-    transform: scaleX(1);
-}
-
-.fade {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 104px;
-    background: url(fade.png);
-    opacity: 50%;
-    transform: scaleX(-1);
-}
-
-.sowing {
-    position: fixed;
-    top: 84px;
-    height: 12px;
-    width: 100%;
-    background: url(sowing-line.png);
-    background-size: 30px;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-}
-
-.sowing.bottom {
-    top: unset;
-    bottom: 84px;
-    transform: rotate(180deg);
-}
-
-.spine {
-    height: 100%;
-    width: 120px;
-    position: absolute;
-    left: -20px;
-    top: 0;
-    background: url(spine.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.spine.back {
-    left: unset;
-    right: calc(-120px - 20px);
-    transform: scaleX(-1);
 }

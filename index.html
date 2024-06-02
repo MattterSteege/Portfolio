@@ -15,6 +15,18 @@
 <!-- Book -->
 <div id="book" class="book">
 
+    <div class="spine">
+        <svg viewBox="0 0 5 100" preserveAspectRatio="none">
+            <path d="M0 5h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 25h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 45h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 65h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 85h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3Z"/>
+        </svg>
+
+        <svg viewBox="0 0 5 100" preserveAspectRatio="none">
+            <path d="M7 95h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 75h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 55h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 35h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3M7 15h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3Z"/>
+        </svg>
+    </div>
+
+    <div class="spinebackground"></div>
+
     <div id="p0" class="page right">
         <div class="paper">
 
@@ -22,8 +34,17 @@
                 <i class="fas fa-arrow-rotate-right"></i>
             </div>
 
-            <h1>Book Title</h1>
-            <p>Page 1</p>
+            <div class="spine-left-line">
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+            </div>
+
+            <div class="front-page">
+
+            </div>
 
         </div>
     </div>
@@ -34,6 +55,10 @@
             <div class="arrow" onclick="prevPage()">
                 <i class="fas fa-arrow-left"></i>
             </div>
+
+            <div class="fade"></div>
+
+            <!--end of generic page-->
 
             <h1>Book Title</h1>
             <p>Page 2</p>
@@ -47,6 +72,10 @@
                 <i class="fas fa-arrow-right"></i>
             </div>
 
+            <div class="fade"></div>
+
+            <!--end of generic page-->
+
             <h1>Book Title</h1>
             <p>Page 3</p>
         </div>
@@ -58,6 +87,10 @@
             <div class="arrow" onclick="prevPage()">
                 <i class="fas fa-arrow-left"></i>
             </div>
+
+            <div class="fade"></div>
+
+            <!--end of generic page-->
 
             <h1>Book Title</h1>
             <p>Page 4</p>
@@ -71,6 +104,10 @@
                 <i class="fas fa-arrow-right"></i>
             </div>
 
+            <div class="fade"></div>
+
+            <!--end of generic page-->
+
             <h1>Book Title</h1>
             <p>Page 5</p>
         </div>
@@ -82,6 +119,10 @@
             <div class="arrow" onclick="prevPage()">
                 <i class="fas fa-arrow-left"></i>
             </div>
+
+            <div class="fade"></div>
+
+            <!--end of generic page-->
 
             <h1>Book Title</h1>
             <p>Page 6</p>
@@ -95,6 +136,10 @@
                 <i class="fas fa-arrow-right"></i>
             </div>
 
+            <div class="fade"></div>
+
+            <!--end of generic page-->
+
             <h1>Book Title</h1>
             <p>Page 7</p>
         </div>
@@ -103,9 +148,19 @@
     <div id="p7" class="page left">
         <div class="paper">
 
-            <div class="last-page-arrow" onclick="prevPage()">
-                <i class="fas fa-arrow-rotate-left"></i>
+            <div class="arrow" onclick="prevPage()">
+                <i class="fas fa-arrow-left"></i>
             </div>
+
+            <div class="spine-right-line">
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+                <div class="binding"></div>
+            </div>
+
+            <!--end of generic page-->
 
             <h1>Book Title</h1>
             <p>Page 8</p>

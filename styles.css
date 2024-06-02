@@ -42,6 +42,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    perspective: 1500px;
 }
 
 .page {
@@ -57,11 +58,16 @@ body {
     position: relative;
     width: var(--book-width);
     height: var(--book-size);
-    background-color: #f5f5f5;
+    background-color: #e6dfd5;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    /* box-shadow: 16px 0px 2px 0px #00000030; */
+}
+
+#p0 .paper {
+    background: #701325;
 }
 
 .page.flipped {
@@ -78,38 +84,6 @@ body {
 
 .page.right {
     transform-origin: 100% 50%;
-}
-
-#book .page:nth-child(1) .paper {
-    background: red;
-}
-
-#book .page:nth-child(2) .paper {
-    background: blue;
-}
-
-#book .page:nth-child(3) .paper {
-    background: green;
-}
-
-#book .page:nth-child(4) .paper {
-    background: yellow;
-}
-
-#book .page:nth-child(5) .paper {
-    background: purple;
-}
-
-#book .page:nth-child(6) .paper {
-    background: orange;
-}
-
-#book .page:nth-child(7) .paper {
-    background: pink;
-}
-
-#book .page:nth-child(8) .paper {
-    background: brown;
 }
 
 .arrow {
@@ -154,7 +128,7 @@ body {
     align-items: center;
     border-radius: 50% 0 0 0;
     background: #fdf0dd;
-    box-shadow: inset 0 0 10px -5px black;
+    box-shadow: inset 4px 4px 10px -5px black;
     position: absolute;
     justify-content: center;
     color: gray;
@@ -194,4 +168,113 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.spine {
+    height: 100%;
+    width: auto;
+    position: absolute;
+}
+
+.spine svg {
+    height: 100%;
+    width: auto;
+    position: absolute;
+    fill: #543518;
+}
+
+.spine svg:first-child {
+    transform: translateX(-98%);
+}
+
+.spine svg:last-child {
+    transform: translateX(-2%);
+}
+
+.spinebackground {
+    width: 100%;
+    height: 100%;
+    background: #543518;
+    position: absolute;
+}
+
+#p0 .spine-left-line {
+    position: absolute;
+    height: 100%;
+    width: 100px;
+    background: linear-gradient(-90deg, #40280d 90%, #9e9191);
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+#p0 .spine-left-line .binding {
+    height: calc(9 * 1%);
+    width: 100%;
+    background: linear-gradient(90deg, #543518 90%, #4a2f12);
+    border-right: 4px solid gold;
+    border-left: 4px solid #543518;
+    box-shadow: 0 0 10px 1px black;
+}
+
+.book .page:last-child .spine-right-line {
+    position: absolute;
+    height: 100%;
+    width: 100px;
+    background: linear-gradient(90deg, #40280d 90%, #9e9191);
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.book .page:last-child .spine-right-line .binding {
+    height: calc(9 * 1%);
+    width: 100%;
+    background: linear-gradient(-90deg, #543518 90%, #4a2f12);
+    border-left: 4px solid gold;
+    box-shadow: 0 0 10px 1px black;
+}
+
+.front-page {
+    position: absolute;
+    width: calc(100% - 100px);
+    right: 0;
+    height: 100%;
+}
+
+.left .fade {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 100px;
+    background: url(fade.png);
+}
+
+.right .fade {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100px;
+    background: url(fade.png);
+    transform: scaleX(-1);
+}
+
+.right .paper {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 1px 0px 3px 1px #00000030;
+}
+
+.left .paper {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: -1px 0px 3px 1px #00000030;
+}
+
+.book .page:last-child .paper {
+    background: #701325;
 }

@@ -1,3 +1,4 @@
+// https://www.gameuidatabase.com/gameData.php?id=322
 var pages = document.querySelectorAll(".page");
 pages.forEach(function (page, index) {
     page.style.zIndex = pages.length - index;

@@ -68,6 +68,7 @@ body {
 
 #p0 .paper {
     background: #701325;
+    background: linear-gradient(45deg, #701325 0%, #4e0c19 100%);
 }
 
 .page.flipped {
@@ -214,7 +215,7 @@ body {
     height: calc(9 * 1%);
     width: 100%;
     background: linear-gradient(90deg, #543518 90%, #4a2f12);
-    border-right: 4px solid gold;
+    border-right: 4px solid #9f8021;
     border-left: 4px solid #543518;
     box-shadow: 0 0 10px 1px black;
 }
@@ -235,7 +236,7 @@ body {
     height: calc(9 * 1%);
     width: 100%;
     background: linear-gradient(-90deg, #543518 90%, #4a2f12);
-    border-left: 4px solid gold;
+    border-left: 4px solid #9f8021;
     box-shadow: 0 0 10px 1px black;
 }
 
@@ -277,4 +278,112 @@ body {
 
 .book .page:last-child .paper {
     background: #701325;
+}
+
+.front-page .gold-outline {
+    margin: 10px;
+    border: 10px solid #9f8021;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    position: absolute;
+    border-radius: 5px;
+}
+
+.front-page .title-text {
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 10%;
+}
+
+.front-page .title-text svg:not(:first-child) {
+    margin-top: 50px;
+    fill: #e3a124;
+    width: 90%;
+}
+
+.front-page .title-text svg:nth-child(3) {
+    margin-top: 0;
+}
+
+
+.front-page svg {
+    fill: #e3a124;
+}
+
+.front-page .project-counter {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.front-page .project-counter svg:first-child {
+    fill: white;
+    width: 25px;
+    height: 25px;
+}
+
+.front-page .project-counter svg:last-child {
+    width: 20px;
+    height: 20px;
+}
+
+.front-page .file-sticker {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: rotate(337deg);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #9f8021 0%, #957916 100%);
+    box-shadow: 0 0 2px 1px black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.front-page .feather {
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    transform: rotate(337deg);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.front-page .feather img {
+    display: block;
+    width: 200px;
+}
+
+.front-page .feather img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    mix-blend-mode: lighten;
+}
+
+.front-page .file-sticker svg {
+    fill: white;
+    transform: scale(1.2);
 }

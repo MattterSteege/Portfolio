@@ -35,6 +35,13 @@ body {
     image-rendering: crisp-edges;
 }
 
+#screensize-detector {
+    visibility: hidden;
+    width: 100in;
+    height: 100cm;
+    position: fixed;
+}
+
 /* Book */
 .book {
     width: fit-content;

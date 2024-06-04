@@ -11,7 +11,7 @@
 </head>
 <body>
 <!--https://www.winterwind.com/tutorials/css/3 -->
-
+<div id="screensize-detector"></div>
 <!-- Book -->
 <div id="book" class="book">
 
@@ -245,6 +245,16 @@
     </div>
 
 </div>
+
+<script>
+    var test = document.getElementById("screensize-detector")
+    var info = test.getBoundingClientRect()
+    var inch = info.width / 100
+    var cm = info.height / 100
+    console.log(`So width is ${window.innerWidth / inch}inch and height is ${window.innerHeight / inch}inch`);
+    console.log(`So Width is ${window.innerWidth / cm}cm and height is ${window.innerHeight / cm}cm`);
+
+</script>
 
 </body>
 </html>

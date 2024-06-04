@@ -11,7 +11,18 @@
 </head>
 <body>
 <!--https://www.winterwind.com/tutorials/css/3 -->
-<div id="screensize-detector"></div>
+
+<div id="size-wrong-overlay" class="noclick">
+    De groote van uw scherm is niet correct.<br>
+    * Zorg dat uw scherm horizontaal is.<br>
+    * Zoom uit totdat u de hele pagina ziet. (Ctrl + -)<br>
+</div>
+
+<div id="screensize-detector" class="noselect"></div>
+
+<div class="left-click" onclick="prevPage()"></div>
+<div class="right-click" onclick="nextPage()"></div>
+
 <!-- Book -->
 <div id="book" class="book">
 
@@ -30,7 +41,7 @@
     <div id="p0" class="page right">
         <div class="paper">
 
-            <div class="first-page-arrow" onclick="nextPage()">
+            <div class="first-page-arrow">
                 <i class="fas fa-arrow-rotate-right"></i>
             </div>
 
@@ -129,43 +140,55 @@
     <div id="p1" class="page left">
         <div class="paper">
 
-            <div class="arrow" onclick="prevPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-left"></i>
             </div>
 
             <div class="fade"></div>
 
-            <!--end of generic page-->
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
-            <h1>Book Title</h1>
-            <p>Page 2</p>
         </div>
     </div>
 
     <div id="p2" class="page right">
         <div class="paper">
 
-            <div class="arrow" onclick="nextPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-right"></i>
             </div>
 
             <div class="fade"></div>
 
-            <!--end of generic page-->
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
-            <h1>Book Title</h1>
-            <p>Page 3</p>
+            <div class="class-title">PROJECTEN<br>UIT 4VWO</div>
+
         </div>
     </div>
 
     <div id="p3" class="page left">
         <div class="paper">
 
-            <div class="arrow" onclick="prevPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-left"></i>
             </div>
 
             <div class="fade"></div>
+
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
             <!--end of generic page-->
 
@@ -177,11 +200,17 @@
     <div id="p4" class="page right">
         <div class="paper">
 
-            <div class="arrow" onclick="nextPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-right"></i>
             </div>
 
             <div class="fade"></div>
+
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
             <!--end of generic page-->
 
@@ -193,11 +222,17 @@
     <div id="p5" class="page left">
         <div class="paper">
 
-            <div class="arrow" onclick="prevPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-left"></i>
             </div>
 
             <div class="fade"></div>
+
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
             <!--end of generic page-->
 
@@ -209,11 +244,17 @@
     <div id="p6" class="page right">
         <div class="paper">
 
-            <div class="arrow" onclick="nextPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-right"></i>
             </div>
 
             <div class="fade"></div>
+
+            <div class="arrow-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
+                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
+                </svg>
+            </div>
 
             <!--end of generic page-->
 
@@ -225,7 +266,7 @@
     <div id="p7" class="page left">
         <div class="paper">
 
-            <div class="arrow" onclick="prevPage()">
+            <div class="arrow">
                 <i class="fas fa-arrow-left"></i>
             </div>
 
@@ -253,6 +294,34 @@
     var cm = info.height / 100
     console.log(`So width is ${window.innerWidth / inch}inch and height is ${window.innerHeight / inch}inch`);
     console.log(`So Width is ${window.innerWidth / cm}cm and height is ${window.innerHeight / cm}cm`);
+
+    //width less than 25cm
+    if (window.innerWidth / cm < 40) {
+        document.getElementById("size-wrong-overlay").style.opacity = "1";
+    }
+    else {
+        document.getElementById("size-wrong-overlay").style.opacity = "0";
+    }
+
+    setTimeout(function() {
+        document.getElementById("size-wrong-overlay").style.transition = "opacity 0.5s";
+    }, 100);
+
+    window.onresize = function() {
+        var test = document.getElementById("screensize-detector")
+        var info = test.getBoundingClientRect()
+        var inch = info.width / 100
+        var cm = info.height / 100
+        console.log(`So width is ${window.innerWidth / inch}inch and height is ${window.innerHeight / inch}inch`);
+        console.log(`So Width is ${window.innerWidth / cm}cm and height is ${window.innerHeight / cm}cm`);
+
+        //width less than 25cm
+        if (window.innerWidth / cm < 40) {
+            document.getElementById("size-wrong-overlay").style.opacity = "1";
+        } else {
+            document.getElementById("size-wrong-overlay").style.opacity = "0";
+        }
+    }
 
 </script>
 

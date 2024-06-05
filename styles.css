@@ -269,6 +269,7 @@ body {
     height: 100%;
     width: 100px;
     background: url(fade.png);
+    opacity: 0.5;
 }
 
 .right .fade {
@@ -278,6 +279,7 @@ body {
     width: 100px;
     background: url(fade.png);
     transform: scaleX(-1);
+    opacity: 0.5;
 }
 
 .right .paper {
@@ -485,7 +487,9 @@ body {
 }
 
 .project-showcase-left .number {
-    width: 100%;
+    width: 80%;
+    position: relative;
+    left: 10%;
     height: 200px;
     display: flex;
     flex-direction: row;
@@ -497,15 +501,22 @@ body {
     height: 20px;
     width: 200px;
     transform: scaleX(-1);
-    margin-right: 50px;
+    margin-right: 10px;
     fill: #7d695e;
 }
 
 .number .right-arrow {
     height: 20px;
     width: 200px;
-    margin-left: 50px;
+    margin-left: 10px;
     fill: #7d695e;
+}
+
+.number .num {
+    width: 50px;
+    stroke: #7d695e;
+    fill: none;
+    stroke-width: 5px;
 }
 
 .project-showcase-left .project-title {
@@ -513,4 +524,43 @@ body {
     text-align: center;
     color: #7d695e;
     height: 40px;
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+.project-showcase-right {
+    font-size: 1.5vw;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    z-index: 1;
+    color: #7d695e;
+    gap: 100px;
+}
+
+.project-showcase-right .preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: none;
+}
+
+.project-showcase-right .preview-image {
+    box-shadow: inset 0 0 3px 1px #0000008a;
+    padding: 5px;
+    background: #e6dfd5;
+    display: flex;
+}
+
+.project-showcase-right .desc {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.project-showcase-right .desc p {
+    text-align: end;
 }

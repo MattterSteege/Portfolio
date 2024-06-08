@@ -222,9 +222,6 @@
                     </div>
                 </div>
 
-                <div class="bekijk">
-                    <img src="bekijk.png" alt="">
-                </div>
             </div>
         </div>
     </div>
@@ -240,7 +237,10 @@
 
             <div class="project-showcase-right">
                 <div class="preview-image">
-                    <img src="/Projecten/Tiny_Community.png" alt="Tiny Community">
+                    <img src="/Projecten/Tiny_Community.png" alt="Tiny Community" onclick="window.location.href='/ProjectPagina/TinyCommunity'">
+                    <div class="click">
+                        klik om meer te zien
+                    </div>
                 </div>
                 <div class="desc">
                     Gestart op: <p>26-08-2020</p>
@@ -539,8 +539,6 @@
     var info = test.getBoundingClientRect()
     var inch = info.width / 100
     var cm = info.height / 100
-    console.log(`So width is ${window.innerWidth / inch}inch and height is ${window.innerHeight / inch}inch`);
-    console.log(`So Width is ${window.innerWidth / cm}cm and height is ${window.innerHeight / cm}cm`);
 
     //width less than 25cm
     if (window.innerWidth / cm < 40) {

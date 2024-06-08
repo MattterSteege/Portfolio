@@ -10,16 +10,13 @@ body {
     justify-content: center;
     align-items: center;
 
-    font-family: sans-serif;
-
-
     /* Aspect ratio 1:1.5 */
     --book-size: calc(0.75 * 100vh);
     --book-width: calc(var(--book-size) * (662 / 864));
     --page-gap: 0px;
     --book-border: 12px;
 
-    overflow: hidden;
+    font-family: "Majoris";
 }
 
 @font-face {
@@ -614,4 +611,132 @@ body {
     width: calc(100% - 120px);
     position: absolute;
     right: 0;
+}
+
+.click {
+    position: absolute;
+    color: black;
+    font-size: 12px;
+}
+
+/*PROJECTEN PAGINA's*/
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 40px;
+}
+
+.project-header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.project-header h1 {
+    margin: 0;
+}
+
+.project-meta {
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.project-meta p {
+    margin: 5px 0;
+}
+
+.project-meta span {
+    font-weight: bold;
+}
+
+.project-overview,
+.project-research,
+.project-role,
+.project-final,
+.project-evaluation,
+.project-team {
+    padding: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.project-overview h2,
+.project-research h2,
+.project-role h2,
+.project-final h2,
+.project-evaluation h2,
+.project-team h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+.project-role ul,
+.project-team ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.project-role li,
+.project-team li {
+    background: #f4f4f4;
+    margin: 5px 0;
+    padding: 10px;
+    border-left: 4px solid #333;
+}
+
+.project-requirements {
+    padding: 20px;
+}
+
+.sketch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.sketch.left {
+    flex-direction: row-reverse;
+}
+
+.sketch.right {
+    flex-direction: row;
+}
+
+.sketch img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.sketch p {
+    flex: 1;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+@media (max-width: 600px) {
+    .sketch {
+        flex-direction: column;
+    }
+
+    .sketch.left,
+    .sketch.right {
+        flex-direction: column;
+    }
+
+    .sketch p {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }

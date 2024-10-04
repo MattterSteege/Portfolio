@@ -1,572 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="https://fa.kronk.tech">
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
-<body style="overflow: hidden">
-<!--https://www.winterwind.com/tutorials/css/3 -->
+<body>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+  }
 
-<div id="size-wrong-overlay" class="noclick">
-    De groote van uw scherm is niet correct.<br>
-    * Zorg dat uw scherm horizontaal is.<br>
-    * Zoom uit totdat u de hele pagina ziet. (Ctrl + -)<br>
+  .trading-card {
+    position: relative;
+    width: 400px;
+    aspect-ratio: 18 / 25;
+  }
+  .trading-card img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+    .trading-card-header {
+      position: absolute;
+      top: calc(var(--height-ratio)* 65%);
+      height: calc(var(--height-ratio)* 10%);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      font-weight: bold;
+      color: black;
+      z-index: 4;
+      width: calc(var(--width-ratio)* 56%);
+      text-transform: uppercase;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trading-card-description {
+      position: absolute;
+      top: calc(var(--height-ratio)* 73%);
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 1em;
+      color: black;
+      font-weight: bold;
+      z-index: 4;
+      width: calc(var(--width-ratio)* 56%);
+      text-align: start;
+      margin: 0;
+    }
+
+    .trading-card-top-info {
+      position: absolute;
+      top: calc(var(--height-ratio)* 1.5%);
+      height: calc(var(--height-ratio)* 11.5%);
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 2em;
+      font-weight: bold;
+      color: black;
+      z-index: 4;
+      width: calc(var(--width-ratio)* 40%);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+</style>
+
+<div class="trading-card" style="--height-ratio: calc(100 / 91); --width-ratio: calc(100 / 66);">
+    <img src="/images/TradingCard_Background.svg" style="z-index: 1;">
+    <img src="/images/TradingCard_ForegroundMask.svg" style="z-index: 2;">
+    <img src="/images/TradingCard_Name.svg" style="z-index: 3;">
+    <img src="/images/TradingCard_TopInfo.svg" style="z-index: 4;">
+    <h1 class="trading-card-header">Domino Day</h1>
+    <p class="trading-card-description">Domino day was een project waar we een domino baan moesten ontwerpen</p>
+    <p class="trading-card-top-info">1 VWO</p>
 </div>
-
-<div id="screensize-detector" class="noselect"></div>
-
-<div class="left-click" onclick="prevPage()"></div>
-<div class="right-click" onclick="nextPage()"></div>
-
-<!-- Book -->
-<div id="book" class="book">
-
-    <div class="spine">
-        <svg viewBox="0 0 5 100" preserveAspectRatio="none">
-            <path d="M0 5h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 25h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 45h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 65h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3ZM0 85h7v10h-1a3 3 0 01-3-3v-4a3 3 0 013-3Z"/>
-        </svg>
-
-        <svg viewBox="0 0 5 100" preserveAspectRatio="none">
-            <path d="M7 95h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 75h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 55h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3ZM7 35h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3M7 15h-7v-10h1a3 3 180 013 3v4a3 3 180 01-3 3Z"/>
-        </svg>
-    </div>
-
-    <div class="spinebackground"></div>
-
-    <div id="p0" class="page right">
-        <div class="paper">
-
-            <div class="arrow" style="z-index: 10;">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="spine-left-line">
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-            </div>
-
-            <div class="front-page">
-                <div class="gold-outline">
-                    <div class="gold-outline">
-
-                        <div class="title-text">
-                            <svg viewBox="0 0 382.959 71.289" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <filter id="strong-inner">
-                                        <feFlood flood-color="black"/>
-                                        <feComposite operator="out" in2="SourceGraphic" />
-                                        <feMorphology operator="dilate" radius="1"/>
-                                        <feGaussianBlur stdDeviation="2" />
-                                        <feComposite operator="atop" in2="SourceGraphic"/>
-                                    </filter>
-                                </defs>
-
-                                <g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" filter="url(#strong-inner)">
-                                    <path d="M 7.324 67.578 L 0 3.613 L 22.559 0.732 L 39.746 25.342 L 50.977 0 L 73.779 3.955 L 77.979 70.557 L 57.275 66.602 L 57.91 33.057 L 42.139 56.689 L 25.928 32.471 L 28.76 70.313 L 7.324 67.578 Z M 368.115 0.537 L 379.297 5.518 L 372.07 22.705 L 355.762 19.629 L 348.096 24.756 L 367.236 26.66 L 382.959 44.824 L 372.754 69.141 L 342.139 71.289 L 325.049 63.672 L 332.52 46.582 L 351.66 50.049 L 359.863 46.826 L 350.391 42.285 L 330.957 38.623 L 324.463 19.629 L 341.064 2.441 L 368.115 0.537 Z M 160.547 20.801 L 161.035 4.199 L 220.459 0.488 L 218.701 24.463 L 199.219 22.949 L 201.514 69.482 L 177.148 70.557 L 180.371 21.875 L 160.547 20.801 Z M 228.857 20.801 L 229.346 4.199 L 288.77 0.488 L 287.012 24.463 L 267.529 22.949 L 269.824 69.482 L 245.459 70.557 L 248.682 21.875 L 228.857 20.801 Z M 84.375 66.602 L 104.443 2.148 L 127.002 0.635 L 151.953 68.75 L 131.299 70.898 L 125.684 55.176 L 111.23 54.297 L 106.006 69.824 L 84.375 66.602 Z M 304.443 24.707 L 297.998 3.125 L 314.355 0.977 L 312.207 26.172 L 304.443 24.707 Z M 118.75 26.611 L 116.65 26.025 L 113.135 39.404 L 123.193 39.307 L 118.75 26.611 Z" vector-effect="non-scaling-stroke"/>
-                                </g>
-                            </svg>
-
-                            <svg viewBox="0 0 493.945 89.844" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <filter id="strong-inner">
-                                        <feFlood flood-color="black"/>
-                                        <feComposite operator="out" in2="SourceGraphic" />
-                                        <feMorphology operator="dilate" radius="5"/>
-                                        <feGaussianBlur stdDeviation="5" />
-                                        <feComposite operator="atop" in2="SourceGraphic"/>
-                                    </filter>
-                                </defs>
-
-                                <g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" filter="url(#strong-inner)">
-                                    <path d="M 0 88.281 L 3.271 18.701 L 18.506 17.285 L 19.141 26.953 L 41.602 19.434 L 55.273 42.48 L 48.193 65.527 L 30.566 70.02 L 21.045 65.039 L 24.219 88.916 L 0 88.281 Z M 19.385 40.625 L 20.557 47.949 L 29.395 52.93 L 34.131 44.531 L 28.418 37.549 L 19.385 40.625 Z" id="0" vector-effect="non-scaling-stroke"/><path d="M 63.232 69.824 L 63.086 23.047 L 77.295 20.313 L 78.711 28.174 L 97.363 22.119 L 107.227 35.791 L 97.217 48.584 L 90.625 41.064 L 84.912 46.777 L 83.838 69.824 L 63.232 69.824 Z" id="1" vector-effect="non-scaling-stroke"/><path d="M 121.777 23.291 L 143.652 19.678 L 160.449 26.514 L 165.381 46.924 L 155.078 69.824 L 127.393 70.557 L 115.332 47.51 L 121.777 23.291 Z M 143.994 38.574 L 138.037 38.33 L 135.059 44.531 L 142.432 49.756 L 148.291 44.775 L 143.994 38.574 Z" id="2" vector-effect="non-scaling-stroke"/><path d="M 175.098 71.094 L 176.758 22.07 L 193.945 23.486 L 193.701 71.24 L 185.693 89.844 L 161.963 86.523 L 165.43 69.434 L 175.098 71.094 Z M 173.389 12.793 L 176.709 0.586 L 190.186 0 L 195.117 8.594 L 186.963 18.262 L 173.389 12.793 Z" id="3" vector-effect="non-scaling-stroke"/><path d="M 257.91 46.924 L 225.684 47.607 L 234.766 52.979 L 250.146 51.221 L 257.422 65.625 L 224.023 70.752 L 203.613 57.666 L 203.613 26.855 L 234.961 19.678 L 256.348 28.662 L 257.91 46.924 Z M 226.27 37.695 L 237.744 38.086 L 234.961 32.813 L 229.004 32.813 L 226.27 37.695 Z" id="4" vector-effect="non-scaling-stroke"/><path d="M 288.232 19.629 L 313.77 22.559 L 306.689 41.357 L 295.361 37.305 L 288.721 43.945 L 293.408 50.342 L 308.887 47.119 L 317.822 63.135 L 292.529 70.703 L 271.777 64.551 L 266.357 32.52 L 288.232 19.629 Z" id="5" vector-effect="non-scaling-stroke"/><path d="M 339.014 20.41 L 339.941 1.66 L 356.055 0.342 L 355.371 20.313 L 366.943 19.434 L 366.553 34.961 L 355.127 35.791 L 355.957 51.563 L 368.359 53.809 L 370.166 69.824 L 337.451 67.432 L 338.184 36.426 L 326.123 36.182 L 327.686 20.068 L 339.014 20.41 Z" id="6" vector-effect="non-scaling-stroke"/><path d="M 433.105 46.924 L 400.879 47.607 L 409.961 52.979 L 425.342 51.221 L 432.617 65.625 L 399.219 70.752 L 378.809 57.666 L 378.809 26.855 L 410.156 19.678 L 431.543 28.662 L 433.105 46.924 Z M 401.465 37.695 L 412.939 38.086 L 410.156 32.813 L 404.199 32.813 L 401.465 37.695 Z" id="7" vector-effect="non-scaling-stroke"/><path d="M 442.383 70.996 L 441.895 20.85 L 454.297 20.02 L 456.445 26.465 L 461.816 21.436 L 480.811 19.775 L 493.945 34.717 L 490.479 70.264 L 470.068 69.678 L 471.387 37.695 L 458.252 43.164 L 458.496 69.336 L 442.383 70.996 Z" id="8" vector-effect="non-scaling-stroke"/>
-                                </g>
-                            </svg>
-
-                            <svg viewBox="0 0 474.316 89.111" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <filter id="strong-inner">
-                                        <feFlood flood-color="black"/>
-                                        <feComposite operator="out" in2="SourceGraphic" />
-                                        <feMorphology operator="dilate" radius="5"/>
-                                        <feGaussianBlur stdDeviation="5" />
-                                        <feComposite operator="atop" in2="SourceGraphic"/>
-                                    </filter>
-                                </defs>
-
-                                <g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" filter="url(#strong-inner)">
-                                    <path d="M 21.875 19.727 L 47.412 22.656 L 40.332 41.455 L 29.004 37.402 L 22.363 44.043 L 27.051 50.439 L 42.529 47.217 L 51.465 63.232 L 26.172 70.801 L 5.42 64.648 L 0 32.617 L 21.875 19.727 Z" id="0" vector-effect="non-scaling-stroke"/><path d="M 66.406 36.719 L 66.797 21.826 L 88.428 19.531 L 105.615 28.369 L 108.789 66.943 L 93.262 69.775 L 91.602 62.5 L 78.076 69.434 L 60.303 62.402 L 59.619 43.652 L 76.465 36.035 L 88.232 37.451 L 86.084 32.178 L 66.406 36.719 Z M 88.965 52.393 L 87.793 48.926 L 80.908 47.363 L 77.93 51.416 L 86.426 54.541 L 88.965 52.393 Z" id="1" vector-effect="non-scaling-stroke"/><path d="M 129.59 20.508 L 130.518 1.758 L 146.631 0.439 L 145.947 20.41 L 157.52 19.531 L 157.129 35.059 L 145.703 35.889 L 146.533 51.66 L 158.936 53.906 L 160.742 69.922 L 128.027 67.529 L 128.76 36.523 L 116.699 36.279 L 118.262 20.166 L 129.59 20.508 Z" id="2" vector-effect="non-scaling-stroke"/><path d="M 175.391 36.719 L 175.781 21.826 L 197.412 19.531 L 214.6 28.369 L 217.773 66.943 L 202.246 69.775 L 200.586 62.5 L 187.061 69.434 L 169.287 62.402 L 168.604 43.652 L 185.449 36.035 L 197.217 37.451 L 195.068 32.178 L 175.391 36.719 Z M 197.949 52.393 L 196.777 48.926 L 189.893 47.363 L 186.914 51.416 L 195.41 54.541 L 197.949 52.393 Z" id="3" vector-effect="non-scaling-stroke"/><path d="M 230.469 68.848 L 226.172 3.32 L 247.998 0 L 249.414 70.41 L 230.469 68.848 Z" id="4" vector-effect="non-scaling-stroke"/><path d="M 264.795 23.389 L 286.67 19.775 L 303.467 26.611 L 308.398 47.021 L 298.096 69.922 L 270.41 70.654 L 258.35 47.607 L 264.795 23.389 Z M 287.012 38.672 L 281.055 38.428 L 278.076 44.629 L 285.449 49.854 L 291.309 44.873 L 287.012 38.672 Z" id="5" vector-effect="non-scaling-stroke"/><path d="M 338.916 19.189 L 348.828 21.338 L 354.199 16.943 L 365.43 21.826 L 362.207 25.537 L 365.283 35.205 L 360.303 52.49 L 351.904 56.445 L 363.281 59.033 L 370.557 75.781 L 355.273 89.111 L 323.633 86.865 L 328.906 68.848 L 346.094 71.924 L 346.777 61.572 L 333.057 58.594 L 319.727 60.596 L 326.367 57.275 L 316.016 42.334 L 321.973 22.754 L 338.916 19.189 Z M 337.158 43.896 L 345.996 42.09 L 344.678 35.547 L 335.596 38.037 L 337.158 43.896 Z" id="6" vector-effect="non-scaling-stroke"/><path d="M 376.855 62.744 L 374.951 21.24 L 396.094 19.336 L 394.531 50.439 L 406.689 45.068 L 405.029 20.264 L 425.195 21.68 L 423.193 70.85 L 407.52 70.264 L 406.836 62.158 L 387.354 69.092 L 376.855 62.744 Z" id="7" vector-effect="non-scaling-stroke"/><path d="M 463.232 20.02 L 473.34 29.004 L 466.797 40.82 L 457.715 34.961 L 454.248 37.207 L 471.094 44.482 L 474.316 59.912 L 457.471 72.559 L 433.643 64.404 L 439.355 53.564 L 457.471 58.691 L 459.766 54.736 L 438.135 49.756 L 434.082 30.762 L 447.363 22.07 L 463.232 20.02 Z" id="8" vector-effect="non-scaling-stroke"/>
-                                </g>
-                            </svg>
-                        </div>
-
-                        <div class="file-sticker">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none">
-                                <path fill="none" d="M 10 4.5 H 7.6 C 7.0399 4.5 6.7599 4.5 6.546 4.609 C 6.3579 4.7049 6.2049 4.8579 6.109 5.046 C 6 5.2599 6 5.54 6 6.1 V 11.9 C 6 12.4601 6 12.7401 6.109 12.954 C 6.2049 13.1422 6.3579 13.2951 6.546 13.391 C 6.7599 13.5 7.0399 13.5 7.6 13.5 H 11.4 C 11.9601 13.5 12.2401 13.5 12.454 13.391 C 12.6422 13.2951 12.7951 13.1422 12.891 12.954 C 13 12.7401 13 12.4601 13 11.9 V 7.5 M 10 4.5 L 13 7.5 M 10 4.5 V 6.7 C 10 6.98 10 7.1201 10.0545 7.227 C 10.1024 7.3211 10.1789 7.3976 10.273 7.4455 C 10.3799 7.5 10.5199 7.5 10.8 7.5 H 13 Z M 9 2 A 1 1 0 0 0 9 16 A 1 1 0 0 0 9 2 Z" stroke="#b49c6c" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-
-                        <div class="feather">
-                            <img src="feather.png" alt="">
-                        </div>
-
-                        <div class="project-counter">
-                            <svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" >
-                                <g id="SVGRepo_iconCarrier">
-                                    <path id="Diamond" d="M63.6870499,18.5730648L48.7831497,4.278266c-0.1855011-0.1758003-0.4316025-0.4813001-0.6870003-0.4813001 H15.9037514c-0.2553005,0-0.5014,0.3054998-0.6870003,0.4813001l-14.9038,14.1908998 c-0.374,0.3535004-0.4184,0.9855995-0.1025,1.3917999c0.21,0.2703991,30.8237991,39.7256012,31.0517006,39.9812012 c0.1022987,0.1149979,0.2402992,0.2215996,0.3428001,0.266098c0.2763996,0.1206017,0.5077,0.1296997,0.7900982,0.0065002 c0.1025009-0.0444984,0.2404022-0.1348991,0.3428001-0.2499008c0.0151024-0.0168991,0.0377007-0.0224991,0.0517006-0.0404968 L63.789547,19.9121666C64.1054459,19.5058651,64.0610504,18.9265652,63.6870499,18.5730648z M15.6273508,6.4344659 l4.9945002,11.3625011H3.6061509L15.6273508,6.4344659z M24.0795517,17.7969666l7.9203987-11.2617006l7.9204979,11.2617006 H24.0795517z M40.7191467,19.7969666l-8.7191963,34.8769989l-8.719099-34.8769989H40.7191467z M33.9257507,5.7969656h12.5423012 l-4.8240013,10.9746008L33.9257507,5.7969656z M22.3559513,16.7715664L17.53195,5.7969656h12.5423012L22.3559513,16.7715664z M21.2191505,19.7969666l8.6596012,34.638401L2.975451,19.7969666H21.2191505z M42.7808495,19.7969666h18.2436981 l-26.9032974,34.638401L42.7808495,19.7969666z M43.3781471,17.7969666l4.9944992-11.3625011l12.0212021,11.3625011H43.3781471z"></path>
-                                </g>
-                            </svg>
-                            <svg width="52.588" height="70.752" viewBox="0 0 52.588 70.752" xmlns="http://www.w3.org/2000/svg">
-                                <g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt">
-                                    <path d="M 0 35.205 L 20.459 0 L 41.064 3.32 L 24.902 37.988 L 32.275 39.111 L 31.348 29.395 L 44.238 27.197 L 44.727 40.088 L 51.367 41.211 L 52.588 55.127 L 45.703 54.443 L 47.314 67.773 L 32.959 70.752 L 32.275 55.029 L 2.051 50.977 L 0 35.205 Z" id="0" vector-effect="non-scaling-stroke"/>
-                                </g>
-                            </svg>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="p1" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="arrow-small">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
-                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
-                </svg>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="p2" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="arrow-small">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
-                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
-                </svg>
-            </div>
-
-            <div class="class-title">PROJECTEN<br>UIT 4VWO</div>
-
-        </div>
-    </div>
-
-    <div id="p3" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <!--end of generic page-->
-
-            <div class="project-showcase-left">
-                <div class="number">
-                    <div class="left-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="num">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67.18 80.31">
-                            <path d="M 5 16.719 L 24.678 5 L 46.65 7.393 L 44.746 55.146 L 61.445 55.879 L 62.178 73.896 L 6.416 75.313 L 5.342 54.072 L 23.994 54.658 L 24.189 25.166 L 14.766 30.684 L 5 16.719 Z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="project-title">
-                    TINY COMMUNITY
-                </div>
-
-                <div class="number" style="height: 100px;">
-                    <div class="left-arrow" style="margin-right: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow" style="margin-left: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div id="p4" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="project-showcase-right">
-                <div class="preview-image">
-                    <img src="/Projecten/Tiny_Community.png" alt="Tiny Community" onclick="window.location.href='/ProjectPagina/TinyCommunity'">
-                    <div class="click">
-                        klik om meer te zien
-                    </div>
-                </div>
-                <div class="desc">
-                    Gestart op: <p>26-08-2020</p>
-                    Geëindigd op: <p>02-12-2022</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p5" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <!--end of generic page-->
-
-            <div class="project-showcase-left">
-                <div class="number">
-                    <div class="left-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="num">
-                        <svg viewBox="0 0 54.102 71.387" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 0.732 12.549 L 18.506 0 L 40.82 4.297 L 51.953 15.283 L 52.051 34.619 L 40.625 46.094 L 30.713 50.391 L 54.102 49.658 L 50.879 71.387 L 1.221 69.824 L 0 52.881 L 24.854 35.107 L 29.59 24.951 L 18.994 21.045 L 10.4 27.1 L 0.732 12.549 Z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="project-title">
-                    PROJECT TAS
-                </div>
-
-                <div class="number" style="height: 100px;">
-                    <div class="left-arrow" style="margin-right: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow" style="margin-left: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p6" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="project-showcase-right">
-                <div class="preview-image">
-                    <img src="/Projecten/Project_Tas.png" alt="Project Tas"  onclick="window.location.href='/ProjectPagina/ProjectTas'">
-                    <div class="click">
-                        klik om meer te zien
-                    </div>
-                </div>
-                <div class="desc">
-                    Gestart op: <p>26-08-2020</p>
-                    Geëindigd op: <p>02-12-2022</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p7" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="arrow-small">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
-                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
-                </svg>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="p8" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="arrow-small">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2" preserveAspectRatio="none">
-                    <path d="m 0 0 l 10 1 l -10 1 l 0 -2 z"/>
-                </svg>
-            </div>
-
-            <div class="class-title">PROJECTEN<br>UIT 5VWO</div>
-
-        </div>
-    </div>
-
-    <div id="p9" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <!--end of generic page-->
-
-            <div class="project-showcase-left">
-                <div class="number">
-                    <div class="left-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="num">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67.18 80.31">
-                            <path d="M 5 16.719 L 24.678 5 L 46.65 7.393 L 44.746 55.146 L 61.445 55.879 L 62.178 73.896 L 6.416 75.313 L 5.342 54.072 L 23.994 54.658 L 24.189 25.166 L 14.766 30.684 L 5 16.719 Z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="project-title">
-                    SUIKERVRIJ SNOEP
-                </div>
-
-                <div class="number" style="height: 100px;">
-                    <div class="left-arrow" style="margin-right: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow" style="margin-left: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p10" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="project-showcase-right">
-                <div class="preview-image">
-                    <img src="/Projecten/Suikervervanger.png" alt="Suikervrij snoep" onclick="window.location.href='/ProjectPagina/SuikervrijSnoep'">
-                    <div class="click">
-                        klik om meer te zien
-                    </div>
-                </div>
-                <div class="desc">
-                    Gestart op: <p>28-08-2023</p>
-                    Geëindigd op: <p>06-12-2023</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p11" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <!--end of generic page-->
-
-            <div class="project-showcase-left">
-                <div class="number">
-                    <div class="left-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="num">
-                        <svg viewBox="0 0 54.102 71.387" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 0.732 12.549 L 18.506 0 L 40.82 4.297 L 51.953 15.283 L 52.051 34.619 L 40.625 46.094 L 30.713 50.391 L 54.102 49.658 L 50.879 71.387 L 1.221 69.824 L 0 52.881 L 24.854 35.107 L 29.59 24.951 L 18.994 21.045 L 10.4 27.1 L 0.732 12.549 Z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="project-title">
-                    ROOSTERS BUITEN DE SMARTZONES
-                </div>
-
-                <div class="number" style="height: 100px;">
-                    <div class="left-arrow" style="margin-right: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                    <div class="right-arrow" style="margin-left: 0; width: 50%;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 2" preserveAspectRatio="none">
-                            <path d="m 0 0 l 50 1 l -50 1 l 0 -2 z"/>
-                        </svg>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div id="p12" class="page right">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-
-            <div class="fade"></div>
-
-            <div class="project-showcase-right">
-                <div class="preview-image">
-                    <img src="/Projecten/RoosterBuitenDeSmartzone.png" alt="RoosterBuitenDeSmartzone" onclick="window.location.href='/ProjectPagina/RoosterBuitenDeSmartzone'">
-                    <div class="click">
-                        klik om meer te zien
-                    </div>
-                </div>
-                <div class="desc">
-                    Gestart op: <p>25-01-2024</p>
-                    Geëindigd op: <p>24-05-2025</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="p13" class="page left">
-        <div class="paper">
-
-            <div class="arrow">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="spine-right-line">
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-                <div class="binding"></div>
-            </div>
-
-            <!--end of generic page-->
-        </div>
-    </div>
-
-</div>
-
-<script>
-    var test = document.getElementById("screensize-detector")
-    var info = test.getBoundingClientRect()
-    var inch = info.width / 100
-    var cm = info.height / 100
-
-    //width less than 25cm
-    if (window.innerWidth / cm < 40) {
-        document.getElementById("size-wrong-overlay").style.opacity = "1";
-    }
-    else {
-        document.getElementById("size-wrong-overlay").style.opacity = "0";
-    }
-
-    setTimeout(function() {
-        document.getElementById("size-wrong-overlay").style.transition = "opacity 0.5s";
-    }, 100);
-
-    window.onresize = function() {
-        var test = document.getElementById("screensize-detector")
-        var info = test.getBoundingClientRect()
-        var inch = info.width / 100
-        var cm = info.height / 100
-        console.log(`So width is ${window.innerWidth / inch}inch and height is ${window.innerHeight / inch}inch`);
-        console.log(`So Width is ${window.innerWidth / cm}cm and height is ${window.innerHeight / cm}cm`);
-
-        //width less than 25cm
-        if (window.innerWidth / cm < 40) {
-            document.getElementById("size-wrong-overlay").style.opacity = "1";
-        } else {
-            document.getElementById("size-wrong-overlay").style.opacity = "0";
-        }
-    }
-
-</script>
-
 </body>
 </html>

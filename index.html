@@ -22,70 +22,139 @@
     width: 400px;
     aspect-ratio: 18 / 25;
   }
-  .trading-card img {
+
+  .trading-card * {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+
+      -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+  }
+
+  .trading-card img, .trading-card svg {
     width: 100%;
     height: 100%;
     position: absolute;
   }
 
-    .trading-card-header {
-      position: absolute;
-      top: calc(var(--height-ratio)* 65%);
-      height: calc(var(--height-ratio)* 10%);
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2em;
-      font-weight: bold;
-      color: black;
-      z-index: 4;
-      width: calc(var(--width-ratio)* 56%);
-      text-transform: uppercase;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.trading-card-header, .trading-card-description, .trading-card-top-info {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-weight: bold;
+  color: black;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.trading-card-header {
+  top: calc(var(--height-ratio) * 65%);
+  height: calc(var(--height-ratio) * 10%);
+  font-size: 2em;
+  z-index: 4;
+  width: calc(var(--width-ratio) * 56%);
+  transform: translate(-50%, -50%);
+}
+
+.trading-card-description {
+  top: calc(var(--height-ratio) * 73%);
+  font-size: 1em;
+  z-index: 4;
+  width: calc(var(--width-ratio) * 56%);
+  text-align: start;
+  text-transform: unset;
+}
+
+.trading-card-top-info {
+  top: calc(var(--height-ratio) * 1.5%);
+  height: calc(var(--height-ratio) * 11.5%);
+  font-size: 2em;
+  z-index: 5;
+  width: calc(var(--width-ratio) * 40%);
+}
+
+    #mask {
+        z-index: 3;
+        mask-image: url('images/TradingCard_ForegroundMask.svg');
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
 
-    .trading-card-description {
-      position: absolute;
-      top: calc(var(--height-ratio)* 73%);
-      left: 50%;
-      transform: translate(-50%, 0);
-      font-size: 1em;
-      color: black;
-      font-weight: bold;
-      z-index: 4;
-      width: calc(var(--width-ratio)* 56%);
-      text-align: start;
-      margin: 0;
+    #mask::before {
+        content: '';
+        z-index: 3;
+        width: 141%;
+        height:141%; /* ~sqrt(2) */
+        left: 50%;
+        top: calc(var(--height-ratio)* 40%);
+        position: absolute;
+        background-image: url('images/TechnasiumLogo.svg');
+        background-size: 120px;
+        transform: translate(-50%, -50%) rotate(35deg); /* center the element then rotate */
+        opacity: 0.5;
+        /*animation: infinite_scroll 100s linear infinite; !*scroll diagonally forever (background-position )*!*/
     }
 
-    .trading-card-top-info {
-      position: absolute;
-      top: calc(var(--height-ratio)* 1.5%);
-      height: calc(var(--height-ratio)* 11.5%);
-      left: 50%;
-      transform: translate(-50%, 0);
-      font-size: 2em;
-      font-weight: bold;
-      color: black;
-      z-index: 4;
-      width: calc(var(--width-ratio)* 40%);
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @keyframes infinite_scroll {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: -10% 100%;
+            }
     }
 </style>
 
-<div class="trading-card" style="--height-ratio: calc(100 / 91); --width-ratio: calc(100 / 66);">
-    <img src="/images/TradingCard_Background.svg" style="z-index: 1;">
-    <img src="/images/TradingCard_ForegroundMask.svg" style="z-index: 2;">
-    <img src="/images/TradingCard_Name.svg" style="z-index: 3;">
-    <img src="/images/TradingCard_TopInfo.svg" style="z-index: 4;">
-    <h1 class="trading-card-header">Domino Day</h1>
-    <p class="trading-card-description">Domino day was een project waar we een domino baan moesten ontwerpen</p>
-    <p class="trading-card-top-info">1 VWO</p>
-</div>
 </body>
 </html>
+
+<script>
+    function createProjectCard(TopContent, NameContent, DescContent, ForegroundColor, BackgroundColor, ProjectIconContent) {
+        var cardTemplate =
+        `<div class="trading-card" style="--height-ratio: calc(100 / 91); --width-ratio: calc(100 / 66);">
+            <!--background-->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 1">
+                <path d="M 0 8 L 0 81 Q 0 89 8 89 L 56 89 Q 64 89 64 81 L 64 8 Q 64 0 56 0 L 8 0 Q 0 0 0 8" fill="${BackgroundColor}" stroke="black" stroke-width="0.5"/>
+            </svg>
+            <div id="mask"></div>
+
+            <!--foreground mask-->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 2;">
+                <path d="M 4 9 L 4 65 L 60 65 L 60 8 Q 60 4 56 4 L 9 4 Q 4 4 4 9" fill="${ForegroundColor}" stroke="black" stroke-width="0.5"/>
+            </svg>
+
+            <!--card name-->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 3">
+                <path d="M 4 59 L 4 65 Q 4 69 8 69 L 56 69 Q 60 69 60 65 L 60 59 L 4 59" fill="white" stroke="black" stroke-width="0.5"/>
+            </svg>
+
+            <!--top-info icon-->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 3">
+                <path d="M 12 0 L 12 8 Q 12 12 16 12 L 48 12 Q 52 12 52 9 L 52 0 L 12 0" fill="white" stroke="black" stroke-width="0.5"/>
+            </svg>
+
+            <!--project icon-->
+            <img src="${ProjectIconContent}" alt="project icon" style="z-index: 6">
+
+            <h1 class="trading-card-header">${NameContent}</h1>
+            <h1 class="trading-card-description">${DescContent}</h1>
+            <p class="trading-card-top-info">${TopContent}</p>
+        </div>`;
+
+        //turn into html Element
+        var cardElement = document.createElement('div');
+        cardElement.innerHTML = cardTemplate;
+        return cardElement.firstChild;
+    }
+</script>

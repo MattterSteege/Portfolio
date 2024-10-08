@@ -2,159 +2,253 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    font-family: 'Arial', sans-serif;
-  }
+  <title>Draggable Trading Cards</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
 
-  .trading-card {
-    position: relative;
-    width: 400px;
-    aspect-ratio: 18 / 25;
-  }
+    .trading-card {
+      width: 200px;
+      aspect-ratio: 18 / 25;
+      transition: transform 0.15s;
+      position: absolute;
+      cursor: move;
+    }
 
-  .trading-card * {
+    .trading-card:hover {
+      transform: scale(1.05);
+    }
+
+    .trading-card * {
       user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      -o-user-select: none;
-
       -webkit-user-drag: none;
-        -khtml-user-drag: none;
-        -moz-user-drag: none;
-        -o-user-drag: none;
-        user-drag: none;
-  }
+    }
 
-  .trading-card img, .trading-card svg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-  }
+    .trading-card img, .trading-card svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
 
-.trading-card-header, .trading-card-description, .trading-card-top-info {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  font-weight: bold;
-  color: black;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-}
+    .trading-card-header, .trading-card-description, .trading-card-top-info {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-weight: bold;
+      color: black;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
 
-.trading-card-header {
-  top: calc(var(--height-ratio) * 65%);
-  height: calc(var(--height-ratio) * 10%);
-  font-size: 2em;
-  z-index: 4;
-  width: calc(var(--width-ratio) * 56%);
-  transform: translate(-50%, -50%);
-}
+    .trading-card-header {
+      top: calc(var(--height-ratio) * 65%);
+      height: calc(var(--height-ratio) * 10%);
+      font-size: 2em;
+      z-index: 4;
+      width: calc(var(--width-ratio) * 56%);
+      transform: translate(-50%, -50%);
+    }
 
-.trading-card-description {
-  top: calc(var(--height-ratio) * 73%);
-  font-size: 1em;
-  z-index: 4;
-  width: calc(var(--width-ratio) * 56%);
-  text-align: start;
-  text-transform: unset;
-}
+    .trading-card-description {
+      top: calc(var(--height-ratio) * 73%);
+      font-size: 1em;
+      z-index: 4;
+      width: calc(var(--width-ratio) * 56%);
+      text-align: start;
+      text-transform: unset;
+    }
 
-.trading-card-top-info {
-  top: calc(var(--height-ratio) * 1.5%);
-  height: calc(var(--height-ratio) * 11.5%);
-  font-size: 2em;
-  z-index: 5;
-  width: calc(var(--width-ratio) * 40%);
-}
+    .trading-card-top-info {
+      top: calc(var(--height-ratio) * 1.5%);
+      height: calc(var(--height-ratio) * 11.5%);
+      font-size: 2em;
+      z-index: 5;
+      width: calc(var(--width-ratio) * 40%);
+    }
 
     #mask {
-        z-index: 3;
-        mask-image: url('images/TradingCard_ForegroundMask.svg');
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+      z-index: 3;
+      mask-image: url('images/TradingCard_ForegroundMask.svg');
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
 
     #mask::before {
-        content: '';
-        z-index: 3;
-        width: 141%;
-        height:141%; /* ~sqrt(2) */
-        left: 50%;
-        top: calc(var(--height-ratio)* 40%);
-        position: absolute;
-        background-image: url('images/TechnasiumLogo.svg');
-        background-size: 120px;
-        transform: translate(-50%, -50%) rotate(35deg); /* center the element then rotate */
-        opacity: 0.5;
-        /*animation: infinite_scroll 100s linear infinite; !*scroll diagonally forever (background-position )*!*/
+      content: '';
+      z-index: 3;
+      width: 141%;
+      height: 141%;
+      left: 50%;
+      top: calc(var(--height-ratio) * 40%);
+      position: absolute;
+      background-image: url('images/TechnasiumLogo.svg');
+      background-size: 120px;
+      transform: translate(-50%, -50%) rotate(35deg);
+      opacity: 0.5;
     }
 
-    @keyframes infinite_scroll {
-        0% {
-            background-position: 0 0;
-        }
-        100% {
-            background-position: -10% 100%;
-            }
+    .drop-off-point {
+      width: 220px;
+      height: 305px;
+      border: 2px dashed #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: #666;
+      position: absolute;
+      top: 400px;
     }
-</style>
-
-</body>
-</html>
+  </style>
+</head>
+<body>
+<div id="cards-container"></div>
+<div id="drop-off-container"></div>
 
 <script>
-    function createProjectCard(TopContent, NameContent, DescContent, ForegroundColor, BackgroundColor, ProjectIconContent) {
-        var cardTemplate =
-        `<div class="trading-card" style="--height-ratio: calc(100 / 91); --width-ratio: calc(100 / 66);">
-            <!--background-->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 1">
-                <path d="M 0 8 L 0 81 Q 0 89 8 89 L 56 89 Q 64 89 64 81 L 64 8 Q 64 0 56 0 L 8 0 Q 0 0 0 8" fill="${BackgroundColor}" stroke="black" stroke-width="0.5"/>
-            </svg>
-            <div id="mask"></div>
+  function createProjectCard(TopContent, NameContent, DescContent, ForegroundColor, BackgroundColor, ProjectIconContent) {
+    DescContent = "<tspan x=\"0\" dy=\"1.2em\">" + DescContent.split("\n").join("</tspan><tspan x='0' dy='1.2em'>") + "</tspan>";
 
-            <!--foreground mask-->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 2;">
-                <path d="M 4 9 L 4 65 L 60 65 L 60 8 Q 60 4 56 4 L 9 4 Q 4 4 4 9" fill="${ForegroundColor}" stroke="black" stroke-width="0.5"/>
-            </svg>
-
-            <!--card name-->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 3">
-                <path d="M 4 59 L 4 65 Q 4 69 8 69 L 56 69 Q 60 69 60 65 L 60 59 L 4 59" fill="white" stroke="black" stroke-width="0.5"/>
-            </svg>
-
-            <!--top-info icon-->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 66 91" style="z-index: 3">
-                <path d="M 12 0 L 12 8 Q 12 12 16 12 L 48 12 Q 52 12 52 9 L 52 0 L 12 0" fill="white" stroke="black" stroke-width="0.5"/>
-            </svg>
-
-            <!--project icon-->
-            <img src="${ProjectIconContent}" alt="project icon" style="z-index: 6">
-
-            <h1 class="trading-card-header">${NameContent}</h1>
-            <h1 class="trading-card-description">${DescContent}</h1>
-            <p class="trading-card-top-info">${TopContent}</p>
+    var cardTemplate = `
+        <div class="trading-card" style="--height-ratio: calc(100 / 91); --width-ratio: calc(100 / 66);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.25 -0.25 64.5 89.5" style="z-index: 1">
+            <path d="M 0 8 L 0 81 Q 0 89 8 89 L 56 89 Q 64 89 64 81 L 64 8 Q 64 0 56 0 L 8 0 Q 0 0 0 8" fill="${BackgroundColor}" stroke="black" stroke-width="0.5"/>
+          </svg>
+          <div id="mask"></div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.25 -0.25 64.5 89.5" style="z-index: 2;">
+            <path d="M 4 9 L 4 65 L 60 65 L 60 8 Q 60 4 56 4 L 9 4 Q 4 4 4 9" fill="${ForegroundColor}" stroke="black" stroke-width="0.5"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.25 -0.25 64.5 89.5" style="z-index: 3">
+            <path d="M 4 59 L 4 65 Q 4 69 8 69 L 56 69 Q 60 69 60 65 L 60 59 L 4 59" fill="white" stroke="black" stroke-width="0.5"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.25 -0.25 64.5 89.5" style="z-index: 3">
+            <path d="M 12 0 L 12 8 Q 12 12 16 12 L 48 12 Q 52 12 52 9 L 52 0 L 12 0" fill="white" stroke="black" stroke-width="0.5"/>
+          </svg>
+          <img src="${ProjectIconContent}" alt="project icon" style="z-index: 6">
+          <svg viewBox="-0.25 -0.25 64.5 89.5" xmlns="http://www.w3.org/2000/svg" style="z-index: 4">
+            <style>
+              .header { font-size: 40%; font-weight: bold; text-transform: uppercase; fill: black; text-anchor: middle; transform: translate(50%, 0); }
+            </style>
+            <text x="0" y="66" class="header">${NameContent}</text>
+          </svg>
+          <svg viewBox="-0.25 -0.25 64.5 89.5" xmlns="http://www.w3.org/2000/svg" style="z-index: 4">
+            <style>
+              .desc { font-size: 20%; font-weight: bold; text-transform: unset; fill: black; text-anchor: start; width: 86%; height: 100%; transform: translate(7%, 0); }
+            </style>
+            <text x="0" y="71" class="desc">${DescContent}</text>
+          </svg>
+          <svg viewBox="-0.25 -0.25 64.5 89.5" xmlns="http://www.w3.org/2000/svg" style="z-index: 5">
+            <style>
+              .top-info { font-size: 40%; font-weight: bold; text-transform: uppercase; fill: black; text-anchor: middle; transform: translate(50%, 0); }
+            </style>
+            <text x="0" y="8" class="top-info">${TopContent}</text>
+          </svg>
         </div>`;
 
-        //turn into html Element
-        var cardElement = document.createElement('div');
-        cardElement.innerHTML = cardTemplate;
-        return cardElement.firstChild;
+    var cardElement = document.createElement('div');
+    cardElement.innerHTML = cardTemplate;
+    return cardElement;
+  }
+
+  const cardsData = [
+    { top: "1 vwo", name: "Domino day", desc: "Domino day was een project waar\nwe een domino baan moesten\nontwerpen", fgColor: "#ffc20d", bgColor: "#CFD1D5", icon: "images/DominoDayArt.svg" },
+    { top: "2 vwo", name: "Robot arm", desc: "We designed and built a\nfunctional robot arm using\nservos and Arduino", fgColor: "#ff6b6b", bgColor: "#4ecdc4", icon: "images/RobotArmArt.svg" },
+    { top: "3 vwo", name: "Smart home", desc: "Created a miniature smart home\nwith IoT devices and\nautomation systems", fgColor: "#45aaf2", bgColor: "#fed330", icon: "images/SmartHomeArt.svg" }
+  ];
+
+  function initializeDraggableCards() {
+    const cardsContainer = document.getElementById('cards-container');
+    const dropOffContainer = document.getElementById('drop-off-container');
+
+    cardsData.forEach((data, index) => {
+      const card = createProjectCard(data.top, data.name, data.desc, data.fgColor, data.bgColor, data.icon);
+      card.style.left = `${index * 220}px`;
+      card.style.top = '20px';
+      card.id = `card-${index}`;
+      card.className = 'trading-card';
+      cardsContainer.appendChild(card);
+
+      makeDraggable(card);
+    });
+
+    const dropOffPoint = document.createElement('div');
+    dropOffPoint.className = 'drop-off-point';
+    dropOffPoint.textContent = `Drop here`;
+    dropOffPoint.id = `drop-}`;
+    dropOffContainer.appendChild(dropOffPoint);
+  }
+
+  function makeDraggable(element) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    element.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+      element.style.zIndex = 1000;
     }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      element.style.top = (element.offsetTop - pos2) + "px";
+      element.style.left = (element.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+      element.style.zIndex = 1;
+      checkDropZone(element);
+    }
+  }
+
+  function checkDropZone(card) {
+    const dropZones = document.querySelectorAll('.drop-off-point');
+    const cardRect = card.getBoundingClientRect();
+    const cardCenter = {
+      x: cardRect.left + cardRect.width / 2,
+      y: cardRect.top + cardRect.height / 2
+    };
+
+    for (const dropZone of dropZones) {
+      const dropRect = dropZone.getBoundingClientRect();
+      if (
+              cardCenter.x >= dropRect.left &&
+              cardCenter.x <= dropRect.right &&
+              cardCenter.y >= dropRect.top &&
+              cardCenter.y <= dropRect.bottom
+      ) {
+          card.style.left = `${dropRect.left}px`;
+          card.style.top = `${dropRect.top}px`;
+        return;
+      }
+    }
+    resetCardPosition(card);
+  }
+
+  function resetCardPosition(card) {
+    const index = parseInt(card.id.split('-')[1]);
+    card.style.left = `${index * 220}px`;
+    card.style.top = '20px';
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeDraggableCards);
 </script>
+</body>
+</html>

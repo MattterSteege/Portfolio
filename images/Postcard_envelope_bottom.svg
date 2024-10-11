@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-165 -99 330 198" fill="blue">
+	<!-- bottom lid   --><path d="M 165 99 L -165 99 L 165 99 L 15 -1 C 0 -11 0 -11 -15 -1 L -165 99 L 165 99" fill="#e3bb5c"/>
+	<!-- left side    --><path d="M -16.5 0 L -165 -99 L -165 99 L -16.5 0" fill="#e3bb5c"/>
+	<!-- right side   --><path d="M 16.5 0 L 165 -99 L 165 99 L 16.5 0" fill="#e3bb5c"/>
+	<!-- right stripe --><path d="M 164 100 L 20 4 L 22 2 L 166 98 L 164 100" fill="#c1983a"/>
+	<!-- left stripe  --><path d="M -164 100 L -20 4 L -22 2 L -166 98 L -164 100" fill="#c1983a"/>
+</svg>

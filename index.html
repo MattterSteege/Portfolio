@@ -3,96 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <title>Draggable Trading Cards</title>
-  <style>
-      body {
-          margin: 0;
-          font-family: 'Arial', sans-serif;
-      }
-
-      #envelope, #envelope-background, #envelope-lid {
-          position: fixed;
-          width: 500px;
-          aspect-ratio: 5 / 3;
-          left: 50%;
-          bottom: 50%;
-          transform: translate(-50%, 50%);
-          /*perspective: 1000px;*/
-      }
-
-      #envelope-lid {
-          z-index: 1;
-          display: grid;
-          grid-template-columns: 1fr;
-          grid-template-rows: 1fr;
-          translate: -50% -50%;
-          transform-origin: bottom;
-      }
-
-      #envelope-lid img {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-      }
-
-      #envelope-background img {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-      }
-
-      #envelope #card {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-      }
-
-      #envelope img {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-      }
-
-      #cards-container {
-          position: fixed;
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          top: 10%;
-          z-index: 5;
-      }
-    </style>
     <style>
-        .draggable {
-            position: relative;
-            width: 100px;
-            height: 150px;
-            cursor: grab;
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
         }
 
-        .draggable img {
+        #envelope, #envelope-background, #envelope-lid {
+            position: fixed;
+            width: 300px;
+            aspect-ratio: 5 / 3;
+            left: 50%;
+            bottom: 20%;
+            transform: translate(-50%, 50%);
+            /*perspective: 1000px;*/
+        }
+
+        #envelope-lid {
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            translate: -50% -50%;
+            transform-origin: bottom;
+        }
+
+        #envelope-lid img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        #envelope-background img {
+            position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .draggable:active {
+        #envelope #envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #envelope img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #cards-container {
+            /* position: fixed; */
+            /* display: flex; */
+            /* justify-content: flex-start; */
+            /* width: 100%; */
+            /* top: 10%; */
+            /* z-index: 5; */
+        }
+    </style>
+    <style>
+        .card {
+            width: 290px;
+            aspect-ratio: 145 / 83;
+            cursor: grab;
+            transition: transform 0.2s, top 1s, left 1s;
+            position: absolute;
+            translate: -50% -50%;
+            top: 10%;
+            left: 50%;
+        }
+
+        .card img {
+            position: absolute;
+            width: 290px;
+            aspect-ratio: 145 / 83;
+        }
+
+        .card:active {
             cursor: grabbing;
         }
 
+        .card.stationary {
+            /* transform: rotate(-15deg); */
+        }
+
+        .card.stationary:hover {
+            transform: rotate(-30deg) scale(1.1);
+            border: 2px solid #000;
+        }
     </style>
     <script defer src="envelope.js"></script>
     <script defer src="dragging.js"></script>
 </head>
 <body>
 <div id="cards-container" style="z-index: -5;">
-    <div class="draggable card">
+    <div id="domino-day" class="draggable card stationary">
         <img src="/images/Postcard.svg" alt="">
     </div>
+
+<!--    <div id="eenzaamheidsvirus" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="create_the_escape" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="miniproject" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="zevenhonderdvijftig_jaar_gouda" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
 </div>
 
 <div id="envelope" style="z-index: 0;">
-    <div id="card">
+    <div id="envelope-front">
       <img src="/images/Postcard_envelope_bottom.svg" alt="Trading Card">
     </div>
 </div>

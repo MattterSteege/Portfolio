@@ -12,13 +12,11 @@ function flipEnvelope(flipTime = 1000) {
         setTimeout(() => {
             envelopeFlapInside.style.zIndex = 0;
             envelopeFlapOutside.style.zIndex = 2;
+            envelopeFlap.style.zIndex = 1;
             ease(90, 180, flipTime / 2, (value) => {
                 envelopeFlap.style.transform = `rotateX(${value}deg)`;
             }, 'easeOut');
 
-            setTimeout(() => {
-                envelopeFlap.style.zIndex = 1;
-            }, flipTime / 2);
         }, flipTime / 2);
         isFlipped = true;
     } else {
@@ -28,13 +26,11 @@ function flipEnvelope(flipTime = 1000) {
         setTimeout(() => {
             envelopeFlapInside.style.zIndex = 2;
             envelopeFlapOutside.style.zIndex = 0;
+            envelopeFlap.style.zIndex = -100;
             ease(90, 0, flipTime / 2, (value) => {
                 envelopeFlap.style.transform = `rotateX(${value}deg)`;
             }, 'easeOut');
 
-            setTimeout(() => {
-                envelopeFlap.style.zIndex = -100;
-            }, flipTime / 2);
         }, flipTime / 2);
         isFlipped = false;
     }

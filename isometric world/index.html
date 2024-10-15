@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body
+        {
+            --scaler: 0.6; /* Scale the grid */
+            --cells: 7; /* Amount of cells in the grid */
+            --grid-size: calc((90vw * var(--scaler)) / var(--cells)); /* Size of the grid */
+            --line-color: #666; /* Color of the walls */
+            --floor-color: #a6a5a5; /* Color of the floor */
+
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .grid
+        {
+            position: fixed;
+            width: calc(90vw * var(--scaler));
+            height: calc(90vw * var(--scaler));
+            transform: rotateX(60deg) rotateZ(45deg);
+            transform-origin: 50% 50%;
+            box-shadow: 0 0 0 1px #000;
+
+            /* generate the isometric grid */
+            background-image: linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0);
+            background-size: var(--grid-size) var(--grid-size);
+            background-color: var(--floor-color);
+            background-position: 0 0, 0 0;
+            border: 2px solid #000;
+        }
+
+        .grid .cell {
+            width: calc(var(--grid-size));
+            height: calc(var(--grid-size));
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            font-size: 24px;
+            position: fixed;
+        }
+
+        .grid .cell .positioner {
+            --positioner-size: 0px;
+            width: var(--positioner-size);
+            height: var(--positioner-size);
+            position: relative;
+            background: red;
+            top: calc(0% - var(--positioner-size) / 2);
+            left: calc(0% - var(--positioner-size) / 2);
+        }
+
+        .cells {
+            /*width = 868 when not rotated*/
+            /*height = 868 when not rotated*/
+            /*width = 1227.54 when rotated*/
+            /*height = 613.77 when rotated*/
+
+            /*that means that the (90vw * var(--scaler)) has to be multiplied by 1.41421356237 to get the correct width*/
+            /*that means that the (90vw * var(--scaler)) has to be multiplied by 0.70710678118 to get the correct height*/
+
+            position: fixed;
+            /*width: calc((90vw * var(--scaler)) * 1.41421356237);*/
+            /*height: calc((90vw * var(--scaler)) * 0.70710678118);*/
+            /*top: 50%;*/
+            /*left: 50%;*/
+            /*transform: translate(-50%, -50%);*/
+        }
+
+        .cells .cell {
+            width: calc(var(--grid-size) * 1.41421356237);
+            height: calc(var(--grid-size) * 0.70710678118 * 2);
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            font-size: 24px;
+            position: fixed;
+            translate: -50% -50%;
+            /*background: red;*/
+        }
+
+        .cells .cell img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .warning-screen-to-small
+        {
+            display: none;
+        }
+
+        /* if screen is too small show a warning */
+        @media (max-width: calc(14px + 100px))
+        {
+            .grid
+            {
+                background-image: none;
+                background-color: #f00;
+            }
+
+            .warning-screen-to-small
+            {
+                display: block;
+            }
+
+            .grid
+            {
+                display: none;
+            }
+
+            .warning-screen-to-small {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                font-family: Arial, sans-serif;
+                color: #fff;
+                font-size: 24px;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                background-color: rgba(0, 0, 0, 0.5);
+
+                z-index: 1000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="cell" data-x="1" data-y="1"></div>
+        <div class="cell" data-x="2" data-y="1"></div>
+        <div class="cell" data-x="3" data-y="1"></div>
+        <div class="cell" data-x="7" data-y="7"></div>
+    </div>
+
+    <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
+
+    <div class="cells">
+        <div class="cell" data-x="1" data-y="1">
+            <img src="/isometric%20world/iso_cube.svg" alt="">
+        </div>
+        <div class="cell" data-x="2" data-y="1">
+            <img src="/isometric%20world/iso_cube.svg" alt="">
+            </div>
+        <div class="cell" data-x="3" data-y="1">
+            <img src="/isometric%20world/iso_cube.svg" alt="">
+        </div>
+        <div class="cell" data-x="7" data-y="7">
+            <img src="/isometric%20world/iso_cube.svg" alt="">
+        </div>
+    </div>
+
+    <div class="warning-screen-to-small">
+        <h1>Screen is too small</h1>
+        <p>Screen is too small to display the isometric grid minimal size is 1500px wide</p>
+    </div>
+
+    <script>
+        var cells =[]; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
+        var grid = document.querySelector('.grid');
+        var cellsContainer = document.querySelector('.cells');
+        var gridCells = grid.querySelectorAll('.cell');
+        var cellsCells = cellsContainer.querySelectorAll('.cell');
+
+        gridCells.forEach((cell, index) => {
+            cells.push({grid: cell, cells: cellsCells[index]});
+        });
+
+        //foreach cell in the grid, set the text to the x and y position
+        cells.forEach(cell => {
+            cell.grid.style.top = `calc(100% - var(--grid-size) * ${cell.grid.dataset.y})`;
+            cell.grid.style.left = `calc(100% - var(--grid-size) * ${cell.grid.dataset.x})`;
+            cell.grid.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+            var positioner = document.createElement('div');
+            positioner.classList.add('positioner');
+            cell.grid.appendChild(positioner);
+
+            //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
+            var screenPositioner = cell.grid.querySelector('.positioner');
+            var screenPosition = screenPositioner.getBoundingClientRect();
+            cell.cells.style.top = `${screenPosition.top}px`;
+            cell.cells.style.left = `${screenPosition.left}px`;
+            cell.cells.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+        });
+
+    </script>
+</body>
+</html>

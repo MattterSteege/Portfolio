@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Draggable Trading Cards</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #envelope, #envelope-background, #envelope-lid {
+            position: fixed;
+            width: 300px;
+            aspect-ratio: 5 / 3;
+            left: 50%;
+            bottom: 20%;
+            transform: translate(-50%, 50%);
+            /*perspective: 1000px;*/
+        }
+
+        #envelope-lid {
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            translate: -50% -50%;
+            transform-origin: bottom;
+        }
+
+        #envelope-lid img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        #envelope-background img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #envelope #envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #envelope img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #cards-container {
+            /* position: fixed; */
+            /* display: flex; */
+            /* justify-content: flex-start; */
+            /* width: 100%; */
+            /* top: 10%; */
+            /* z-index: 5; */
+        }
+    </style>
+    <style>
+        .card {
+            width: 290px;
+            aspect-ratio: 145 / 83;
+            cursor: grab;
+            transition: transform 0.2s, top 1s, left 1s;
+            position: absolute;
+            translate: -50% -50%;
+            top: 10%;
+            left: 50%;
+        }
+
+        .card img {
+            position: absolute;
+            width: 290px;
+            aspect-ratio: 145 / 83;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card.stationary {
+            /* transform: rotate(-15deg); */
+        }
+
+        .card.stationary:hover {
+            transform: rotate(-30deg) scale(1.1);
+            border: 2px solid #000;
+        }
+    </style>
+    <script defer src="envelope.js"></script>
+    <script defer src="dragging.js"></script>
+</head>
+<body>
+<div id="cards-container" style="z-index: -5;">
+    <div id="domino-day" class="draggable card stationary">
+        <img src="/idea%201%20(postcard)/images01%20(postcard)/images/Postcard.svg" alt="">
+    </div>
+
+<!--    <div id="eenzaamheidsvirus" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="create_the_escape" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="miniproject" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div id="zevenhonderdvijftig_jaar_gouda" class="draggable card stationary">-->
+<!--        <img src="/images/Postcard.svg" alt="">-->
+<!--    </div>-->
+</div>
+
+<div id="envelope" style="z-index: 0;">
+    <div id="envelope-front">
+      <img src="/idea%201%20(postcard)/images01%20(postcard)/images/Postcard_envelope_bottom.svg" alt="Trading Card">
+    </div>
+</div>
+
+<div id="envelope-lid" style="transform: rotateX(0deg); z-index: -100;">
+    <img id="envelope-lid-out" src="/idea%201%20(postcard)/images01%20(postcard)/images/Postcard_envelope_top_out.svg" alt="Envelope Flap outside" style="transform: scaleY(-1);">
+    <img id="envelope-lid-in" src="/idea%201%20(postcard)/images01%20(postcard)/images/Postcard_envelope_top_in.svg" alt="Envelope Flap inside">
+</div>
+
+<div id="envelope-background" style="z-index: -100;">
+    <img src="/idea%201%20(postcard)/images01%20(postcard)/images/Postcard_envelope_background.svg" alt="Envelope Background">
+</div>
+
+<!-- slide them in from the left or right with a small delay (random) between them -->
+
+<div class="screen-transition">
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+    <div class="screen-transition__border"></div>
+</div>
+
+<script>
+    function ActivateScreenTransition() {
+        const screenTransition = document.querySelector('.screen-transition');
+        screenTransition.classList.add('screen-transition--active');
+        //screen-transition-left or screenTransition-right
+        Math.random() > 0.5 ? screenTransition.classList.add('screen-transition-left') : screenTransition.classList.add('screen-transition-right');
+    }
+</script>
+
+<style>
+    .screen-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
+        z-index: 100;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .screen-transition--active {
+        opacity: 1;
+    }
+
+    .screen-transition__border {
+        width: 0;
+        height: 100%;
+        background-color: #fff;
+        transition: width 0.5s;
+    }
+
+    .screen-transition-left .screen-transition__border {
+        transform-origin: right;
+    }
+
+    .screen-transition-right .screen-transition__border {
+        transform-origin: left;
+    }
+
+    .screen-transition--active .screen-transition__border {
+        width: calc(100% / 8);
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(2) {
+        transition-delay: 0.2s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(3) {
+        transition-delay: 0.3s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(4) {
+        transition-delay: 0.4s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(5) {
+        transition-delay: 0.5s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(6) {
+        transition-delay: 0.6s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(7) {
+        transition-delay: 0.7s;
+    }
+
+    .screen-transition--active .screen-transition__border:nth-child(8) {
+        transition-delay: 0.8s;
+    }
+</style>
+</body>
+</html>

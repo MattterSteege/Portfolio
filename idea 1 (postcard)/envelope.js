@@ -83,3 +83,17 @@ function ease(start, end, time, callback, easeType = 'ease') {
     }
     requestAnimationFrame(update);
 }
+
+function slideAwayEnvelope(){
+//#envelope, #envelope-lid, #envelope-background
+    const envelope = document.querySelector('#envelope');
+    const envelopeLid = document.querySelector('#envelope-lid');
+    const envelopeBackground = document.querySelector('#envelope-background');
+    envelope.style.transition = 'top 0.5s ease-in, left 0.5s ease-in';
+    envelopeLid.style.transition = 'top 0.5s ease-in, left 0.5s ease-in';
+    envelopeBackground.style.transition = 'top 0.5s ease-in, left 0.5s ease-in';
+
+    envelope.style.left = '150%';
+    envelopeLid.style.left = '150%';
+    envelopeBackground.style.left = '150%';
+}

@@ -7,7 +7,7 @@
         body
         {
             --scaler: 0.6; /* Scale the grid */
-            --cells: 7; /* Amount of cells in the grid */
+            --cells: 5; /* Amount of cells in the grid */
             --grid-size: calc((90vw * var(--scaler)) / var(--cells)); /* Size of the grid */
             --line-color: #666; /* Color of the walls */
             --floor-color: #a6a5a5; /* Color of the floor */
@@ -89,7 +89,14 @@
             font-size: 24px;
             position: fixed;
             translate: -50% -50%;
-            /*background: red;*/
+            /* Clip path for hexagonal shape */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            transition: transform 0.5s;
+        }
+
+        .cells .cell:hover {
+            /* Your hover styles */
+            transform: scale(1.1) translateY(-10%); /* For example, scale the element and move it up */
         }
 
         .cells .cell img {
@@ -148,24 +155,25 @@
         <div class="cell" data-x="1" data-y="1"></div>
         <div class="cell" data-x="2" data-y="1"></div>
         <div class="cell" data-x="3" data-y="1"></div>
-        <div class="cell" data-x="7" data-y="7"></div>
+        <div class="cell" data-x="4" data-y="4"></div>
     </div>
 
     <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
 
     <div class="cells">
         <div class="cell" data-x="1" data-y="1">
-            <img src="/isometric%20world/iso_cube.svg" alt="">
+            <img src="/isometric%20world/images/ProjectCubes/DominoDayCube.svg" alt="">
+            <div class="hover-cover"></div>
         </div>
-        <div class="cell" data-x="2" data-y="1">
-            <img src="/isometric%20world/iso_cube.svg" alt="">
-            </div>
-        <div class="cell" data-x="3" data-y="1">
-            <img src="/isometric%20world/iso_cube.svg" alt="">
-        </div>
-        <div class="cell" data-x="7" data-y="7">
-            <img src="/isometric%20world/iso_cube.svg" alt="">
-        </div>
+<!--        <div class="cell" data-x="2" data-y="1">-->
+<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
+<!--            </div>-->
+<!--        <div class="cell" data-x="3" data-y="1">-->
+<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
+<!--        </div>-->
+<!--        <div class="cell" data-x="4" data-y="4">-->
+<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
+<!--        </div>-->
     </div>
 
     <div class="warning-screen-to-small">
@@ -174,33 +182,39 @@
     </div>
 
     <script>
-        var cells =[]; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
-        var grid = document.querySelector('.grid');
-        var cellsContainer = document.querySelector('.cells');
-        var gridCells = grid.querySelectorAll('.cell');
-        var cellsCells = cellsContainer.querySelectorAll('.cell');
+        function render()
+        {
+            var cells =[]; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
+            var grid = document.querySelector('.grid');
+            var cellsContainer = document.querySelector('.cells');
+            var gridCells = grid.querySelectorAll('.cell');
+            var cellsCells = cellsContainer.querySelectorAll('.cell');
 
-        gridCells.forEach((cell, index) => {
-            cells.push({grid: cell, cells: cellsCells[index]});
-        });
+            gridCells.forEach((cell, index) => {
+                cells.push({grid: cell, cells: cellsCells[index]});
+            });
 
-        //foreach cell in the grid, set the text to the x and y position
-        cells.forEach(cell => {
-            cell.grid.style.top = `calc(100% - var(--grid-size) * ${cell.grid.dataset.y})`;
-            cell.grid.style.left = `calc(100% - var(--grid-size) * ${cell.grid.dataset.x})`;
-            cell.grid.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
-            var positioner = document.createElement('div');
-            positioner.classList.add('positioner');
-            cell.grid.appendChild(positioner);
+            //foreach cell in the grid, set the text to the x and y position
+            cells.forEach(cell => {
+                cell.grid.style.top = `calc(100% - var(--grid-size) * ${cell.grid.dataset.y})`;
+                cell.grid.style.left = `calc(100% - var(--grid-size) * ${cell.grid.dataset.x})`;
+                cell.grid.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+                var positioner = document.createElement('div');
+                positioner.classList.add('positioner');
+                cell.grid.appendChild(positioner);
 
-            //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
-            var screenPositioner = cell.grid.querySelector('.positioner');
-            var screenPosition = screenPositioner.getBoundingClientRect();
-            cell.cells.style.top = `${screenPosition.top}px`;
-            cell.cells.style.left = `${screenPosition.left}px`;
-            cell.cells.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
-        });
+                //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
+                var screenPositioner = cell.grid.querySelector('.positioner');
+                var screenPosition = screenPositioner.getBoundingClientRect();
+                cell.cells.style.top = `${screenPosition.top}px`;
+                cell.cells.style.left = `${screenPosition.left}px`;
+                cell.cells.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+            });
+        }
 
+        render();
+
+        window.addEventListener('resize', render);
     </script>
 </body>
 </html>

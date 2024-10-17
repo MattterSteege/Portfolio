@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        body
-        {
+        img {
+            /* no select etc */
+            user-select: none;
+            pointer-events: none;
+        }
+
+        body {
             --scaler: 0.6; /* Scale the grid */
+            --gap: 20px; /* Gap between the cells */
             --cells: 5; /* Amount of cells in the grid */
-            --grid-size: calc((90vw * var(--scaler)) / var(--cells)); /* Size of the grid */
+            --grid-size: calc(((90vw * var(--scaler)) / var(--cells))); /* Size of the cells */
             --line-color: #666; /* Color of the walls */
             --floor-color: #a6a5a5; /* Color of the floor */
 
@@ -22,20 +28,40 @@
             overflow: hidden;
         }
 
-        .grid
-        {
+        .grid {
             position: fixed;
-            width: calc(90vw * var(--scaler));
-            height: calc(90vw * var(--scaler));
+            width: calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1));
+            height: calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1));
             transform: rotateX(60deg) rotateZ(45deg);
             transform-origin: 50% 50%;
             box-shadow: 0 0 0 1px #000;
 
-            /* generate the isometric grid */
-            background-image: linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0);
-            background-size: var(--grid-size) var(--grid-size);
+            /* generate the isometric grid with gap */
+            background-image:
+                    linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
+                    linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
+
+            background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
             background-color: var(--floor-color);
             background-position: 0 0, 0 0;
+            border: 2px solid #000;
+            translate: 0 -50%;
+            top: 50%;
+            transition: top 0.5s;
+        }
+
+        .grid::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                    linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
+                    linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
+
+            background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
+            background-position: calc(-1 * var(--gap)) calc(-1 * var(--gap)), calc(-1 * var(--gap)) calc(-1 * var(--gap));
+            transform-origin: 50% 50%;
             border: 2px solid #000;
         }
 
@@ -51,15 +77,6 @@
             position: fixed;
         }
 
-        .grid .cell .positioner {
-            --positioner-size: 0px;
-            width: var(--positioner-size);
-            height: var(--positioner-size);
-            position: relative;
-            background: red;
-            top: calc(0% - var(--positioner-size) / 2);
-            left: calc(0% - var(--positioner-size) / 2);
-        }
 
         .cells {
             /*width = 868 when not rotated*/
@@ -71,11 +88,12 @@
             /*that means that the (90vw * var(--scaler)) has to be multiplied by 0.70710678118 to get the correct height*/
 
             position: fixed;
-            /*width: calc((90vw * var(--scaler)) * 1.41421356237);*/
-            /*height: calc((90vw * var(--scaler)) * 0.70710678118);*/
-            /*top: 50%;*/
-            /*left: 50%;*/
-            /*transform: translate(-50%, -50%);*/
+            width: calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237);
+            height: calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: top 0.5s, left 0.5s;
         }
 
         .cells .cell {
@@ -91,17 +109,49 @@
             translate: -50% -50%;
             /* Clip path for hexagonal shape */
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            transition: transform 0.5s;
+            transition: transform 0.5s, background 0.5s, opacity 0.5s, width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+            opacity: 1;
+            padding: calc(var(--gap) / 2);
+        }
+
+        .cells .cell::after {
+            content: "";
+            z-index: -1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(transparent, yellow);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .cells .cell:hover::after {
+            opacity: 1;
         }
 
         .cells .cell:hover {
             /* Your hover styles */
-            transform: scale(1.1) translateY(-10%); /* For example, scale the element and move it up */
+            transform: translateY(calc(-1 * var(--gap))); /* For example, scale the element and move it up */
         }
 
         .cells .cell img {
             width: 100%;
             height: 100%;
+        }
+
+        .cells .cell.selected {
+            /*z-index: 1000 !important;*/
+            top: 50% !important;
+            left: 50% !important;
+            width: 100% !important;
+            height: 200% !important;
+            transform: translateY(calc(-25% + 5px)) !important;
+        }
+
+        .cells .cell.unselected {
+            opacity: 0 !important;
         }
 
         .warning-screen-to-small
@@ -154,8 +204,6 @@
     <div class="grid">
         <div class="cell" data-x="1" data-y="1"></div>
         <div class="cell" data-x="2" data-y="1"></div>
-        <div class="cell" data-x="3" data-y="1"></div>
-        <div class="cell" data-x="4" data-y="4"></div>
     </div>
 
     <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
@@ -165,15 +213,10 @@
             <img src="/isometric%20world/images/ProjectCubes/DominoDayCube.svg" alt="">
             <div class="hover-cover"></div>
         </div>
-<!--        <div class="cell" data-x="2" data-y="1">-->
-<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
-<!--            </div>-->
-<!--        <div class="cell" data-x="3" data-y="1">-->
-<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
-<!--        </div>-->
-<!--        <div class="cell" data-x="4" data-y="4">-->
-<!--            <img src="/isometric%20world/images/ProjectCubes/iso_cube.svg" alt="">-->
-<!--        </div>-->
+        <div class="cell" data-x="2" data-y="1">
+            <img src="/isometric%20world/images/ProjectCubes/DominoDayCube.svg" alt="">
+            <div class="hover-cover"></div>
+        </div>
     </div>
 
     <div class="warning-screen-to-small">
@@ -184,6 +227,15 @@
     <script>
         function render()
         {
+            //if --gap is 0 or 0px, the remove the ::after element
+            var grid = document.querySelector('.grid');
+            if (getComputedStyle(grid).getPropertyValue('--gap').trim() === '0' || getComputedStyle(grid).getPropertyValue('--gap').trim() === '0px')
+                grid.style.backgroundImage = 'none';
+            else
+                grid.style.backgroundImage = 'linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0)';
+
+
+
             var cells =[]; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
             var grid = document.querySelector('.grid');
             var cellsContainer = document.querySelector('.cells');
@@ -196,8 +248,8 @@
 
             //foreach cell in the grid, set the text to the x and y position
             cells.forEach(cell => {
-                cell.grid.style.top = `calc(100% - var(--grid-size) * ${cell.grid.dataset.y})`;
-                cell.grid.style.left = `calc(100% - var(--grid-size) * ${cell.grid.dataset.x})`;
+                cell.grid.style.top = `calc(100% - var(--grid-size) * ${cell.grid.dataset.y} - var(--gap) * ${cell.grid.dataset.y - 1})`;
+                cell.grid.style.left = `calc(100% - var(--grid-size) * ${cell.grid.dataset.x} - var(--gap) * ${cell.grid.dataset.x - 1})`;
                 cell.grid.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
                 var positioner = document.createElement('div');
                 positioner.classList.add('positioner');
@@ -206,9 +258,39 @@
                 //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
                 var screenPositioner = cell.grid.querySelector('.positioner');
                 var screenPosition = screenPositioner.getBoundingClientRect();
-                cell.cells.style.top = `${screenPosition.top}px`;
-                cell.cells.style.left = `${screenPosition.left}px`;
+                var relativePosition = grid.getBoundingClientRect();
+                console.log(relativePosition)
                 cell.cells.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+                cell.cells.style.top = `${(screenPosition.top - relativePosition.top) / relativePosition.height * 100}%`;
+                cell.cells.style.left = `${(screenPosition.left - relativePosition.left) / relativePosition.width * 100}%`;
+            });
+        }
+
+        function selectCube(x, y){
+            var cells = document.querySelectorAll('.cells .cell');
+            var grid = document.querySelector('.grid');
+            var cellsContainer = document.querySelector('.cells');
+            cells.forEach(cell => {
+                cell.classList.add('unselected');
+
+                if (cell.dataset.x == x && cell.dataset.y == y) {
+                    cell.classList.add('selected');
+                    cell.classList.remove('unselected');
+
+                    //.grid
+                    grid.style.top = '75%';
+                    //.cells
+                    cellsContainer.style.top = '75%';
+                }
+                else if (x == 0 && y == 0) {
+                    cell.classList.remove('selected');
+                    cell.classList.remove('unselected');
+
+                    //.grid
+                    grid.style.top = '';
+                    //.cells
+                    cellsContainer.style.top = '';
+                }
             });
         }
 

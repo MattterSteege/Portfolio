@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--    no zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ui">
+
+        <h1 class="project-header hidden" style="width: 100%">
+            [Project Name]
+        </h1>
+
+        <p class="project-description hidden">
+            [Project Description]
+        </p>
+
+    </div>
+    <div class="buttons">
+        <button id="backButton" onclick="selectCube(0,0)">⇽</button>
+    </div>
+
+    <div class="grid"></div>
+
+    <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
+
+    <div class="cells">
+        <div class="cell" data-x="1" data-y="1" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." onclick="selectCube(1,1)">
+            <img src="images/ProjectCubes/domino-day.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+
+        <div class="cell" data-x="2" data-y="1" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." onclick="selectCube(2,1)">
+            <img src="images/ProjectCubes/eenzaamheidsvirus.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+    </div>
+
+    <div class="warning-screen-to-small">
+        <h1>Screen is too small</h1>
+        <p>Screen is too small to display the isometric grid minimal size is 1500px wide</p>
+    </div>
+
+
+    <script>
+        function render() {
+            //if --gap is 0 or 0px, the remove the ::after element
+            var grid = document.querySelector('.grid');
+            if (getComputedStyle(grid).getPropertyValue('--gap').trim() === '0' || getComputedStyle(grid).getPropertyValue('--gap').trim() === '0px')
+                grid.style.backgroundImage = 'none';
+            else
+                grid.style.backgroundImage = 'linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0)';
+
+
+            var cells = []; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
+            var grid = document.querySelector('.grid');
+            var cellsContainer = document.querySelector('.cells');
+            var cellsCount = Number(getComputedStyle(document.body).getPropertyValue('--cells'));
+
+            for (var x = 1; x < cellsCount + 1; x++) {
+                for (var y = 1; y < cellsCount + 1; y++) {
+                    var cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    cell.style.top = `calc(100% - var(--grid-size) * ${cell.dataset.y} - var(--gap) * ${cell.dataset.y - 1})`;
+                    cell.style.left = `calc(100% - var(--grid-size) * ${cell.dataset.x} - var(--gap) * ${cell.dataset.x - 1})`;
+                    cell.style.zIndex = 1000 - (cell.dataset.x - 1) * 10 - (cell.dataset.y - 1);
+                    var positioner = document.createElement('div');
+                    positioner.classList.add('positioner');
+                    cell.appendChild(positioner);
+                    grid.appendChild(cell);
+                }
+            }
+
+            var gridCells = grid.querySelectorAll('.cell');
+
+            gridCells.forEach((cell, index) => {
+                var x = cell.dataset.x;
+                var y = cell.dataset.y;
+                var gridCell = document.querySelector(`.grid .cell[data-x="${x}"][data-y="${y}"]`);
+                var cellsCell = document.querySelector(`.cells .cell[data-x="${x}"][data-y="${y}"]`);
+
+                if (gridCell && cellsCell)
+                    cells.push({coords: {x: x, y: y}, grid: gridCell, cell: cellsCell});
+            });
+
+            //foreach cell in the grid, set the text to the x and y position
+            cells.forEach(cell => {
+                //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
+                var screenPositioner = cell.grid.querySelector('.positioner');
+                var screenPosition = screenPositioner.getBoundingClientRect();
+                var relativePosition = grid.getBoundingClientRect();
+                cell.cell.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+                cell.cell.style.top = `${(screenPosition.top - relativePosition.top) / relativePosition.height * 100}%`;
+                cell.cell.style.left = `${(screenPosition.left - relativePosition.left) / relativePosition.width * 100}%`;
+            });
+        }
+
+        function selectCube(x, y){
+            var cells = document.querySelectorAll('.cells .cell');
+            var grid = document.querySelector('.grid');
+            var cellsContainer = document.querySelector('.cells');
+            var backButton = document.querySelector('.buttons #backButton');
+            cells.forEach(cell => {
+                cell.classList.add('unselected');
+
+                if (cell.dataset.x == x && cell.dataset.y == y) {
+                    cell.classList.add('selected');
+                    cell.classList.remove('unselected');
+                    projectHeader.style.width = '50%';
+                    projectDescription.innerText = cell.dataset.desc;
+                    projectDescription.classList.remove('hidden');
+                    cellsContainer.classList.add('background-blur');
+
+                    //.grid
+                    grid.style.top = '150%';
+                    //.cells
+                    cellsContainer.style.top = '150%';
+
+                    backButton.style.transform = 'translateY(0)';
+                }
+                else if (x == 0 && y == 0) {
+                    cell.classList.remove('selected');
+                    cell.classList.remove('unselected');
+                    projectHeader.style.width = '100%';
+                    projectDescription.innerText = '';
+                    projectDescription.classList.add('hidden');
+                    cellsContainer.classList.remove('background-blur');
+
+                    //.grid
+                    grid.style.top = '';
+                    //.cells
+                    cellsContainer.style.top = '';
+
+                    backButton.style.transform = 'translateY(-64px)';
+                }
+            });
+        }
+
+        const projectHeader = document.querySelector('.project-header');
+        const projectDescription = document.querySelector('.project-description');
+        const cellsContainer = document.querySelector('.cells');
+
+        var mouseLeave = null;
+        document.querySelectorAll('.cells .cell').forEach(cell => {
+            cell.addEventListener('mouseenter', () => {
+                changeText(cell);
+            });
+        });
+
+        let interval = null;
+        function changeText(cell) {
+
+            if (interval)
+                clearTimeout(interval);
+
+            //if it is down, move it up
+            if (!projectHeader.classList.contains('hidden'))
+            {
+                projectHeader.classList.add('hidden');
+
+                interval = setTimeout(() => {
+                    projectHeader.innerText = cell.querySelector('img').src.split('/').pop().split('.')[0];
+                    projectHeader.classList.remove('hidden');
+                }, 500);
+            }
+            else
+            {
+                projectHeader.innerText = cell.querySelector('img').src.split('/').pop().split('.')[0];
+                projectHeader.classList.remove('hidden');
+            }
+        }
+
+
+        render();
+
+        window.addEventListener('resize', render);
+    </script>
+</body>
+</html>

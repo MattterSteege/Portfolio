@@ -1,0 +1,258 @@
+img {
+    /* no select etc */
+    user-select: none;
+    pointer-events: none;
+}
+
+body {
+    --scaler: 0.6; /* Scale the grid */
+    --gap: 20px; /* Gap between the cells */
+    --cells: 4; /* Amount of cells in the grid */
+    --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
+    --line-color: #666; /* Color of the walls */
+    --floor-color: #a6a5a5; /* Color of the floor */
+
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.grid {
+    position: fixed;
+    width: min(calc((90vh * var(--scaler)) + var(--gap) * (var(--cells) - 1)), calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1)));
+    height: min(calc((90vh * var(--scaler)) + var(--gap) * (var(--cells) - 1)), calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1)));
+    transform: rotateX(60deg) rotateZ(45deg);
+    transform-origin: 50% 50%;
+    box-shadow: 0 0 0 1px #000;
+
+    /* generate the isometric grid with gap */
+    background-image:
+            linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
+            linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
+
+    background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
+    background-color: var(--floor-color);
+    background-position: 0 0, 0 0;
+    border: 2px solid #000;
+    translate: 0 -50%;
+    top: 50%;
+    transition: top 0.5s;
+}
+
+.grid::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+            linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
+            linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
+
+    background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
+    background-position: calc(-1 * var(--gap)) calc(-1 * var(--gap)), calc(-1 * var(--gap)) calc(-1 * var(--gap));
+    transform-origin: 50% 50%;
+    border: 2px solid #000;
+}
+
+.grid .cell {
+    width: calc(var(--grid-size));
+    height: calc(var(--grid-size));
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    font-size: 24px;
+    position: fixed;
+}
+
+
+.cells {
+    /*width = 868 when not rotated*/
+    /*height = 868 when not rotated*/
+    /*width = 1227.54 when rotated*/
+    /*height = 613.77 when rotated*/
+
+    /*that means that the (90vw * var(--scaler)) has to be multiplied by 1.41421356237 to get the correct width*/
+    /*that means that the (90vw * var(--scaler)) has to be multiplied by 0.70710678118 to get the correct height*/
+
+    position: fixed;
+    width: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 1.41421356237), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237));
+    height: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 0.70710678118), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s;
+}
+
+.cells .cell {
+    width: calc(var(--grid-size)* 1.41421356237);
+    height: calc(var(--grid-size)* 0.70710678118* 2);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    font-size: 24px;
+    translate: -50% -50%;
+    /*clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);*/
+    transition: transform 0.5s, background 0.5s, opacity 0.5s, width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+    opacity: 1;
+    padding: calc(var(--gap) / 2);
+    position: fixed;
+}
+
+.hover-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(transparent, yellow);
+    opacity: 0;
+    transition: opacity 0.5s;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    z-index: -1;
+}
+
+.cells .cell:hover .hover-cover {
+    opacity: 50%;
+}
+
+.cells .cell:hover {
+    /* Your hover styles */
+    transform: translateY(calc(-1 * var(--gap))); /* For example, scale the element and move it up */
+}
+
+.cells .cell img {
+    width: 100%;
+    height: 200%;
+    image-rendering: pixelated;
+    translate: 0% -50%;
+}
+
+.cells .cell.selected {
+    /*z-index: 1000 !important;*/
+    top: -50% !important;
+    left: 100% !important;
+    width: 100% !important;
+    height: 200% !important;
+    transform: translateY(calc(-25% + 5px)) !important;
+}
+
+.cells .cell.unselected {
+    opacity: 0 !important;
+}
+
+.warning-screen-to-small
+{
+    display: none;
+}
+
+.buttons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 12px;
+}
+
+.buttons #backButton {
+    width: 48px;
+    height: 48px;
+    font-size: 36px;
+    font-family: Arial, sans-serif;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+    transform: translateY(-64px);
+    transition: transform 0.5s;
+}
+
+/* if screen is too small show a warning */
+@media (max-width: calc(14px + 100px))
+{
+    .grid
+    {
+        background-image: none;
+        background-color: #f00;
+    }
+
+    .warning-screen-to-small
+    {
+        display: block;
+    }
+
+    .grid
+    {
+        display: none;
+    }
+
+    .warning-screen-to-small {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        font-family: Arial, sans-serif;
+        color: #fff;
+        font-size: 24px;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        background-color: rgba(0, 0, 0, 0.5);
+
+        z-index: 1000;
+    }
+}
+
+.ui {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.project-header, .project-description {
+    width: 50%;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    transform: translateY(0);
+    transition: transform 0.5s, width 0.5s;
+}
+
+.project-description {
+    height: auto;
+    width: 40vw;
+    margin: 0 5vw;
+    font-size: 20px;
+    overflow: auto;
+}
+
+.project-header.hidden {
+    transform: translateY(-100px);
+}
+
+.project-description.hidden {
+    transform: translateY(-600px);
+}
+
+/*add to any html element to blur the background*/
+.background-blur {
+    filter: blur(5px);
+    opacity: 75%;
+}

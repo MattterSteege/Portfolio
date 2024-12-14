@@ -28,13 +28,30 @@
     <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
 
     <div class="cells">
-        <div class="cell" data-x="1" data-y="1" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." onclick="selectCube(1,1)">
-            <img src="images/ProjectCubes/domino-day.png" height="160" width="80"/>
+        <div class="cell" data-x="4" data-y="4" onclick="selectCube(4,4)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
+            <img src="images/ProjectCubes/DominoDay.png" height="160" width="80"/>
             <div class="hover-cover"></div>
         </div>
 
-        <div class="cell" data-x="2" data-y="1" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." onclick="selectCube(2,1)">
+        <div class="cell" data-x="2" data-y="1" onclick="selectCube(2,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
             <img src="images/ProjectCubes/eenzaamheidsvirus.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+
+        <div class="cell" data-x="3" data-y="1" onclick="selectCube(3,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
+            <img src="images/ProjectCubes/CreateTheEscape.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+        <div class="cell" data-x="4" data-y="1" onclick="selectCube(4,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
+            <img src="images/ProjectCubes/Miniproject1.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+        <div class="cell" data-x="1" data-y="2" onclick="selectCube(1,2)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
+            <img src="images/ProjectCubes/daktuinen.png" height="160" width="80"/>
+            <div class="hover-cover"></div>
+        </div>
+        <div class="cell" data-x="2" data-y="2" onclick="selectCube(2,2)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
+            <img src="images/ProjectCubes/Gouda750Jaar.png" height="160" width="80"/>
             <div class="hover-cover"></div>
         </div>
     </div>
@@ -114,12 +131,11 @@
                     projectHeader.style.width = '50%';
                     projectDescription.innerText = cell.dataset.desc;
                     projectDescription.classList.remove('hidden');
-                    cellsContainer.classList.add('background-blur');
 
                     //.grid
-                    grid.style.top = '150%';
+                    grid.style.top = '175%';
                     //.cells
-                    cellsContainer.style.top = '150%';
+                    cellsContainer.style.top = '175%';
 
                     backButton.style.transform = 'translateY(0)';
                 }
@@ -129,7 +145,6 @@
                     projectHeader.style.width = '100%';
                     projectDescription.innerText = '';
                     projectDescription.classList.add('hidden');
-                    cellsContainer.classList.remove('background-blur');
 
                     //.grid
                     grid.style.top = '';

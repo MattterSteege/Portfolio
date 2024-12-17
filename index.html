@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="ui">
@@ -28,36 +31,7 @@
     <!-- fix the cube, you can you the coords of the corners to alter everything (top and bottom are correct, so screen space position, turn into coords and tada-->
 
     <div class="cells">
-        <div class="cell" data-x="4" data-y="4" onclick="selectCube(4,4)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/DominoDay.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
 
-        <div class="cell" data-x="2" data-y="1" onclick="selectCube(2,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/eenzaamheidsvirus.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
-
-        <div class="cell" data-x="3" data-y="1" onclick="selectCube(3,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/CreateTheEscape.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
-        <div class="cell" data-x="4" data-y="1" onclick="selectCube(4,1)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/Miniproject1.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
-        <div class="cell" data-x="1" data-y="2" onclick="selectCube(1,2)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/daktuinen.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
-        <div class="cell" data-x="2" data-y="2" onclick="selectCube(2,2)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/Gouda750Jaar.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
-        <div class="cell" data-x="3" data-y="2" onclick="selectCube(3,2)" data-desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-            <img src="images/ProjectCubes/TinyHouse.png" height="160" width="80"/>
-            <div class="hover-cover"></div>
-        </div>
     </div>
 
     <div class="warning-screen-to-small">
@@ -67,137 +41,188 @@
 
 
     <script>
-        function render() {
-            //if --gap is 0 or 0px, the remove the ::after element
-            var grid = document.querySelector('.grid');
-            if (getComputedStyle(grid).getPropertyValue('--gap').trim() === '0' || getComputedStyle(grid).getPropertyValue('--gap').trim() === '0px')
-                grid.style.backgroundImage = 'none';
-            else
-                grid.style.backgroundImage = 'linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0)';
+            const projects = [
+                { title: "Domino Day", pos: {x: 1, y: 1}, image: "images/ProjectCubes/DominoDay.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Eenzaamheidsvirus", pos: {x: 2, y: 1}, image: "images/ProjectCubes/eenzaamheidsvirus.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Create The Escape", pos: {x: 3, y: 1}, image: "images/ProjectCubes/CreateTheEscape.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Mini Project 1", pos: {x: 4, y: 1}, image: "images/ProjectCubes/Miniproject1.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Daktuinen", pos: {x: 1, y: 2}, image: "images/ProjectCubes/daktuinen.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Gouda 750 Jaar", pos: {x: 2, y: 2}, image: "images/ProjectCubes/Gouda750Jaar.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Tiny House", pos: {x: 3, y: 2}, image: "images/ProjectCubes/TinyHouse.png", desc: "Lorem Ipsum is simply dummy text..." },
+                { title: "Suiker Vervanger", pos: {x: 4, y: 2}, image: "images/ProjectCubes/SuikerVervanger.png", desc: "Lorem Ipsum is simply dummy text..." }
+            ];
 
+            const cellsContainer = document.querySelector('.cells');
+            const grid = document.querySelector('.grid');
+            const projectHeader = document.querySelector('.project-header');
+            const projectDescription = document.querySelector('.project-description');
+            const backButton = document.querySelector('.buttons #backButton');
 
-            var cells = []; //[{.grid .cell 0, .cells .cell 0}, {.grid .cell 1, .cells .cell 1}, ...]
-            var grid = document.querySelector('.grid');
-            var cellsContainer = document.querySelector('.cells');
-            var cellsCount = Number(getComputedStyle(document.body).getPropertyValue('--cells'));
+            function generateProjectsWithDelay() {
+                const gridSize = parseFloat(getComputedStyle(document.body).getPropertyValue('--grid-size')) || 100;
+                const gap = parseFloat(getComputedStyle(document.body).getPropertyValue('--gap')) || 10;
+                let delay = 0;
 
-            for (var x = 1; x < cellsCount + 1; x++) {
-                for (var y = 1; y < cellsCount + 1; y++) {
-                    var cell = document.createElement('div');
-                    cell.classList.add('cell');
-                    cell.dataset.x = x;
-                    cell.dataset.y = y;
-                    cell.style.top = `calc(100% - var(--grid-size) * ${cell.dataset.y} - var(--gap) * ${cell.dataset.y - 1})`;
-                    cell.style.left = `calc(100% - var(--grid-size) * ${cell.dataset.x} - var(--gap) * ${cell.dataset.x - 1})`;
-                    cell.style.zIndex = 1000 - (cell.dataset.x - 1) * 10 - (cell.dataset.y - 1);
-                    var positioner = document.createElement('div');
-                    positioner.classList.add('positioner');
-                    cell.appendChild(positioner);
-                    grid.appendChild(cell);
-                }
+                projects.forEach((project) => {
+                    setTimeout(() => {
+                        const cell = document.createElement('div');
+                        cell.classList.add('cell', 'falling');
+                        cell.style.animationDelay = `${delay}ms`;
+
+                        // Set dataset attributes
+                        cell.dataset.desc = project.desc;
+                        cell.dataset.x = project.pos.x;
+                        cell.dataset.y = project.pos.y;
+
+                        // Calculate positions dynamically
+                        const top = `calc(${gridSize}px * ${project.pos.y - 1} + ${gap}px * ${project.pos.y - 1})`;
+                        const left = `calc(${gridSize}px * ${project.pos.x - 1} + ${gap}px * ${project.pos.x - 1})`;
+                        cell.style.top = top;
+                        cell.style.left = left;
+                        cell.style.position = "absolute";
+                        cell.style.zIndex = 1000 - (project.pos.x * 10 + project.pos.y);
+
+                        // Add onclick event for selection
+                        cell.setAttribute('onclick', `selectCube(${project.pos.x}, ${project.pos.y})`);
+
+                        // Add image and hover cover
+                        const img = document.createElement('img');
+                        img.src = project.image;
+                        img.alt = project.title;
+                        img.height = 160;
+                        img.width = 80;
+
+                        const hoverCover = document.createElement('div');
+                        hoverCover.classList.add('hover-cover');
+
+                        cell.appendChild(img);
+                        cell.appendChild(hoverCover);
+                        cellsContainer.appendChild(cell);
+
+                        // Add mouseenter event listener
+                        cell.addEventListener('mouseenter', () => changeText(cell));
+
+                        delay += 300;
+                        render();
+                    }, delay);
+                });
             }
 
-            var gridCells = grid.querySelectorAll('.cell');
-
-            gridCells.forEach((cell, index) => {
-                var x = cell.dataset.x;
-                var y = cell.dataset.y;
-                var gridCell = document.querySelector(`.grid .cell[data-x="${x}"][data-y="${y}"]`);
-                var cellsCell = document.querySelector(`.cells .cell[data-x="${x}"][data-y="${y}"]`);
-
-                if (gridCell && cellsCell)
-                    cells.push({coords: {x: x, y: y}, grid: gridCell, cell: cellsCell});
-            });
-
-            //foreach cell in the grid, set the text to the x and y position
-            cells.forEach(cell => {
-                //get the screen position of the cell.grid > .positioner and set .cells .cell to the same position
-                var screenPositioner = cell.grid.querySelector('.positioner');
-                var screenPosition = screenPositioner.getBoundingClientRect();
-                var relativePosition = grid.getBoundingClientRect();
-                cell.cell.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
-                cell.cell.style.top = `${(screenPosition.top - relativePosition.top) / relativePosition.height * 100}%`;
-                cell.cell.style.left = `${(screenPosition.left - relativePosition.left) / relativePosition.width * 100}%`;
-            });
-        }
-
-        function selectCube(x, y){
-            var cells = document.querySelectorAll('.cells .cell');
-            var grid = document.querySelector('.grid');
-            var cellsContainer = document.querySelector('.cells');
-            var backButton = document.querySelector('.buttons #backButton');
-            cells.forEach(cell => {
-                cell.classList.add('unselected');
-
-                if (cell.dataset.x == x && cell.dataset.y == y) {
-                    cell.classList.add('selected');
-                    cell.classList.remove('unselected');
-                    projectHeader.style.width = '50%';
-                    projectDescription.innerText = cell.dataset.desc;
-                    projectDescription.classList.remove('hidden');
-
-                    //.grid
-                    grid.style.top = '175%';
-                    //.cells
-                    cellsContainer.style.top = '175%';
-
-                    backButton.style.transform = 'translateY(0)';
+            function render() {
+                // Render grid lines based on gap
+                if (getComputedStyle(grid).getPropertyValue('--gap').trim() === '0' ||
+                    getComputedStyle(grid).getPropertyValue('--gap').trim() === '0px') {
+                    grid.style.backgroundImage = 'none';
+                } else {
+                    grid.style.backgroundImage = 'linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0)';
                 }
-                else if (x == 0 && y == 0) {
-                    cell.classList.remove('selected');
-                    cell.classList.remove('unselected');
-                    projectHeader.style.width = '100%';
-                    projectDescription.innerText = '';
-                    projectDescription.classList.add('hidden');
 
-                    //.grid
-                    grid.style.top = '';
-                    //.cells
-                    cellsContainer.style.top = '';
+                const cells = [];
+                const cellsCount = Number(getComputedStyle(document.body).getPropertyValue('--cells'));
 
-                    backButton.style.transform = 'translateY(-64px)';
+                // Create grid cells
+                for (let x = 1; x < cellsCount + 1; x++) {
+                    for (let y = 1; y < cellsCount + 1; y++) {
+                        const cell = document.createElement('div');
+                        cell.classList.add('cell');
+                        cell.dataset.x = x;
+                        cell.dataset.y = y;
+                        cell.style.top = `calc(100% - var(--grid-size) * ${cell.dataset.y} - var(--gap) * ${cell.dataset.y - 1})`;
+                        cell.style.left = `calc(100% - var(--grid-size) * ${cell.dataset.x} - var(--gap) * ${cell.dataset.x - 1})`;
+                        cell.style.zIndex = 1000 - (cell.dataset.x - 1) * 10 - (cell.dataset.y - 1);
+
+                        const positioner = document.createElement('div');
+                        positioner.classList.add('positioner');
+                        cell.appendChild(positioner);
+                        grid.appendChild(cell);
+                    }
                 }
-            });
-        }
 
-        const projectHeader = document.querySelector('.project-header');
-        const projectDescription = document.querySelector('.project-description');
-        const cellsContainer = document.querySelector('.cells');
+                const gridCells = grid.querySelectorAll('.cell');
 
-        var mouseLeave = null;
-        document.querySelectorAll('.cells .cell').forEach(cell => {
-            cell.addEventListener('mouseenter', () => {
-                changeText(cell);
-            });
-        });
+                gridCells.forEach((cell) => {
+                    const x = cell.dataset.x;
+                    const y = cell.dataset.y;
+                    const gridCell = document.querySelector(`.grid .cell[data-x="${x}"][data-y="${y}"]`);
+                    const cellsCell = document.querySelector(`.cells .cell[data-x="${x}"][data-y="${y}"]`);
 
-        let interval = null;
-        function changeText(cell) {
+                    if (gridCell && cellsCell) {
+                        cells.push({coords: {x, y}, grid: gridCell, cell: cellsCell});
+                    }
+                });
 
-            if (interval)
-                clearTimeout(interval);
+                // Position cells based on grid
+                cells.forEach(cell => {
+                    const screenPositioner = cell.grid.querySelector('.positioner');
+                    const screenPosition = screenPositioner.getBoundingClientRect();
+                    const relativePosition = grid.getBoundingClientRect();
 
-            //if it is down, move it up
-            if (!projectHeader.classList.contains('hidden'))
-            {
-                projectHeader.classList.add('hidden');
+                    cell.cell.style.zIndex = 1000 - (cell.grid.dataset.x - 1) * 10 - (cell.grid.dataset.y - 1);
+                    cell.cell.style.top = `${(screenPosition.top - relativePosition.top) / relativePosition.height * 100}%`;
+                    cell.cell.style.left = `${(screenPosition.left - relativePosition.left) / relativePosition.width * 100}%`;
+                });
+            }
 
-                interval = setTimeout(() => {
+            function selectCube(x, y) {
+                const cells = document.querySelectorAll('.cells .cell');
+
+                cells.forEach(cell => {
+                    cell.classList.add('unselected');
+
+                    if (cell.dataset.x == x && cell.dataset.y == y) {
+                        cell.classList.add('selected');
+                        cell.classList.remove('unselected');
+                        projectHeader.style.width = '50%';
+                        projectDescription.innerText = cell.dataset.desc;
+                        projectDescription.classList.remove('hidden');
+
+                        grid.style.top = '175%';
+                        cellsContainer.style.top = '175%';
+
+                        backButton.style.transform = 'translateY(0)';
+                    }
+                    else if (x == 0 && y == 0) {
+                        cell.classList.remove('selected');
+                        cell.classList.remove('unselected');
+                        projectHeader.style.width = '100%';
+                        projectDescription.innerText = '';
+                        projectDescription.classList.add('hidden');
+
+                        grid.style.top = '';
+                        cellsContainer.style.top = '';
+
+                        backButton.style.transform = 'translateY(-64px)';
+                    }
+                });
+            }
+
+            function changeText(cell) {
+                let interval = null;
+
+                if (interval) {
+                    clearTimeout(interval);
+                }
+
+                if (!projectHeader.classList.contains('hidden')) {
+                    projectHeader.classList.add('hidden');
+
+                    interval = setTimeout(() => {
+                        projectHeader.innerText = cell.querySelector('img').src.split('/').pop().split('.')[0];
+                        projectHeader.classList.remove('hidden');
+                    }, 500);
+                } else {
                     projectHeader.innerText = cell.querySelector('img').src.split('/').pop().split('.')[0];
                     projectHeader.classList.remove('hidden');
-                }, 500);
+                }
             }
-            else
-            {
-                projectHeader.innerText = cell.querySelector('img').src.split('/').pop().split('.')[0];
-                projectHeader.classList.remove('hidden');
-            }
-        }
 
+            // Initialize the grid and projects
+            render();
+            generateProjectsWithDelay();
 
-        render();
+            // Attach global selectCube function to window for onclick attribute
+            window.selectCube = selectCube;
 
-        window.addEventListener('resize', render);
     </script>
 </body>
 </html>

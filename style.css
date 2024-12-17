@@ -18,8 +18,27 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
     overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+
+    background-image: url("images/ProjectCubes/simple background.png");
+    background-size: 200px 200px;
+    image-rendering: pixelated;
+
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@keyframes fadeIn {
+    0%, 50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .grid {
@@ -28,7 +47,6 @@ body {
     height: min(calc((90vh * var(--scaler)) + var(--gap) * (var(--cells) - 1)), calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1)));
     transform: rotateX(60deg) rotateZ(45deg);
     transform-origin: 50% 50%;
-    box-shadow: 0 0 0 1px #000;
 
     /* generate the isometric grid with gap */
     background-image:
@@ -42,6 +60,7 @@ body {
     translate: 0 -50%;
     top: 60%;
     transition: top 0.5s;
+    box-shadow: 50px 50px #fe9833;
 }
 
 .grid::after {
@@ -65,7 +84,6 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    font-family: Arial, sans-serif;
     color: #fff;
     font-size: 24px;
     position: fixed;
@@ -96,15 +114,24 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    font-family: Arial, sans-serif;
     color: #fff;
     font-size: 24px;
     translate: -50% -50%;
     /*clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);*/
     transition: transform 0.5s, background 0.5s, opacity 0.5s, width 0.5s, height 0.5s, top 0.5s, left 0.5s;
-    opacity: 1;
     padding: calc(var(--gap) / 2);
     position: fixed;
+
+    opacity: 0;
+    transform: translateY(-200px); /* Start off-screen */
+    animation: fallIn 1s ease-out forwards;
+}
+
+@keyframes fallIn {
+    to {
+        transform: translateY(0); /* Move to normal position */
+        opacity: 1;
+    }
 }
 
 .hover-cover {
@@ -164,14 +191,15 @@ body {
 .buttons #backButton {
     width: 48px;
     height: 48px;
-    font-size: 36px;
-    font-family: Arial, sans-serif;
-    color: #000;
-    background-color: #fff;
-    border: 1px solid #000;
+    background: transparent;
+    border: transparent;
     cursor: pointer;
     transform: translateY(-64px);
     transition: transform 0.5s;
+
+    background-image: url("images/ProjectCubes/back.png");
+    background-size: 48px 48px;
+    image-rendering: pixelated;
 }
 
 /* if screen is too small show a warning */
@@ -200,7 +228,6 @@ body {
         flex-direction: column;
         width: 100%;
         height: 100%;
-        font-family: Arial, sans-serif;
         color: #fff;
         font-size: 24px;
 
@@ -230,7 +257,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
     transform: translateY(0);
     transition: transform 0.5s, width 0.5s;
 }

@@ -1,3 +1,7 @@
+@view-transition {
+    navigation: auto;
+}
+
 img {
     /* no select etc */
     user-select: none;
@@ -5,12 +9,13 @@ img {
 }
 
 body {
-    --scaler: 0.7; /* Scale the grid */
+    --scaler: 0.9; /* Scale the grid */
     --gap: 50px; /* Gap between the cells */
     --cells: 4; /* Amount of cells in the grid */
     --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
     --line-color: #666; /* Color of the walls */
     --floor-color: #a6a5a5; /* Color of the floor */
+    --anim-speed: 0.5s; /* Animation speed */
 
     margin: 0;
     padding: 0;
@@ -19,25 +24,37 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
 
     background-image: url("images/ProjectCubes/simple background.png");
-    background-size: 200px 200px;
+    background-size: 12.5vw 12.5vw;
     image-rendering: pixelated;
 
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+
+    /*animation: background 25s infinite linear;*/
+
+    opacity: 0;
+    transition: opacity .5s;
 }
 
-@keyframes fadeIn {
-    0%, 50% {
-        opacity: 0;
+@media screen and (max-width: 1000px)
+{
+    body {
+        --scaler: 0.8; /* Scale the grid */
+        --gap: 10px; /* Gap between the cells */
+        --cells: 4; /* Amount of cells in the grid */
+    }
+}
+
+@keyframes background {
+    0% {
+        background-position: 0 0;
     }
     100% {
-        opacity: 1;
+        background-position: 12.5vw 12.5vw;
     }
 }
 
@@ -58,9 +75,10 @@ body {
     background-position: 0 0, 0 0;
     border: 2px solid #000;
     translate: 0 -50%;
-    top: 60%;
-    transition: top 0.5s;
+    top: 55%;
+    transition: top var(--anim-speed);
     box-shadow: 50px 50px #fe9833;
+    z-index: 10000;
 }
 
 .grid::after {
@@ -102,36 +120,26 @@ body {
     position: fixed;
     width: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 1.41421356237), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237));
     height: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 0.70710678118), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118));
-    top: 60%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all 0.5s;
+    transition: all var(--anim-speed);
+    z-index: 100000;
 }
 
 .cells .cell {
     width: calc(var(--grid-size)* 1.41421356237);
-    height: calc(var(--grid-size)* 0.70710678118* 2);
+    height: calc(var(--grid-size)* 0.70710678118 * 2);
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     color: #fff;
     font-size: 24px;
     translate: -50% -50%;
-    /*clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);*/
-    transition: transform 0.5s, background 0.5s, opacity 0.5s, width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    transition: transform var(--anim-speed), background var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed), height var(--anim-speed), top var(--anim-speed), left var(--anim-speed);
     padding: calc(var(--gap) / 2);
     position: fixed;
-
-    opacity: 0;
-    transform: translateY(-200px); /* Start off-screen */
-    animation: fallIn 1s ease-out forwards;
-}
-
-@keyframes fallIn {
-    to {
-        transform: translateY(0); /* Move to normal position */
-        opacity: 1;
-    }
 }
 
 .hover-cover {
@@ -142,38 +150,41 @@ body {
     left: 0;
     background: radial-gradient(transparent, yellow);
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity var(--anim-speed);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     z-index: -1;
 }
 
-.cells .cell:hover .hover-cover {
+.cells .cell:hover:not(.selected) .hover-cover {
     opacity: 50%;
 }
 
 .cells .cell:hover {
-    /* Your hover styles */
-    transform: translateY(calc(-1 * var(--gap))); /* For example, scale the element and move it up */
+    transform: translateY(-50px); /* Simplified for testing */
 }
+
 
 .cells .cell img {
     width: 100%;
-    height: 200%;
+    height: 100%;
     image-rendering: pixelated;
-    translate: 0% -50%;
+    translate: 0% 0%;
 }
 
 .cells .cell.selected {
-    /*z-index: 1000 !important;*/
-    top: -50% !important;
-    left: 100% !important;
-    width: 100% !important;
-    height: 200% !important;
-    transform: translateY(calc(-25% + 5px)) !important;
+    z-index: 1000 !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: calc(40vh * 1.41421356237) !important;
+    height: calc(40vh * 0.70710678118 * 2) !important;
+    transform: translateY(-200%) translateX(25vw) !important;
+    padding: 0;
+    clip-path: none;
 }
 
 .cells .cell.unselected {
     opacity: 0 !important;
+    pointer-events: none;
 }
 
 .warning-screen-to-small
@@ -186,59 +197,41 @@ body {
     top: 0;
     left: 0;
     padding: 12px;
+    z-index: 10000;
 }
 
 .buttons #backButton {
-    width: 48px;
-    height: 48px;
+    width: 72px;
+    height: 72px;
     background: transparent;
     border: transparent;
     cursor: pointer;
-    transform: translateY(-64px);
-    transition: transform 0.5s;
-
+    transform: translateY(-128px);
+    transition: transform var(--anim-speed);
     background-image: url("images/ProjectCubes/back.png");
-    background-size: 48px 48px;
+    background-size: 72px 72px;
     image-rendering: pixelated;
 }
 
-/* if screen is too small show a warning */
-@media (max-width: calc(14px + 100px))
-{
-    .grid
-    {
-        background-image: none;
-        background-color: #f00;
-    }
+.buttons #backButton:hover {
+    transform: scale(1.1) !important;
+}
 
-    .warning-screen-to-small
-    {
-        display: block;
-    }
+.buttons #viewButton {
+    width: 72px;
+    height: 72px;
+    background: transparent;
+    border: transparent;
+    cursor: pointer;
+    transform: translateY(-128px);
+    transition: transform var(--anim-speed);
+    background-image: url("images/ProjectCubes/view.png");
+    background-size: 72px 72px;
+    image-rendering: pixelated;
+}
 
-    .grid
-    {
-        display: none;
-    }
-
-    .warning-screen-to-small {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-        color: #fff;
-        font-size: 24px;
-
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        background-color: rgba(0, 0, 0, 0.5);
-
-        z-index: 1000;
-    }
+.buttons #viewButton:hover {
+    transform: scale(1.1) !important;
 }
 
 .ui {
@@ -247,26 +240,37 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 1000;
     pointer-events: none;
+    box-shadow: 0 0 2.5vw 2.5vw #fec473 inset;
+    z-index: 100;
+}
+
+.ui::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 0.5vw #fe9833 inset;
 }
 
 .project-header, .project-description {
     width: 50%;
-    height: 64px;
+    height: 5vw;
     display: flex;
     justify-content: center;
     align-items: center;
     transform: translateY(0);
-    transition: transform 0.5s, width 0.5s;
+    transition: transform var(--anim-speed), width var(--anim-speed);
 }
 
 .project-description {
     height: auto;
-    width: 40vw;
-    margin: 0 5vw;
-    font-size: 20px;
+    font-size: 1.5vw;
     overflow: auto;
+    opacity: 1;
+    transition: transform var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed);
 }
 
 .project-header.hidden {
@@ -274,5 +278,5 @@ body {
 }
 
 .project-description.hidden {
-    transform: translateY(-600px);
+    opacity: 0;
 }

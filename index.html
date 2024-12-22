@@ -9,20 +9,13 @@
             width: 100vw;
             height: 100vh;
             z-index: 100000;
-            background: #fefcd3;
+            background: var(--lighter-background);
             display: flex;
             justify-content: center;
             align-items: center;
             position: fixed;
             top: 0;
             left: 0;
-        }
-
-        .intro-container img {
-            animation: fadeIntro 2s forwards;
-            z-index: 1000;
-            width: 100vw;
-            height: auto;
         }
 
 
@@ -37,12 +30,21 @@
                 opacity: 1;
             }
         }
+
+        #name {
+            z-index: 1000;
+            width: 100vw;
+            height: auto;
+            image-rendering: pixelated;
+            transition: opacity 0.5s;
+            opacity: 1;
+        }
     </style>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style='opacity: 1; '>
+<body>
 <div class="intro-container">
-    <img src="images/ProjectCubes/Intro-Animation.png" height="96" width="192"/>
+    <img id="name" src="images/ProjectCubes/Intro-Animation.png" height="96" width="192"/>
 </div>
 
 <script>
@@ -73,11 +75,11 @@
 
             // Calculate color: (0,0) = #fec473, (1,0) and (0,1) = #ffbe6a, (1,1) = #fec473 and repeat
             if (i % 2 === 0 && j % 2 === 0) {
-                div.style.background = '#fec473';
+                div.style.background = 'var(--dark-background)';
             } else if (i % 2 === 1 && j % 2 === 1) {
-                div.style.background = '#fec473';
+                div.style.background = 'var(--dark-background)';
             } else {
-                div.style.background = '#ffbe6a';
+                div.style.background = 'var(--light-background)';
             }
 
             // Calculate the time offset for the animation
@@ -105,11 +107,11 @@
 
             // Apply the same color pattern
             if (i % 2 === 0 && j % 2 === 0) {
-                div2.style.background = '#fec473';
+                div2.style.background = 'var(--dark-background)';
             } else if (i % 2 === 1 && j % 2 === 1) {
-                div2.style.background = '#fec473';
+                div2.style.background = 'var(--dark-background)';
             } else {
-                div2.style.background = '#ffbe6a';
+                div2.style.background = 'var(--light-background)';
             }
 
             // Calculate the time offset for the animation
@@ -129,7 +131,7 @@
 
     //after 3 seconds, redirect to grid.html
     setTimeout(() => {
-        document.querySelector('body').style.opacity = 0
+        document.querySelector('#name').style.opacity = 0
         setTimeout(function() {
             window.location.href = 'grid.html'
         }, 500)

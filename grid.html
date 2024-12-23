@@ -4,23 +4,24 @@
 <!--    no zooming-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Matt ter Steege</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
-    <meta name="view-transition" content="same-origin">
+    <script src="site.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <link rel="stylesheet" href="projecten.css">
 </head>
-<body class="animateBackground">
+<body class="squares animate">
     <div class="ui">
 
         <h1 class="project-header" style="width: 100%">Selecteer een project</h1>
-        <p class="project-description hidden" style="width: 100%;">Lorem Ipsum is simply dummy text...</p>
+        <div id="documentElement" class="project-description hidden" style="width: 50%;">Lorem Ipsum is simply dummy text...</div>
 
     </div>
     <div class="buttons">
         <button id="backButton" onclick="selectCube(0,0)">⇽</button>
-        <button id="viewButton" onclick="ViewCurrentProject()">⇽</button>
     </div>
 
     <div class="grid"></div>
@@ -38,20 +39,16 @@
 
     <script>
             const projects = [
-                { title: "Domino Day", pos: {x: 1, y: 1}, image: "images/ProjectCubes/DominoDay.png", desc: "Lorem Ipsum is simply dummy text..."},
-
-
-
-
-                { title: "Eenzaamheidsvirus", pos: {x: 2, y: 1}, image: "images/ProjectCubes/eenzaamheidsvirus.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Create The Escape", pos: {x: 3, y: 1}, image: "images/ProjectCubes/CreateTheEscape.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Mini Project 1", pos: {x: 4, y: 1}, image: "images/ProjectCubes/Miniproject1.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Daktuinen", pos: {x: 1, y: 2}, image: "images/ProjectCubes/daktuinen.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Gouda 750 Jaar", pos: {x: 2, y: 2}, image: "images/ProjectCubes/Gouda750Jaar.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Tiny House", pos: {x: 3, y: 2}, image: "images/ProjectCubes/TinyHouse.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Suiker Vervanger", pos: {x: 4, y: 2}, image: "images/ProjectCubes/SuikerVervanger.png", desc: "Lorem Ipsum is simply dummy text..."},
-                { title: "Project Tas", pos: {x: 1, y: 3}, image: "images/ProjectCubes/ProjectTas.png", desc: "Lorem Ipsum is simply dummy text..." },
-                { title: "Project Startup", pos: {x: 2, y: 3}, image: "images/ProjectCubes/Startup.png", desc: "Lorem Ipsum is simply dummy text..." }
+                { title: "Domino Day", pos: {x: 1, y: 1}, image: "images/ProjectCubes/DominoDay.png"},
+                { title: "Eenzaamheidsvirus", pos: {x: 2, y: 1}, image: "images/ProjectCubes/eenzaamheidsvirus.png"},
+                { title: "Create The Escape", pos: {x: 3, y: 1}, image: "images/ProjectCubes/CreateTheEscape.png"},
+                { title: "Mini Project 1", pos: {x: 4, y: 1}, image: "images/ProjectCubes/Miniproject1.png"},
+                { title: "Daktuinen", pos: {x: 1, y: 2}, image: "images/ProjectCubes/daktuinen.png"},
+                { title: "Gouda 750 Jaar", pos: {x: 2, y: 2}, image: "images/ProjectCubes/Gouda750Jaar.png"},
+                { title: "Tiny House", pos: {x: 3, y: 2}, image: "images/ProjectCubes/TinyHouse.png"},
+                { title: "Suiker Vervanger", pos: {x: 4, y: 4}, image: "images/ProjectCubes/SuikerVervanger.png"},
+                { title: "Project Tas", pos: {x: 1, y: 3}, image: "images/ProjectCubes/ProjectTas.png"},
+                { title: "Project Startup", pos: {x: 2, y: 3}, image: "images/ProjectCubes/Startup.png"}
             ];
 
             const cellsContainer = document.querySelector('.cells');
@@ -59,7 +56,7 @@
             const projectHeader = document.querySelector('.project-header');
             const projectDescription = document.querySelector('.project-description');
             const backButton = document.querySelector('.buttons #backButton');
-            const viewButton = document.querySelector('.buttons #viewButton');
+            const UI = document.querySelector('.ui');
 
             function generateProjectsWithDelay() {
                 const gridSize = parseFloat(getComputedStyle(document.body).getPropertyValue('--grid-size')) || 100;
@@ -72,7 +69,6 @@
 
                     // Set dataset attributes
                     cell.dataset.title = project.title;
-                    cell.dataset.desc = project.desc;
                     cell.dataset.x = project.pos.x;
                     cell.dataset.y = project.pos.y;
 
@@ -193,33 +189,42 @@
                 cells.forEach(cell => {
                     cell.classList.add('unselected');
 
-                    if (cell.dataset.x == x && cell.dataset.y == y) {
-                        cell.classList.add('selected');
-                        cell.classList.remove('unselected');
-                        projectHeader.style.width = '50%';
-                        projectHeader.innerText = cell.dataset.title;
-                        projectDescription.style.width = '50%';
-                        projectDescription.innerText = cell.dataset.desc;
-                        projectDescription.classList.remove('hidden');
+                    if (cell.dataset.x == x && cell.dataset.y == y) {{
 
-                        grid.style.top = '175%';
-                        cellsContainer.style.top = '175%';
+                        fetch("/Projecten/" + cell.dataset.title.replace(/ /g, '') + ".md")
+                            .then(response => response.text())
+                            .then(text => {
+                                const converter = new showdown.Converter();
+                                const html = converter.makeHtml(text);
+                                cell.classList.add('selected');
+                                cell.classList.remove('unselected');
+                                projectHeader.style.width = '50%';
+                                projectHeader.innerText = cell.dataset.title;
+                                projectDescription.innerHTML = html;
+                                projectDescription.classList.remove('hidden');
+                                UI.style.pointerEvents = 'all';
 
-                        backButton.style.transform = 'translateY(0)';
-                        viewButton.style.transform = 'translateY(0)';
+                                //grid.style.top = '175%';
+                                //cellsContainer.style.top = '175%';
+                                //    translate: 0 150%;
+                                grid.style.top = '150vh';
+                                cellsContainer.style.top = '150vh';
+
+                                backButton.style.transform = 'translateY(0)';
+                            });
+                        }
                     }
                     else if (x == 0 && y == 0) {
                         cell.classList.remove('selected');
                         cell.classList.remove('unselected');
                         projectHeader.style.width = '100%';
-                        projectDescription.style.width = '100%';
                         projectDescription.classList.add('hidden');
+                        UI.style.pointerEvents = '';
 
                         grid.style.top = '';
                         cellsContainer.style.top = '';
 
                         backButton.style.transform = '';
-                        viewButton.style.transform = '';
                     }
                 });
             }
@@ -234,7 +239,7 @@
                 cells.forEach(cell => {
                     if (cell.classList.contains('selected')) {
                         // window.location.href = "project.php?title=" + cell.dataset.title;
-                        transitionToPage('./Projecten/' + cell.dataset.title.replace(/ /g, '') + '.html');
+                        //transitionToPage('./Projecten/?' + cell.dataset.title.replace(/ /g, '') + '');
                     }
                 });
             }
@@ -246,18 +251,22 @@
             // Attach global selectCube function to window for onclick attribute
             window.selectCube = selectCube;
 
-
-
-            window.transitionToPage = function(href) {
-                document.querySelector('body').style.opacity = 0
-                setTimeout(function() {
-                    window.location.href = href
-                }, 500)
-            }
-
-            document.addEventListener('DOMContentLoaded', function(event) {
-                document.querySelector('body').style.opacity = 1
-            })
+            //when a user clicks on a link <a> tag and it is to #, prevent the default behaviour and scroll the description element till that element is in view
+            document.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const element = document.querySelector(this.getAttribute('href'));
+                    if (element) {
+                        //scroll to the element (without using built in scrollIntoView)
+                        const elementTop = element.getBoundingClientRect().top;
+                        const elementHeight = element.getBoundingClientRect().height;
+                        const windowTop = window.scrollY;
+                        const windowHeigth = window.innerHeight;
+                        const scrollAmount = elementTop - windowTop - windowHeigth / 2 + elementHeight / 2;
+                        window.scrollBy({top: scrollAmount, behavior: 'smooth'});
+                    }
+                });
+            });
     </script>
 </body>
 </html>

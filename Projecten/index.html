@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--    no zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../site.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../projecten.css">
+</head>
+<body class="squares animate">
+
+<div class="ui"></div>
+<div id="mainElement">
+</div>
+
+
+<script>
+//fetch the md file from the same folder (url: Projecten/?DominoDay -> fetch DominoDay.md)
+    const url = window.location.href.split('?')[1];
+    const mdFile = url + '.md';
+    fetch(mdFile + ".md")
+        .then(response => response.text())
+        .then(text => {
+            const converter = new showdown.Converter();
+            const html = converter.makeHtml(text);
+            document.getElementById('mainElement').innerHTML = html;
+        });
+
+window.transitionToPage = function(href) {
+    document.querySelector('body').style.opacity = 0
+    setTimeout(function() {
+        window.location.href = href
+    }, 500)
+}
+
+document.addEventListener('DOMContentLoaded', function(event) {
+    setTimeout(function() {
+        document.querySelector('body').style.opacity = 1
+    }, 0)
+})
+</script>
+
+</body>
+</html>

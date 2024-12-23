@@ -11,7 +11,7 @@ body, body.light {
     --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
     --line-color: #666; /* Color of the walls */
     --floor-color: #a6a5a5; /* Color of the floor */
-    --anim-speed: .5s; /* Animation speed */
+    --anim-speed: 1s; /* Animation speed */
     --background-animation: 25s; /* Background animation speed */
 
     /*** Colors ***/
@@ -19,7 +19,6 @@ body, body.light {
     --light-background: #fec473;
     --dark-background: #ffbe6a;
     --darker-background: #fe9833;
-
     margin: 0;
     padding: 0;
     display: flex;
@@ -42,7 +41,7 @@ body.dark {
     --darker-background: #4a4a4a;
 }
 
-body.animateBackground {
+body.squares {
     /*background-color: #e5e5f7;*/
     /*4 sqaures (0,0),(1,0),(0,1),(1,1) where 2 colors are used (--light and --dark*/
     background: repeating-conic-gradient(var(--light-background) 0% 25%, var(--dark-background) 0% 50%) 50%;
@@ -50,14 +49,14 @@ body.animateBackground {
     background-size: 12.5vw 12.5vw;
     image-rendering: pixelated;
 
-    font-family: "Pixelify Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-
-    animation: background var(--background-animation) cubic-bezier(.25,0,.5,.5) , background var(--background-animation) linear var(--background-animation) infinite;
     opacity: 0;
     transition: opacity .5s;
+}
+
+body.animate {
+    animation: background var(--background-animation) cubic-bezier(.25,0,.5,.5) , background var(--background-animation) linear var(--background-animation) infinite;
+    /* pointer-events: none; */
+    /* user-select: none; */
 }
 
 @media screen and (max-width: 1000px)
@@ -155,10 +154,9 @@ body.animateBackground {
     align-items: flex-start;
     color: #fff;
     font-size: 24px;
-    translate: -50% -50%;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    translate: calc(var(--grid-size)* -1.41421356237 / 2) calc(var(--grid-size)* -0.70710678118 * 2 / 2);
+    /* clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); */
     transition: transform var(--anim-speed), background var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed), height var(--anim-speed), top var(--anim-speed), left var(--anim-speed);
-    padding: calc(var(--gap) / 2);
     position: fixed;
 }
 
@@ -193,14 +191,14 @@ body.animateBackground {
 
 .cells .cell.selected {
     z-index: 1000 !important;
-    left: 50% !important;
-    top: 50% !important;
-    width: calc(40vh * 1.41421356237) !important;
-    height: calc(40vh * 0.70710678118 * 2) !important;
-    transform: translateY(-200%) translateX(25vw) !important;
-    padding: 0;
-    clip-path: none;
+    opacity: 1 !important;
+    pointer-events: none;
+    transform: translate(25vw, -135vh) !important; /* Use translate instead of top/left */
+    width: 30vw;
+    height: auto;
+    transition: transform var(--anim-speed), width var(--anim-speed), height var(--anim-speed), opacity var(--anim-speed);
 }
+
 
 .cells .cell.unselected {
     opacity: 0 !important;
@@ -217,7 +215,7 @@ body.animateBackground {
     top: 0;
     left: 0;
     padding: 12px;
-    z-index: 10000;
+    z-index: 1000000000;
 }
 
 .buttons #backButton {
@@ -237,21 +235,15 @@ body.animateBackground {
     transform: scale(1.1) !important;
 }
 
-.buttons #viewButton {
-    width: 72px;
-    height: 72px;
-    background: transparent;
-    border: transparent;
-    cursor: pointer;
-    transform: translateY(-128px);
-    transition: transform var(--anim-speed);
-    background-image: url("images/ProjectCubes/view.png");
-    background-size: 72px 72px;
-    image-rendering: pixelated;
-}
-
-.buttons #viewButton:hover {
-    transform: scale(1.1) !important;
+.iconPlaceholder {
+    position: fixed;
+    width: 20vw;
+    height: 20vw;
+    border: 10px solid red;
+    z-index: 100000000;
+    top: 50vh;
+    right: 10vw;
+    transform: translateY(-50%);
 }
 
 .ui {
@@ -262,7 +254,7 @@ body.animateBackground {
     left: 0;
     pointer-events: none;
     box-shadow: 0 0 2.5vw 2.5vw var(--light-background) inset;
-    z-index: 100;
+    z-index: 10000000;
 }
 
 .ui::after {
@@ -273,9 +265,10 @@ body.animateBackground {
     width: 100%;
     height: 100%;
     box-shadow: 0 0 0 0.5vw var(--darker-background) inset;
+    pointer-events: none;
 }
 
-.project-header, .project-description {
+.project-header {
     width: 50%;
     height: 5vw;
     display: flex;

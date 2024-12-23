@@ -1,0 +1,129 @@
+#documentElement {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: black;
+    background: var(--lighter-background);
+    border: 6px solid var(--darker-background);
+    width: 50vw;
+    position: fixed;
+    top: 10vh;
+    left: 50px;
+    padding: 2rem;
+    height: 80vh;
+    overflow-y: auto;
+    border-radius: 10px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    --accent-color: #ff6b6b;
+
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /*showdown html*/
+
+    h1 {
+        font-size: 2rem;
+        margin-top: 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 1rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    h5 {
+        font-size: 0.875rem;
+        margin-top: 1rem;
+    }
+
+    h6 {
+        font-size: 0.75rem;
+        margin-top: 1rem;
+    }
+
+    p {
+        margin-top: 1rem;
+    }
+
+    a {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    ul {
+        margin-top: 0.15rem;
+    }
+
+    ol {
+        margin-top: 0.15rem;
+    }
+
+    li {
+        margin-top: 0.15rem;
+    }
+
+    blockquote {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background: var(--light-background);
+        border-left: 4px solid var(--accent-color);
+    }
+
+    code {
+        font-family: 'Fira Code', monospace;
+        background: var(--light-background);
+        padding: 0.25rem;
+        border-radius: 5px;
+    }
+
+    pre {
+        font-family: 'Fira Code', monospace;
+        background: var(--light-background);
+        padding: 1rem;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 1rem;
+    }
+
+    table {
+        margin-top: 1rem;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        background: var(--light-background);
+        border: 1px solid var(--darker-background);
+        padding: 0.5rem;
+    }
+
+    td {
+        border: 1px solid var(--darker-background);
+        padding: 0.5rem;
+    }
+
+}

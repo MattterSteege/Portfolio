@@ -16,8 +16,8 @@
 <body class="squares animate">
     <div class="ui">
 
-        <h1 class="project-header" style="width: 100%">Selecteer een project</h1>
-        <div id="documentElement" class="project-description hidden" style="width: 50%;">Lorem Ipsum is simply dummy text...</div>
+        <h1 class="project-header">Selecteer een project</h1>
+        <div id="documentElement" class="project-description hidden">Lorem Ipsum is simply dummy text...</div>
 
     </div>
     <div class="buttons">
@@ -50,6 +50,27 @@
                 { title: "Project Tas", pos: {x: 1, y: 3}, image: "images/ProjectCubes/ProjectTas.png"},
                 { title: "Project Startup", pos: {x: 2, y: 3}, image: "images/ProjectCubes/Startup.png"}
             ];
+
+            const markdownConverterOptions = {
+                simplifiedAutoLink: true,
+                strikethrough: true,
+                tables: true,
+                tasklists: true,
+                simpleLineBreaks: true,
+                openLinksInNewWindow: true,
+                emoji: true,
+                underline: true,
+                literalMidWordUnderscores: true,
+                ghMentions: true,
+                ghMentionsLink: ' ',
+                metadata: true,
+                parseImgDimensions: true,
+                requireSpaceBeforeHeadingText: true,
+                ghCodeBlocks: true,
+                backticks: 'asciimath',
+                disableForced4SpacesIndentedSublists: true,
+            }
+            const showdownConverter = new showdown.Converter(markdownConverterOptions);
 
             const cellsContainer = document.querySelector('.cells');
             const grid = document.querySelector('.grid');
@@ -194,35 +215,36 @@
                         fetch("/Projecten/" + cell.dataset.title.replace(/ /g, '') + ".md")
                             .then(response => response.text())
                             .then(text => {
-                                const converter = new showdown.Converter();
-                                const html = converter.makeHtml(text);
+                                const html = showdownConverter.makeHtml(text);
                                 cell.classList.add('selected');
                                 cell.classList.remove('unselected');
-                                projectHeader.style.width = '50%';
+                                projectHeader.classList.add('active');
+
                                 projectHeader.innerText = cell.dataset.title;
                                 projectDescription.innerHTML = html;
                                 projectDescription.classList.remove('hidden');
                                 UI.style.pointerEvents = 'all';
 
-                                //grid.style.top = '175%';
-                                //cellsContainer.style.top = '175%';
-                                //    translate: 0 150%;
                                 grid.style.top = '150vh';
-                                cellsContainer.style.top = '150vh';
+                                cellsContainer.classList.add('animate');
+                                cellsContainer.classList.remove('unanimate');
 
                                 backButton.style.transform = 'translateY(0)';
+
                             });
                         }
                     }
                     else if (x == 0 && y == 0) {
                         cell.classList.remove('selected');
                         cell.classList.remove('unselected');
-                        projectHeader.style.width = '100%';
+                        projectHeader.classList.remove('active');
                         projectDescription.classList.add('hidden');
                         UI.style.pointerEvents = '';
 
                         grid.style.top = '';
-                        cellsContainer.style.top = '';
+                        cellsContainer.classList.add('unanimate');
+                        cellsContainer.classList.remove('animate');
+
 
                         backButton.style.transform = '';
                     }
@@ -232,16 +254,6 @@
             function changeText(cell) {
                 var project = projects.find(project => project.pos.x == cell.dataset.x && project.pos.y == cell.dataset.y);
                 projectHeader.innerText = project.title;
-            }
-
-            function ViewCurrentProject() {
-                const cells = document.querySelectorAll('.cells .cell');
-                cells.forEach(cell => {
-                    if (cell.classList.contains('selected')) {
-                        // window.location.href = "project.php?title=" + cell.dataset.title;
-                        //transitionToPage('./Projecten/?' + cell.dataset.title.replace(/ /g, '') + '');
-                    }
-                });
             }
 
             // Initialize the grid and projects

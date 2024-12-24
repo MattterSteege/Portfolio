@@ -5,7 +5,7 @@ img {
 }
 
 body, body.light {
-    --scaler: 0.9; /* Scale the grid */
+    --scaler: 0.7; /* Scale the grid */
     --gap: 50px; /* Gap between the cells */
     --cells: 4; /* Amount of cells in the grid */
     --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
@@ -136,14 +136,49 @@ body.animate {
     /*that means that the (90vw * var(--scaler)) has to be multiplied by 1.41421356237 to get the correct width*/
     /*that means that the (90vw * var(--scaler)) has to be multiplied by 0.70710678118 to get the correct height*/
 
+    --width: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 1.41421356237), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237));
+    --height: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 0.70710678118), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118));
+
     position: fixed;
-    width: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 1.41421356237), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237));
-    height: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 0.70710678118), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118));
+    width: var(--width);
+    height: var(--height);
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: all var(--anim-speed);
     z-index: 100000;
+}
+
+.cells.animate {
+    animation: down calc(2 * var(--anim-speed)) forwards;
+}
+
+.cells.unanimate {
+    animation: up calc(2 * var(--anim-speed)) forwards;
+}
+
+@keyframes down {
+    0% {
+        width: var(--width);
+    }
+    50% {
+        width: var(--width);
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes up {
+    0% {
+        width: 100%;
+    }
+    50% {
+        width: var(--width);
+    }
+    51%, 100% {
+        width: var(--width);
+    }
 }
 
 .cells .cell {
@@ -164,13 +199,14 @@ body.animate {
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
+    top: -1vw;
+    left: -1vw;
     background: radial-gradient(transparent, yellow);
     opacity: 0;
     transition: opacity var(--anim-speed);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     z-index: -1;
+    padding: 1vw;
 }
 
 .cells .cell:hover:not(.selected) .hover-cover {
@@ -193,16 +229,19 @@ body.animate {
     z-index: 1000 !important;
     opacity: 1 !important;
     pointer-events: none;
-    transform: translate(25vw, -135vh) !important; /* Use translate instead of top/left */
-    width: 30vw;
-    height: auto;
-    transition: transform var(--anim-speed), width var(--anim-speed), height var(--anim-speed), opacity var(--anim-speed);
+    width: calc(var(--grid-size) * 1.41421356237 * 1.5);
+    height: calc(var(--grid-size) * 0.70710678118 * 2 * 1.5);
+    left: 75vw !important;
+    top: 50% !important;
+    translate: -35% -50%;
+    transition: transform calc(2* var(--anim-speed)), width calc(2* var(--anim-speed)), height calc(2* var(--anim-speed)), opacity calc(2* var(--anim-speed)), left calc(2* var(--anim-speed)), top calc(2* var(--anim-speed)), translate calc(2* var(--anim-speed));
 }
 
 
 .cells .cell.unselected {
     opacity: 0 !important;
     pointer-events: none;
+    transform: translate(0, 100vh);
 }
 
 .warning-screen-to-small
@@ -269,21 +308,54 @@ body.animate {
 }
 
 .project-header {
-    width: 50%;
+    width: 50vw;
+    left: 25vw;
+    position: fixed;
     height: 5vw;
     display: flex;
     justify-content: center;
     align-items: center;
     transform: translateY(0);
-    transition: transform var(--anim-speed), width var(--anim-speed);
+    transition: transform var(--anim-speed), width var(--anim-speed), left var(--anim-speed);
+}
+
+.project-header.active {
+    width: 50%;
+    position: fixed;
+    left: calc(50px + 2rem);
 }
 
 .project-description {
-    height: auto;
-    font-size: 1.5vw;
-    overflow: auto;
     opacity: 1;
-    transition: transform var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed);
+    transition: opacity var(--anim-speed);
+    width: 50%;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: black;
+    background: var(--lighter-background);
+    border: 6px solid var(--darker-background);
+    position: fixed;
+    top: 10vh;
+    left: 50px;
+    padding: 2rem;
+    height: 80vh;
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1000px)
+{
+    .project-description {
+        width: calc(100vw - 112px - 4rem);
+    }
+
+    .project-header.active {
+        width: 100%;
+        position: fixed;
+        left: 0;
+    }
+
 }
 
 .project-header.hidden {

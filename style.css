@@ -211,6 +211,31 @@ body.animate {
 
 .cells .cell:hover:not(.selected) .hover-cover {
     opacity: 50%;
+    animation: fadeIn var(--anim-speed) forwards, pulse calc(4 * var(--anim-speed)) infinite var(--anim-speed);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 50%;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    66% {
+        transform: scale(1.05);
+        opacity: 0.75;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
 }
 
 .cells .cell:hover {

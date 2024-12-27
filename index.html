@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matt ter Steege</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <style>
         .intro-container {
             width: 100vw;
@@ -32,12 +35,57 @@
         }
 
         #name {
-            z-index: 1000;
+            z-index: 100000;
             width: 100vw;
             height: auto;
             image-rendering: pixelated;
             transition: opacity 0.5s;
             opacity: 1;
+            margin-bottom: 10vw;
+        }
+
+        #openPersonal, #openSchool {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 33.333vw;
+            height: auto;
+            image-rendering: pixelated;
+            opacity: 0;
+            z-index: 1000;
+            margin: 0 8.333vw 2vw 8.333vw;
+            transition: bottom 0.5s, opacity 0.5s;
+            background: url('images/ProjectCubes/school.png') no-repeat;
+            background-size: contain;
+            border: transparent;
+            aspect-ratio: 4 / 1;
+        }
+
+        #openPersonal {
+            left: 0;
+            background: url('images/ProjectCubes/eigen.png') no-repeat;
+            background-size: contain;
+        }
+
+        #openPersonal:hover, #openSchool:hover {
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+
+        .squares {
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @media (max-width: 800px) {
+            #openPersonal, #openSchool {
+                width: 80vw;
+                margin: 0 10vw 2vw 10vw;
+            }
+
+            #openSchool {
+                bottom: 25vw;
+            }
         }
     </style>
     <link rel="stylesheet" href="style.css">
@@ -47,15 +95,17 @@
 <body>
 <div class="intro-container">
     <img id="name" src="images/ProjectCubes/Intro-Animation.png" height="96" width="192"/>
+    <button id="openSchool" src="images/ProjectCubes/school.png" height="16" width="64" style="bottom: -25vh; opacity: 1;" onclick="openSchoolPortfolio()"></button>
+    <button id="openPersonal" src="images/ProjectCubes/eigen.png" height="16" width="64" style="bottom: -25vh; opacity: 1;" onclick="openPersonalPortfolio()"></button>
 </div>
 
 <script>
-    // //Wait for the animation to complete before redirecting to grid.html
+    // //Wait for the animation to complete before redirecting to s_grid.html
     // setTimeout(() => {
-    //     // window.location.href = 'grid.html';
+    //     // window.location.href = 's_grid.html';
     //     document.querySelector('body').style.opacity = 0
     //     setTimeout(function() {
-    //         window.location.href = 'grid.html'
+    //         window.location.href = 's_grid.html'
     //     }, 500)
     // }, 3000); // Matches the duration of the CSS animation (3 seconds)
 
@@ -74,6 +124,7 @@
             div.style.top = j * pixel + 'px';
             div.style.background = 'black';
             div.style.opacity = 0;
+            div.classList.add('squares');
 
             // Calculate color: (0,0) = #fec473, (1,0) and (0,1) = #ffbe6a, (1,1) = #fec473 and repeat
             if (i % 2 === 0 && j % 2 === 0) {
@@ -131,13 +182,32 @@
         }
     }
 
-    //after 3 seconds, redirect to grid.html
+    //after 3 seconds, redirect to s_grid.html
     setTimeout(() => {
-        document.querySelector('#name').style.opacity = 0
-        setTimeout(function() {
-            window.location.href = 'grid.html'
-        }, 500)
+        document.querySelector('#openSchool').style.bottom = '';
+        document.querySelector('#openPersonal').style.bottom = '';
+        document.querySelector('#openSchool').style.opacity = 1;
+        document.querySelector('#openPersonal').style.opacity = 1;
     }, (1600 + (screenHeigth / pixel) * 50)); // Matches the duration of the CSS animation (3 seconds)
+
+    function openSchoolPortfolio() {
+        document.querySelector('#name').style.opacity = 0
+        document.querySelector('#openSchool').style.bottom = '-25vh';
+        document.querySelector('#openPersonal').style.bottom = '-25vh';
+        setTimeout(function() {
+            window.location.href = 's_grid.html' + window.location.search;
+        }, 500)
+    }
+
+    function openPersonalPortfolio() {
+        alert('Deze portfolio is nog niet beschikbaar. Probeer het later nog eens.')
+        // document.querySelector('#name').style.opacity = 0
+        // document.querySelector('#openSchool').style.bottom = '-25vh';
+        // document.querySelector('#openPersonal').style.bottom = '-25vh';
+        // setTimeout(function() {
+        //     window.location.href = 'p_grid.html' + window.location.search;
+        // }, 500)
+    }
 
 </script>
 </body>

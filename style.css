@@ -44,17 +44,17 @@ body.dark {
 body.squares {
     /*background-color: #e5e5f7;*/
     /*4 sqaures (0,0),(1,0),(0,1),(1,1) where 2 colors are used (--light and --dark*/
-    background: repeating-conic-gradient(var(--light-background) 0% 25%, var(--dark-background) 0% 50%) 50%;
-
+    background: repeating-conic-gradient(var(--light-background) 0% 25%, var(--dark-background) 0% 50%);
+    background-position: 0 0, 10px 10px;
     background-size: 12.5vw 12.5vw;
     image-rendering: pixelated;
 
     opacity: 0;
-    transition: opacity .5s;
+    transition: opacity .5s, background .5s;
 }
 
 body.animate {
-    animation: background var(--background-animation) cubic-bezier(.25,0,.5,.5) , background var(--background-animation) linear var(--background-animation) infinite;
+    /*animation: background var(--background-animation) cubic-bezier(.25,0,.5,.5) , background var(--background-animation) linear var(--background-animation) infinite;*/
     /* pointer-events: none; */
     /* user-select: none; */
 }
@@ -98,6 +98,7 @@ body.animate {
     transition: top var(--anim-speed);
     box-shadow: 50px 50px var(--darker-background);
     z-index: 10000;
+    animation: hover 5s infinite ease-in-out;
 }
 
 .grid::after {
@@ -214,6 +215,11 @@ body.animate {
     animation: fadeIn var(--anim-speed) forwards, pulse calc(4 * var(--anim-speed)) infinite var(--anim-speed);
 }
 
+
+.cells .cell.up {}
+.cells .cell.down {}
+
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -329,7 +335,18 @@ body.animate {
     width: 100%;
     height: 100%;
     box-shadow: 0 0 0 0.5vw var(--darker-background) inset;
-    pointer-events: none;
+}
+
+@keyframes hover {
+    0% {
+        box-shadow: 50px 50px var(--darker-background);
+    }
+    50% {
+        box-shadow: 40px 40px var(--darker-background);
+    }
+    100% {
+        box-shadow: 50px 50px var(--darker-background);
+    }
 }
 
 .project-header {
@@ -367,6 +384,7 @@ body.animate {
     height: 80vh;
     overflow-y: auto;
     border-radius: 10px;
+    z-index: 10000;
 }
 
 @media screen and (max-width: 1000px)

@@ -25,12 +25,14 @@ const projectHeader = document.querySelector('.project-header');
 const projectDescription = document.querySelector('.project-description');
 const backButton = document.querySelector('.buttons #backButton');
 const UI = document.querySelector('.ui');
+const gridSize = parseFloat(getComputedStyle(document.body).getPropertyValue('--grid-size')) || 100;
+const gap = parseFloat(getComputedStyle(document.body).getPropertyValue('--gap')) || 10;
 
 function generateProjectsWithDelay() {
-    const gridSize = parseFloat(getComputedStyle(document.body).getPropertyValue('--grid-size')) || 100;
-    const gap = parseFloat(getComputedStyle(document.body).getPropertyValue('--gap')) || 10;
     let delay = 500;
 
+    //rerder projects based on project.pos.x and then by project.pos.y
+    projects.sort((a, b) => a.pos.x - b.pos.x || a.pos.y - b.pos.y);
     projects.forEach((project) => {
         const cell = document.createElement('div');
         cell.classList.add('cell');
@@ -42,7 +44,7 @@ function generateProjectsWithDelay() {
         cell.style.setProperty('--coords-y', project.pos.y);
 
         cell.style.opacity = 0;
-        cell.style.transform = 'translateY(-200px)';
+        cell.style.transform = 'translate(-50%, calc(-50% - 200px))';
 
         cell.setAttribute('onclick', `selectCube(${project.pos.x}, ${project.pos.y})`);
 
@@ -64,8 +66,6 @@ function generateProjectsWithDelay() {
             if (!cell.classList.contains('selected')) changeText(cell);
         });
     });
-
-    render();
 
     document.querySelectorAll('.cells .cell').forEach((cell) => {
         setTimeout(() => {
@@ -100,11 +100,6 @@ function selectCube(x, y) {
                     cellsContainer.classList.remove('unanimate');
 
                     backButton.style.transform = 'translateY(0)';
-
-                    // Change grid position after 0 timeout for transition
-                    setTimeout(() => {
-                        grid.style.top = '0'; // Transition to final position
-                    }, 0);
                 });
         } else if (x == 0 && y == 0) {
             cell.classList.remove('selected', 'unselected');
@@ -125,69 +120,7 @@ function changeText(cell) {
     projectHeader.innerText = project.title;
 }
 
-const cells = [];
-const cellsCount = Number(getComputedStyle(document.body).getPropertyValue('--cells'));
-
-function render() {
-    // Render grid lines based on gap
-    if (getComputedStyle(grid).getPropertyValue('--gap').trim() === '0' ||
-        getComputedStyle(grid).getPropertyValue('--gap').trim() === '0px') {
-        grid.style.backgroundImage = 'none';
-    } else {
-        grid.style.backgroundImage = 'linear-gradient(0deg, var(--line-color) 1px, transparent 0), linear-gradient(90deg, var(--line-color) 1px, transparent 0)';
-    }
-
-    // Create grid cells
-    if (grid.children.length === 0) {
-        for (let x = 1; x < cellsCount + 1; x++) {
-            for (let y = 1; y < cellsCount + 1; y++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                cell.dataset.x = x;
-                cell.dataset.y = y;
-
-                //set variable --coords-x and --coords-y
-                cell.style.setProperty('--coords-x', x);
-                cell.style.setProperty('--coords-y', y);
-                cell.style.zIndex = 1000 - (cell.dataset.x - 1) * 10 - ( cell.dataset.y - 1);
-
-                const positioner = document.createElement('div');
-                positioner.classList.add('positioner')
-
-                const cellInner = document.createElement('div');
-                cellInner.classList.add('cell-inner');
-
-                positioner.appendChild(cellInner);
-                cell.appendChild(positioner);
-                grid.appendChild(cell);
-            }
-        }
-    }
-
-    const gridCells = grid.querySelectorAll('.cell');
-
-    gridCells.forEach((cell) => {
-        const x = cell.dataset.x;
-        const y = cell.dataset.y;
-        const gridCell = document.querySelector(`.grid .cell[data-x="${x}"][data-y="${y}"]`);
-        const cellsCell = document.querySelectorAll(`.cells .cell[data-x="${x}"][data-y="${y}"]`);
-
-        if (gridCell && cellsCell) {
-            if (cellsCell.length === 1) {
-                cells.push({coords: {x, y}, grid: gridCell, cell: cellsCell[0]});
-                //calculatePosition(cells[cells.length - 1]);
-            } else if (cellsCell.length > 1) {
-                cellsCell.forEach((cell) => {
-                    cells.push({coords: {x, y}, grid: gridCell, cell: cell});
-                    //calculatePosition(cells[cells.length - 1]);
-                });
-            }
-        }
-    });
-}
-
 // Initialize the grid and projects
-render();
 generateProjectsWithDelay();
 
 // Attach global selectCube function to window for onclick attribute

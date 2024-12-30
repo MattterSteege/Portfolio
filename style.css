@@ -4,12 +4,12 @@ img {
     pointer-events: none;
 }
 
-.positioner {
-    width: 10px;
-    height: 10px;
-    background: red;
-    transform: translate(-50%, -50%) rotateZ(-45deg);
-}
+/*.positioner {*/
+/*    width: 10px;*/
+/*    height: 10px;*/
+/*    background: red;*/
+/*    transform: translate(-50%, -50%) rotateZ(-45deg);*/
+/*}*/
 
 body, body.light {
     --scaler: 0.7; /* Scale the grid */
@@ -35,7 +35,7 @@ body, body.light {
     height: 100vh;
     overflow: hidden;
 
-    /*font-family: "Pixelify Sans", sans-serif;*/
+    font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -165,38 +165,6 @@ body.animate {
     z-index: 100000;
 }
 
-.cells.animate {
-    animation: down calc(2 * var(--anim-speed)) forwards;
-}
-
-.cells.unanimate {
-    animation: up calc(2 * var(--anim-speed)) forwards;
-}
-
-@keyframes down {
-    0% {
-        width: var(--width);
-    }
-    50% {
-        width: var(--width);
-    }
-    100% {
-        width: 100%;
-    }
-}
-
-@keyframes up {
-    0% {
-        width: 100%;
-    }
-    50% {
-        width: var(--width);
-    }
-    51%, 100% {
-        width: var(--width);
-    }
-}
-
 .cells .cell {
     /*
         1.41421356237 = sqrt(2)
@@ -206,6 +174,7 @@ body.animate {
     left: calc((((var(--cells) - var(--coords-x) + (var(--coords-y) - 1)) ) * ((var(--grid-size) + var(--gap)) * (1 / sqrt(2)))) + ((var(--grid-size)) * (sqrt(2) / 2)));
     top: calc(100% - (((var(--coords-x) + var(--coords-y) - 2) * ((var(--grid-size) + var(--gap)) * (1.41421356237 / 4))) + (var(--grid-size) * (1.41421356237 / 2))));
 
+    z-index: calc(var(--cells) * var(--cells) - var(--coords-x) * var(--cells) - var(--coords-y) * var(--cells));
 
     width: calc(var(--grid-size)* 1.41421356237);
     height: calc(var(--grid-size)* 0.70710678118 * 2);
@@ -240,10 +209,6 @@ body.animate {
 }
 
 
-.cells .cell.up {}
-.cells .cell.down {}
-
-
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -269,7 +234,7 @@ body.animate {
 }
 
 .cells .cell:hover {
-    transform: translateY(-50px); /* Simplified for testing */
+    transform: translate(-50%, calc(-50% - var(--grid-size) * 0.70710678118 / 2));
 }
 
 
@@ -286,10 +251,8 @@ body.animate {
     pointer-events: none;
     width: calc(var(--grid-size) * 1.41421356237 * 1.5);
     height: calc(var(--grid-size) * 0.70710678118 * 2 * 1.5);
-    left: 75vw !important;
+    left: 80vw !important;
     top: 50% !important;
-    translate: -35% -50%;
-    transition: transform calc(2* var(--anim-speed)), width calc(2* var(--anim-speed)), height calc(2* var(--anim-speed)), opacity calc(2* var(--anim-speed)), left calc(2* var(--anim-speed)), top calc(2* var(--anim-speed)), translate calc(2* var(--anim-speed));
 }
 
 
@@ -422,7 +385,6 @@ body.animate {
         position: fixed;
         left: 0;
     }
-
 }
 
 .project-header.hidden {

@@ -15,8 +15,8 @@ body, body.light {
     --scaler: 0.7; /* Scale the grid */
     --gap: 50px; /* Gap between the cells */
     --cells: 4; /* Amount of cells in the grid */
-    /*--grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); !* Size of the cells *!*/
-    --grid-size: 200px; /* Size of the cells */
+    --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
+    /*--grid-size: 200px; !* Size of the cells *!*/
     --line-color: #666; /* Color of the walls */
     --floor-color: #a6a5a5; /* Color of the floor */
     --anim-speed: 1s; /* Animation speed */

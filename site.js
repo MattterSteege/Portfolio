@@ -6,5 +6,8 @@ window.transitionToPage = function(href) {
 }
 
 document.addEventListener('DOMContentLoaded', function(event) {
-    document.querySelector('body').style.opacity = 1
-})
+    document.querySelector('body').style.opacity = 1;
+});
+
+const openSchoolPortfolio = () =>  transitionToPage('p_grid.html');
+const openPersonalPortfolio = () => transitionToPage('s_grid.html');

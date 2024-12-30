@@ -184,30 +184,11 @@
 
     //after 3 seconds, redirect to s_grid.html
     setTimeout(() => {
-        document.querySelector('#openSchool').style.bottom = '';
-        document.querySelector('#openPersonal').style.bottom = '';
-        document.querySelector('#openSchool').style.opacity = 1;
-        document.querySelector('#openPersonal').style.opacity = 1;
-    }, (1600 + (screenHeigth / pixel) * 50)); // Matches the duration of the CSS animation (3 seconds)
-
-    function openSchoolPortfolio() {
         document.querySelector('#name').style.opacity = 0
-        document.querySelector('#openSchool').style.bottom = '-25vh';
-        document.querySelector('#openPersonal').style.bottom = '-25vh';
         setTimeout(function() {
-            window.location.href = 's_grid.html' + window.location.search;
+            window.location.href = 's_grid.html'
         }, 500)
-    }
-
-    function openPersonalPortfolio() {
-        alert('Deze portfolio is nog niet beschikbaar. Probeer het later nog eens.')
-        // document.querySelector('#name').style.opacity = 0
-        // document.querySelector('#openSchool').style.bottom = '-25vh';
-        // document.querySelector('#openPersonal').style.bottom = '-25vh';
-        // setTimeout(function() {
-        //     window.location.href = 'p_grid.html' + window.location.search;
-        // }, 500)
-    }
+    }, (1600 + (screenHeigth / pixel) * 50)); // Matches the duration of the CSS animation (3 seconds)
 
 </script>
 </body>

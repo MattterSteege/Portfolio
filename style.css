@@ -4,11 +4,19 @@ img {
     pointer-events: none;
 }
 
+.positioner {
+    width: 10px;
+    height: 10px;
+    background: red;
+    transform: translate(-50%, -50%) rotateZ(-45deg);
+}
+
 body, body.light {
     --scaler: 0.7; /* Scale the grid */
     --gap: 50px; /* Gap between the cells */
     --cells: 4; /* Amount of cells in the grid */
-    --grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); /* Size of the cells */
+    /*--grid-size: min(calc(((90vh * var(--scaler)) / var(--cells))), calc(((90vw * var(--scaler)) / var(--cells)))); !* Size of the cells *!*/
+    --grid-size: 200px; /* Size of the cells */
     --line-color: #666; /* Color of the walls */
     --floor-color: #a6a5a5; /* Color of the floor */
     --anim-speed: 1s; /* Animation speed */
@@ -27,7 +35,7 @@ body, body.light {
     height: 100vh;
     overflow: hidden;
 
-    font-family: "Pixelify Sans", sans-serif;
+    /*font-family: "Pixelify Sans", sans-serif;*/
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -79,8 +87,8 @@ body.animate {
 
 .grid {
     position: fixed;
-    width: min(calc((90vh * var(--scaler)) + var(--gap) * (var(--cells) - 1)), calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1)));
-    height: min(calc((90vh * var(--scaler)) + var(--gap) * (var(--cells) - 1)), calc((90vw * var(--scaler)) + var(--gap) * (var(--cells) - 1)));
+    width: calc((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap));
+    height: calc((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap));
     transform: rotateX(60deg) rotateZ(45deg);
     transform-origin: 50% 50%;
 
@@ -117,6 +125,12 @@ body.animate {
 }
 
 .grid .cell {
+    --coords-x: 1;
+    --coords-y: 1;
+
+    top: calc(100% - var(--grid-size)* var(--coords-y) - var(--gap)*(var(--coords-y) - 1));
+    left: calc(100% - var(--grid-size)* var(--coords-x) - var(--gap)*(var(--coords-x) - 1));
+    z-index: 1000;
     width: calc(var(--grid-size));
     height: calc(var(--grid-size));
     display: flex;
@@ -134,11 +148,12 @@ body.animate {
     /*width = 1227.54 when rotated*/
     /*height = 613.77 when rotated*/
 
-    /*that means that the (90vw * var(--scaler)) has to be multiplied by 1.41421356237 to get the correct width*/
-    /*that means that the (90vw * var(--scaler)) has to be multiplied by 0.70710678118 to get the correct height*/
+    /*that means that the x has to be multiplied by 1.41421356237 to get the correct width*/
+    /*that means that the y has to be multiplied by 0.70710678118 to get the correct height*/
 
-    --width: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 1.41421356237), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 1.41421356237));
-    --height: min(calc(((90vw* var(--scaler)) + var(--gap)*(var(--cells) - 1)) * 0.70710678118), calc(((90vh* var(--scaler)) + var(--gap)*(var(--cells) - 1))* 0.70710678118));
+    --width: calc(((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap)) * 1.41421356237); /* 1.41421356237 = sqrt(2) */
+    --height: calc(((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap)) * 0.70710678118); /* 0.70710678118 = 1/sqrt(2) */
+
 
     position: fixed;
     width: var(--width);
@@ -183,6 +198,15 @@ body.animate {
 }
 
 .cells .cell {
+    /*
+        1.41421356237 = sqrt(2)
+        0.70710678118 = 1/sqrt(2)
+     */
+
+    left: calc((((var(--cells) - var(--coords-x) + (var(--coords-y) - 1)) ) * ((var(--grid-size) + var(--gap)) * (1 / sqrt(2)))) + ((var(--grid-size)) * (sqrt(2) / 2)));
+    top: calc(100% - (((var(--coords-x) + var(--coords-y) - 2) * ((var(--grid-size) + var(--gap)) * (1.41421356237 / 4))) + (var(--grid-size) * (1.41421356237 / 2))));
+
+
     width: calc(var(--grid-size)* 1.41421356237);
     height: calc(var(--grid-size)* 0.70710678118 * 2);
     display: flex;
@@ -190,10 +214,10 @@ body.animate {
     align-items: flex-start;
     color: #fff;
     font-size: 24px;
-    translate: calc(var(--grid-size)* -1.41421356237 / 2) calc(var(--grid-size)* -0.70710678118 * 2 / 2);
+    transform: translate(-50%, -50%);
     /* clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); */
     transition: transform var(--anim-speed), background var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed), height var(--anim-speed), top var(--anim-speed), left var(--anim-speed);
-    position: fixed;
+    position: absolute;
 }
 
 .hover-cover {

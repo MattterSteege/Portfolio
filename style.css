@@ -6,9 +6,9 @@
 /*}*/
 
 body, body.light {
-    --scaler: 1; /* Scale the grid */
+    --scaler: 0.8; /* Scale the grid */
     --gap: calc(10vw/var(--cells));
-    --cells: 4; /* Amount of cells in the grid */
+    --cells: 3; /* Amount of cells in the grid */
     --grid-size: min(calc(((50vw * var(--scaler)) / var(--cells))), calc(((70vh * var(--scaler)) / var(--cells)))); /* Size of the cells */
     /*--grid-size: 200px; !* Size of the cells *!*/
     --line-color: #666; /* Color of the walls */
@@ -238,7 +238,7 @@ body.animate {
     width: calc(var(--grid-size) * 1.41421356237 * 1.5);
     height: calc(var(--grid-size) * 0.70710678118 * 2 * 1.5);
     top: 50% !important;
-    left: calc(100% - (var(--grid-size) * 1.41421356237 * 1.5)/2);
+    left: calc(100% - (var(--grid-size) * 1.41421356237 * 0.25)/2);
 }
 
 

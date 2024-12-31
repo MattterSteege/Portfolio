@@ -420,7 +420,7 @@ body.animate {
 
 /* The Close Button */
 #close {
-    background-image: url(/images/ProjectCubes/back.png);
+    background-image: url(/images/ProjectCubes/close.png);
     background-repeat: no-repeat;
     background-size: contain;
     display: flex;

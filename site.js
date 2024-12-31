@@ -6,7 +6,9 @@ window.transitionToPage = function(href) {
 }
 
 document.addEventListener('DOMContentLoaded', function(event) {
-    document.querySelector('body').style.opacity = 1;
+    setTimeout(function() {
+        document.querySelector('body').style.opacity = 1
+    }, 0)
 });
 
 const openSchoolPortfolio = () =>  transitionToPage('p_grid.html');

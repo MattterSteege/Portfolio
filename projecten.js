@@ -34,36 +34,21 @@ function generateProjectsWithDelay() {
     //rerder projects based on project.pos.x and then by project.pos.y
     projects.sort((a, b) => a.pos.x - b.pos.x || a.pos.y - b.pos.y);
     projects.forEach((project) => {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.dataset.title = project.title;
-        cell.dataset.x = project.pos.x;
-        cell.dataset.y = project.pos.y;
-        //add variable --coords-x and --coords-y
-        cell.style.setProperty('--coords-x', project.pos.x);
-        cell.style.setProperty('--coords-y', project.pos.y);
+        const CellHtml = `
+        <div class="cell" data-title="${project.title}" data-x="${project.pos.x}" data-y="${project.pos.y}" onclick="selectCube(${project.pos.x}, ${project.pos.y})" style="--coords-x: ${project.pos.x}; --coords-y: ${project.pos.y}; transform: translate(-50%, -100%);">
+            <img src="${project.image}" alt="${project.title}" height="80" width="80" style="height: 100%;">
+            <div class="hover-cover"></div>
+        </div>
+        `;
 
-        cell.style.opacity = 0;
-        cell.style.transform = 'translate(-50%, calc(-50% - 200px))';
+        const cell = new DOMParser().parseFromString(CellHtml, 'text/html').body.firstChild;
 
-        cell.setAttribute('onclick', `selectCube(${project.pos.x}, ${project.pos.y})`);
-
-        const img = document.createElement('img');
-        img.src = project.image;
-        img.alt = project.title;
-        img.height = 80;
-        img.width = 80;
-        img.style.height = '100%';
-
-        const hoverCover = document.createElement('div');
-        hoverCover.classList.add('hover-cover');
-
-        cell.appendChild(img);
-        cell.appendChild(hoverCover);
         cellsContainer.appendChild(cell);
 
         cell.addEventListener('mouseenter', () => {
-            if (!cell.classList.contains('selected')) changeText(cell);
+            if (!cell.classList.contains('selected')) {
+                projectHeader.innerText = project.title;
+            }
         });
     });
 
@@ -71,8 +56,7 @@ function generateProjectsWithDelay() {
         setTimeout(() => {
             cell.style.opacity = 1;
             cell.style.transform = '';
-        }, delay);
-        delay += 125;
+        }, delay += 125);
     });
 }
 
@@ -115,29 +99,5 @@ function selectCube(x, y) {
     });
 }
 
-function changeText(cell) {
-    const project = projects.find(project => project.pos.x == cell.dataset.x && project.pos.y == cell.dataset.y);
-    projectHeader.innerText = project.title;
-}
-
-// Initialize the grid and projects
-generateProjectsWithDelay();
-
-// Attach global selectCube function to window for onclick attribute
-window.selectCube = selectCube;
-
-// Prevent default behavior for anchor links and scroll to the target element
-document.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', function(e) {
-        e.preventDefault();
-        const element = document.querySelector(this.getAttribute('href'));
-        if (element) {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementHeight = element.getBoundingClientRect().height;
-            const windowTop = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const scrollAmount = elementTop - windowTop - windowHeight / 2 + elementHeight / 2;
-            window.scrollBy({top: scrollAmount, behavior: 'smooth'});
-        }
-    });
-});
+generateProjectsWithDelay(); // Initialize the grid and projects
+window.selectCube = selectCube; // Attach global selectCube function to window for onclick attribute

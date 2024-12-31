@@ -125,8 +125,8 @@ body.animate {
 }
 
 .grid .cell {
-    --coords-x: 1;
-    --coords-y: 1;
+    --coords-x: attr(data-x number);
+    --coords-y: attr(data-y number);
 
     top: calc(100% - var(--grid-size)* var(--coords-y) - var(--gap)*(var(--coords-y) - 1));
     left: calc(100% - var(--grid-size)* var(--coords-x) - var(--gap)*(var(--coords-x) - 1));
@@ -187,6 +187,7 @@ body.animate {
     /* clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); */
     transition: transform var(--anim-speed), background var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed), height var(--anim-speed), top var(--anim-speed), left var(--anim-speed);
     position: absolute;
+    opacity: 0;
 }
 
 .hover-cover {

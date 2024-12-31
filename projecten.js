@@ -84,6 +84,8 @@ function selectCube(x, y) {
                     cellsContainer.classList.remove('unanimate');
 
                     backButton.style.transform = 'translateY(0)';
+
+                    activeImageEnlargement();
                 });
         } else if (x == 0 && y == 0) {
             cell.classList.remove('selected', 'unselected');

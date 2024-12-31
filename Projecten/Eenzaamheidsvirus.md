@@ -1,8 +1,8 @@
-# Het Eenzaamheidsvirus 2020
+# Eenzaamheidsvirus();
 
 
 ### Gemaakt door:
-Joep Sorel, Sam Timmers, Joris Booij en Matt ter Steege 
+Joep Sorel, Sam Timmers, Joris Booij en Matt ter Steege   
 Klas: 1VA
 
 ---
@@ -24,6 +24,7 @@ Klas: 1VA
 4. [Sprint 4: Afronden en Evaluatie](#sprint-4-afronden-en-evaluatie)
     - [Pitch](#pitch)
     - [Evaluatie](#evaluatie)
+5. [Eigen Rol](#eigen-rol)
 
 ---
 
@@ -31,7 +32,9 @@ Klas: 1VA
 
 ### Onderzoek doelgroep
 
-Tijdens ons onderzoek hebben we ons gericht op de effecten van eenzaamheid onder ouderen tijdens de coronacrisis. Belangrijke punten:
+In dit vooronderzoek hebben we allemaal ideeën bedacht en opgezocht. Daarna hebben we allemaal een prototype spel gemaakt van een idee dat je zelf leuk vond. Sam had een Lingo achtig spel, Joris een tekenspel, Joep een Quiz en ik had een bus bestuur spel.  We zijn ook op zoek gegaan naar wat andere meningen en ideeën over hoe het spel in elkaar zou moeten komen te zitten. Dat hebben we vervolgens kort en bondig opgeschreven en we zijn zelf punten gaan geven aan de ideeën en zo kwam ons uiteindelijke idee tot leven.
+
+Tijdens ons onderzoek hebben we ons ook gericht op de effecten van eenzaamheid onder ouderen tijdens de coronacrisis. Belangrijke punten:
 - **Kwetsbaarheid**: Ouderen zijn extra gevoelig voor het virus en moeten contacten vermijden.
 - **Gevolgen**: Eenzaamheid verhoogt bloeddruk, stress en kans op depressie.
 - **Statistieken**: Eenzaamheid vergroot de kans op vroegtijdig overlijden met 14%.
@@ -132,11 +135,18 @@ We presenteren onze game met:
 
 ### Evaluatie
 
+Dit project was al een tijdje geleden en toen heb ik er geen evaluatie van gemaakt, maar als ik er nu op terug kijk zou ik niet veel anders doen. Natuurlijk een dingetje hier en daar, maar niks groots, het project op zich was al op mijn lijf geschreven, dus dan gaat een project sowieso al beter en makkelijker
+
 **Teamreflectie:**
 - We zijn trots op het functionerende spel en de creatieve oplossing voor het thema eenzaamheid.
 - Verbeterpunten: betere taakverdeling en tijdbeheer.
 - Individueel groeiden we in samenwerken en probleemoplossend denken.
 
 ### Eindresultaat
-Het eindresultaat is een spel gemaakt met [scratch](https://scratch.mit.edu/), waarbij spelers een parcours afleggen om een zwart bolletje te bereiken. Specifieke kleuren activeren of deactiveren bepaalde platforms, wat een strategisch element toevoegt.
+Het uiteindelijke product was een platformer (denk aan Nintendo Mario), dit hebben we na een tijd wikken en wegen gekozen, omdat het simpelweg de voorkeur had van de toekomstige spelers.  Een paar leuke details uit het spel zijn de namen van de personages in het spel: David of North, Daisy of South, Joel of East en Sunny of … West natuurlijk.
+
+Het eindresultaat is gemaakt met [scratch](https://scratch.mit.edu/), waarbij spelers een parcours afleggen om een zwart bolletje te bereiken. Specifieke kleuren activeren of deactiveren bepaalde platforms, wat een strategisch element toevoegt.
 Het is hier te spelen: [Eenzaamheidsvirus A.K.A. "Parallel"](https://scratch.mit.edu/projects/405875350/)
+
+### Eigen rol
+Zoals vast wel bekend hou ik heel veel van programmeren, daarom was dit het perfecte project voor mij. Mijn rol was dan ook programmeur van het spel.  Als programmeur van het spel had ik wel veel te zeggen over het project. Niet alles is natuurlijk mogelijk om in zo’n korte tijd te maken, maar na iets te veel vrije tijd er in te hebben gestoken was het af. Het was echt een droom spel, Ik was er erg trots op natuurlijk. 

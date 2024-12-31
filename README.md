@@ -4,6 +4,8 @@ Welcome to the **Isometric Grid Portfolio**, an interactive and visually appeali
 
 This project is meant to serve as a portfolio for my personal and school projects. I wanted it to be visually appealing and interactive, so I decided to create an isometric grid layout. The projects are loaded dynamically using JavaScript, and the project texts themselves are written in Markdown for easy editing.
 
+Also please take a look at the grid using the chrome inspect tool and select a div.cell element to see the isometric grid in action. You can change --coords-x and -y and the cell will move accordingly. You can also edit all the variables on the body to see the grid change.
+
 ---
 
 ## 🚀 Features

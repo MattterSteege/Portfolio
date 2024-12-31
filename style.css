@@ -251,15 +251,15 @@ body.animate {
     pointer-events: none;
     width: calc(var(--grid-size) * 1.41421356237 * 1.5);
     height: calc(var(--grid-size) * 0.70710678118 * 2 * 1.5);
-    left: 80vw !important;
     top: 50% !important;
+    left: calc(100% - (var(--grid-size) * 1.41421356237 * 1.5)/2);
 }
 
 
 .cells .cell.unselected {
     opacity: 0 !important;
     pointer-events: none;
-    transform: translate(0, 100vh);
+    transform: translate(-50%, 100vh);
 }
 
 .warning-screen-to-small

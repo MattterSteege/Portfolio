@@ -86,12 +86,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 - [Pixelify Sans](https://fonts.google.com/specimen/Pixelify+Sans) for the retro font.
 - [Showdown.js](https://github.com/showdownjs/showdown) for Markdown support.
-
----
-
-Feel free to explore and customize this project. Your feedback and suggestions are highly appreciated! 🌟
-```
-
-### Steps You Can Take:
-1. Replace `https://github.com/your-username/isometric-grid-project.git` with the actual URL of your repository.
-2. Add more details if required, such as instructions for deployment or additional acknowledgments.

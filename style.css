@@ -1,443 +1,82 @@
-/*.positioner {*/
-/*    width: 10px;*/
-/*    height: 10px;*/
-/*    background: red;*/
-/*    transform: translate(-50%, -50%) rotateZ(-45deg);*/
-/*}*/
-
-body, body.light {
-    --scaler: 0.8; /* Scale the grid */
-    --gap: calc(10vw/var(--cells));
-    --cells: 3; /* Amount of cells in the grid */
-    --grid-size: min(calc(((50vw * var(--scaler)) / var(--cells))), calc(((70vh * var(--scaler)) / var(--cells)))); /* Size of the cells */
-    /*--grid-size: 200px; !* Size of the cells *!*/
-    --line-color: #666; /* Color of the walls */
-    --floor-color: #a6a5a5; /* Color of the floor */
-    --anim-speed: 1s; /* Animation speed */
-    --background-animation: 25s; /* Background animation speed */
-
-    /*** Colors ***/
-    --lighter-background: #fdfbd4;
-    --light-background: #fec473;
-    --dark-background: #ffbe6a;
-    --darker-background: #fe9833;
+body {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-
-    font-family: "Pixelify Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-}
-
-body.dark {
-    /*** Colors ***/
-    --lighter-background: #1a1a1a;
-    --light-background: #2a2a2a;
-    --dark-background: #3a3a3a;
-    --darker-background: #4a4a4a;
-}
-
-body.squares {
-    /*background-color: #e5e5f7;*/
-    /*4 sqaures (0,0),(1,0),(0,1),(1,1) where 2 colors are used (--light and --dark*/
-    background: repeating-conic-gradient(var(--light-background) 0% 25%, var(--dark-background) 0% 50%);
-    background-position: 0 0, 10px 10px;
-    background-size: 12.5vw 12.5vw;
+    font-family: 'Roboto', sans-serif;
+    background: url("background.png");
+    background-size: 144px 96px;
     image-rendering: pixelated;
-
-    opacity: 0;
-    transition: opacity .5s, background .5s;
 }
 
-body.animate {
-    /*animation: background var(--background-animation) cubic-bezier(.25,0,.5,.5) , background var(--background-animation) linear var(--background-animation) infinite;*/
-    /* pointer-events: none; */
-    /* user-select: none; */
-}
 
-@keyframes background {
-    0% {
-        background-position: 0vw 0vw;
-    }
-    100% {
-        background-position: 12.5vw 12.5vw;
-    }
-}
-
-.grid {
+/* ==================== */
+/*  Scroll Component    */
+/* ==================== */
+#scroll, #scroll.open {
     position: fixed;
-    width: calc((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap));
-    height: calc((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap));
-    transform: rotateX(60deg) rotateZ(45deg);
-    transform-origin: 50% 50%;
-
-    /* generate the isometric grid with gap */
-    background-image:
-            linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
-            linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
-
-    background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
-    background-color: var(--floor-color);
-    background-position: 0 0, 0 0;
-    border: 2px solid #000;
-    translate: 0 -50%;
-    top: 55%;
-    transition: top var(--anim-speed);
-    box-shadow: 50px 50px var(--darker-background);
-    z-index: 10000;
-    animation: hover 5s infinite ease-in-out;
-}
-
-.grid::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image:
-            linear-gradient(0deg, var(--line-color) 1px, transparent 0), /* Horizontal line at the edge */
-            linear-gradient(90deg, var(--line-color) 1px, transparent 0); /* Vertical line at the edge */
-
-    background-size: calc(var(--grid-size) + var(--gap)) calc(var(--grid-size) + var(--gap)); /* Account for gap */
-    background-position: calc(-1 * var(--gap)) calc(-1 * var(--gap)), calc(-1 * var(--gap)) calc(-1 * var(--gap));
-    transform-origin: 50% 50%;
-    border: 2px solid #000;
-}
-
-.grid .cell {
-    --coords-x: attr(data-x number);
-    --coords-y: attr(data-y number);
-
-    top: calc(100% - var(--grid-size)* var(--coords-y) - var(--gap)*(var(--coords-y) - 1));
-    left: calc(100% - var(--grid-size)* var(--coords-x) - var(--gap)*(var(--coords-x) - 1));
-    z-index: 1000;
-    width: calc(var(--grid-size));
-    height: calc(var(--grid-size));
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    color: #fff;
-    font-size: 24px;
-    position: fixed;
-}
-
-
-.cells {
-    /*width = 868 when not rotated*/
-    /*height = 868 when not rotated*/
-    /*width = 1227.54 when rotated*/
-    /*height = 613.77 when rotated*/
-
-    /*that means that the x has to be multiplied by 1.41421356237 to get the correct width*/
-    /*that means that the y has to be multiplied by 0.70710678118 to get the correct height*/
-
-    --width: calc(((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap)) * 1.41421356237); /* 1.41421356237 = sqrt(2) */
-    --height: calc(((var(--grid-size) + var(--gap)) * var(--cells) - var(--gap)) * 0.70710678118); /* 0.70710678118 = 1/sqrt(2) */
-
-
-    position: fixed;
-    width: var(--width);
-    height: var(--height);
-    top: 55%;
+    width: 80vw;
+    display: grid;
+    grid-template-columns: 14.166% 71.668% 14.166%;
+    justify-content: center;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all var(--anim-speed);
-    z-index: 100000;
+    transition: grid-template-columns 0.5s;
+    z-index: 100;
 }
 
-.cells .cell {
-    /*
-        1.41421356237 = sqrt(2)
-        0.70710678118 = 1/sqrt(2)
-     */
-
-    left: calc((((var(--cells) - var(--coords-x) + (var(--coords-y) - 1)) ) * ((var(--grid-size) + var(--gap)) * (1 / sqrt(2)))) + ((var(--grid-size)) * (sqrt(2) / 2)));
-    top: calc(100% - (((var(--coords-x) + var(--coords-y) - 2) * ((var(--grid-size) + var(--gap)) * (1.41421356237 / 4))) + (var(--grid-size) * (1.41421356237 / 2))));
-
-    z-index: calc(var(--cells) * var(--cells) - var(--coords-x) * var(--cells) - var(--coords-y) * var(--cells));
-
-    width: calc(var(--grid-size)* 1.41421356237);
-    height: calc(var(--grid-size)* 0.70710678118 * 2);
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    color: #fff;
-    font-size: 24px;
-    transform: translate(-50%, -50%);
-    /* clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); */
-    transition: transform var(--anim-speed), background var(--anim-speed), opacity var(--anim-speed), width var(--anim-speed), height var(--anim-speed), top var(--anim-speed), left var(--anim-speed);
-    position: absolute;
-    opacity: 0;
+#scroll.close {
+    grid-template-columns: 68px 0 68px;
 }
 
-.hover-cover {
-    position: absolute;
+
+#scroll > #left-scroll {
+    grid-area: 1 / 1 / 2 / 2;
+
     width: 100%;
-    height: 100%;
-    top: -1vw;
-    left: -1vw;
-    background: radial-gradient(transparent, yellow);
-    opacity: 0;
-    transition: opacity var(--anim-speed);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    z-index: -1;
-    padding: 1vw;
-}
-
-.cells .cell:hover:not(.selected) .hover-cover {
-    opacity: 50%;
-    animation: fadeIn var(--anim-speed) forwards, pulse calc(4 * var(--anim-speed)) infinite var(--anim-speed);
-}
-
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 50%;
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    66% {
-        transform: scale(1.05);
-        opacity: 0.75;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-}
-
-.cells .cell:hover {
-    transform: translate(-50%, calc(-50% - var(--grid-size) * 0.70710678118 / 2));
-}
-
-
-.cells .cell img {
-    width: 100%;
-    height: 100%;
+    aspect-ratio: 68 / 269;
     image-rendering: pixelated;
-    translate: 0% 0%;
+    background-image: url('scroll_left.png');
+    background-size: 100% 100%;
 }
 
-.cells .cell.selected {
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    pointer-events: none;
-    width: calc(var(--grid-size) * 1.41421356237 * 1.5);
-    height: calc(var(--grid-size) * 0.70710678118 * 2 * 1.5);
-    top: 50% !important;
-    left: calc(100% - (var(--grid-size) * 1.41421356237 * 0.25)/2);
-}
+#scroll > #right-scroll {
+    grid-area: 1 / 3 / 2 / 4;
 
-
-.cells .cell.unselected {
-    opacity: 0 !important;
-    pointer-events: none;
-    transform: translate(-50%, 100vh);
-}
-
-.warning-screen-to-small
-{
-    display: none;
-}
-
-.buttons {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 12px;
-    z-index: 1000000000;
-}
-
-.buttons #backButton {
-    width: 72px;
-    height: 72px;
-    background: transparent;
-    border: transparent;
-    cursor: pointer;
-    transform: translateY(-128px);
-    transition: transform var(--anim-speed);
-    background-image: url("images/ProjectCubes/back.png");
-    background-size: 72px 72px;
+    width: 100%;
+    aspect-ratio: 68 / 269;
     image-rendering: pixelated;
+    background-image: url('scroll_right.png');
+    background-size: 100% 100%;
 }
 
-.buttons #backButton:hover {
-    transform: scale(1.1) !important;
-}
-
-.iconPlaceholder {
-    position: fixed;
-    width: 20vw;
-    height: 20vw;
-    border: 10px solid red;
-    z-index: 100000000;
-    top: 50vh;
-    right: 10vw;
-    transform: translateY(-50%);
-}
-
-.ui {
-    position: fixed;
+#scroll > #middle-scroll-content {
+    grid-area: 1 / 2 / 2 / 3;
     width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    box-shadow: 0 0 2.5vw 2.5vw var(--light-background) inset;
-    z-index: 10000000;
+    image-rendering: pixelated;
+    background-image: url('scroll_middle.png');
+    /* don't strech , keep image in center */
+    background-size: 100% 100%;
+    overflow: hidden;
+    position: relative;
 }
 
-.ui::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 0 0.5vw var(--darker-background) inset;
-}
-
-@keyframes hover {
-    0% {
-        box-shadow: 50px 50px var(--darker-background);
-    }
-    50% {
-        box-shadow: 40px 40px var(--darker-background);
-    }
-    100% {
-        box-shadow: 50px 50px var(--darker-background);
-    }
-}
-
-.project-header {
-    width: 50vw;
-    left: 25vw;
-    position: fixed;
-    height: 5vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateY(0);
-    transition: transform var(--anim-speed), width var(--anim-speed), left var(--anim-speed);
-}
-
-.project-header.active {
-    width: 50%;
-    position: fixed;
-    left: calc(50px + 2rem);
-}
-
-.project-description {
-    opacity: 1;
-    transition: opacity var(--anim-speed);
-    width: 50%;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: black;
-    background: var(--lighter-background);
-    border: 6px solid var(--darker-background);
-    position: fixed;
-    top: 10vh;
-    left: 50px;
-    padding: 2rem;
-    height: 80vh;
-    overflow-y: auto;
-    border-radius: 10px;
-    z-index: 10000;
-}
-
-@media screen and (max-width: 1000px)
-{
-    .project-description {
-        width: calc(100vw - 112px - 4rem);
-    }
-
-    .project-header.active {
-        width: 100%;
-        position: fixed;
-        left: 0;
-    }
-}
-
-.project-header.hidden {
-    transform: translateY(-100px);
-}
-
-.project-description.hidden {
-    opacity: 0;
-}
-
-
-/*MODAL*/
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000000000; /* Sit on top */
-    padding-top: 50px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-.modal-content {
-    margin: auto;
-    text-align: center;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-#modal-image {
-    display: inline-block;
-    width: min(80vw, 80vh);
-    background: var(--light-background);
-    border: 6px solid var(--darker-background);
-    border-radius: 10px;
-    padding: 1rem;
-}
-
-/* The Close Button */
-#close {
-    background-image: url(/images/ProjectCubes/close.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    display: flex;
-    font-weight: bold;
+#scroll .html-content {
     position: absolute;
-    top: 0;
-    right: 0;
-    margin: 12px;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.5s;
-    width: 72px;
-    height: 72px;
+    aspect-ratio: 396 / 269;
+    height: 82%;
+    top: 11%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    /*background: red;*/
+    outline: 1px solid black;
+    opacity: 0.25;
 }
 
-#close:hover,
-#close:focus {
-    text-decoration: none;
-    cursor: pointer;
+/* ==================== */
+/*      particles       */
+/* ==================== */
+particle {
+    pointer-events: none;
+    position: fixed;
+    opacity: 0;
 }

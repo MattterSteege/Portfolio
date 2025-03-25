@@ -1,48 +1,57 @@
-window.transitionToPage = function(href) {
-    document.querySelector('body').style.opacity = 0
-    setTimeout(function() {
-        window.location.href = href
-    }, 500)
-}
+function createParticle (x, y) {
+    // Create a custom particle element
+    const particle = document.createElement('particle');
+    // Append the element into the body
+    document.body.appendChild(particle);
 
-document.addEventListener('DOMContentLoaded', function(event) {
-    setTimeout(function() {
-        document.querySelector('body').style.opacity = 1
-    }, 0)
-});
+    // Calculate a random size from 5px to 25px
+    const size = Math.floor(Math.random() * 8 + 2);
+    // Apply the size on each particle
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    // Generate a random color in a blue/purple palette
+    particle.style.background = `hsl(${Math.random() * 30 + 300}, 18%, 22%)`;
 
-const openSchoolPortfolio = () =>  transitionToPage('p_grid.html');
-const openPersonalPortfolio = () => transitionToPage('s_grid.html');
+    // Generate a random x & y destination within a distance of 75px from the mouse
+    const destinationX = x + (Math.random() - 0.5) * 30 * 2;
+    const destinationY = y + (Math.random() - 0.25) * 30 * 2;
 
-
-//image enlargement
-function activeImageEnlargement() {
-    const images = document.querySelectorAll("#documentElement img");
-    const modal = document.getElementById("myModal");
-    const span = document.getElementById("close");
-    const modalImage = document.getElementById("modal-image");
-
-    images.forEach((img) => {
-        // When the user clicks the big picture, set the image and open the modal
-        img.onclick = function (e) {
-            console.log(e.target.src);
-            var src = e.target.src;
-            modal.style.display = "block";
-            modalImage.src = src;
-        };
-
-// When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        };
-
-// When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
+    // Store the animation in a variable because we will need it later
+    const animation = particle.animate([
+        {
+            // Set the origin position of the particle
+            // We offset the particle with half its size to center it around the mouse
+            transform: `translate(${x - (size / 2)}px, ${y - (size / 2)}px)`,
+            opacity: 1
+        },
+        {
+            // We define the final coordinates as the second keyframe
+            transform: `translate(${destinationX}px, ${destinationY}px)`,
+            opacity: 0
+        }
+    ], {
+        // Set a random duration from 500 to 1500ms
+        duration: 500 + Math.random() * 1000,
+        easing: 'cubic-bezier(0, .9, .57, 1)',
+        // Delay every particle with a random value from 0ms to 200ms
+        delay: Math.random() * 100
     });
+
+    // Same as before
+    // When the animation is finished, remove the element from the DOM
+    animation.onfinish = () => {
+        particle.remove();
+    };
 }
 
-window.activeImageEnlargement = activeImageEnlargement;
+function pop(e) {
+    // Loop to generate 30 particles at once
+    for (let i = 0; i < 50; i++) {
+        // We pass the mouse coordinates to the createParticle() function
+        createParticle(e.clientX, e.clientY);
+    }
+}
+
+addEventListener('click', (e) => {
+    pop(e);
+});

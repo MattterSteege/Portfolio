@@ -21,4 +21,37 @@
         <div id="right-scroll"></div>
     </div>
 </body>
+<script>
+    function replacePage(url) {
+        //close scroll and fetch
+        closeScroll().then(() => {
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector("main").innerHTML = html;
+                    openScroll();
+                });
+        });
+    }
+
+    const animationDuration = 500;
+    const scroll = document.getElementById("scroll");
+    function closeScroll() {
+        return new Promise((resolve) => {
+            scroll.classList.remove("open");
+            scroll.classList.add("close");
+            setTimeout(resolve, animationDuration);
+        });
+    }
+
+    function openScroll() {
+        return new Promise((resolve) => {
+            scroll.classList.remove("close");
+            scroll.classList.add("open");
+            setTimeout(resolve, animationDuration);
+        });
+    }
+
+    replacePage('./Pages/projects.html')
+</script>
 </html>

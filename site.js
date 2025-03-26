@@ -1,3 +1,6 @@
+const particleColors = ['#23161f', "#2d1b28", "#36212d", "#432f3d"]
+
+
 function createParticle (x, y) {
     // Create a custom particle element
     const particle = document.createElement('particle');
@@ -10,7 +13,8 @@ function createParticle (x, y) {
     particle.style.width = `${size}px`;
     particle.style.height = `${size}px`;
     // Generate a random color in a blue/purple palette
-    particle.style.background = `hsl(${Math.random() * 30 + 300}, 18%, 22%)`;
+    particle.style.background = particleColors[Math.floor(Math.random() * particleColors.length)];
+
 
     // Generate a random x & y destination within a distance of 75px from the mouse
     const destinationX = x + (Math.random() - 0.5) * 30 * 2;
@@ -55,3 +59,25 @@ function pop(e) {
 addEventListener('click', (e) => {
     pop(e);
 });
+
+
+
+let currentPage = 0;
+
+function nextPage() {
+    const views = document.querySelectorAll(".view");
+    if (currentPage > 0) {
+        views[currentPage].style.transform = "translate(100%, 0)";
+        views[currentPage - 1].style.transform = "translate(0, 0)";
+        currentPage--;
+    }
+}
+
+function prevPage() {
+    const views = document.querySelectorAll(".view");
+    if (currentPage < views.length - 1) {
+        views[currentPage].style.transform = "translate(-100%, 0)";
+        views[currentPage + 1].style.transform = "translate(0, 0)";
+        currentPage++;
+    }
+}

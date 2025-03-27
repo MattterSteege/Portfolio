@@ -1,58 +1,28 @@
-const particleColors = ['#23161f', "#2d1b28", "#36212d", "#432f3d"]
-
-
-function createParticle (x, y) {
-    // Create a custom particle element
-    const particle = document.createElement('particle');
-    // Append the element into the body
-    document.body.appendChild(particle);
-
-    // Calculate a random size from 5px to 25px
-    const size = Math.floor(Math.random() * 8 + 2);
-    // Apply the size on each particle
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    // Generate a random color in a blue/purple palette
-    particle.style.background = particleColors[Math.floor(Math.random() * particleColors.length)];
-
-
-    // Generate a random x & y destination within a distance of 75px from the mouse
-    const destinationX = x + (Math.random() - 0.5) * 30 * 2;
-    const destinationY = y + (Math.random() - 0.25) * 30 * 2;
-
-    // Store the animation in a variable because we will need it later
-    const animation = particle.animate([
-        {
-            // Set the origin position of the particle
-            // We offset the particle with half its size to center it around the mouse
-            transform: `translate(${x - (size / 2)}px, ${y - (size / 2)}px)`,
-            opacity: 1
-        },
-        {
-            // We define the final coordinates as the second keyframe
-            transform: `translate(${destinationX}px, ${destinationY}px)`,
-            opacity: 0
-        }
-    ], {
-        // Set a random duration from 500 to 1500ms
-        duration: 500 + Math.random() * 1000,
-        easing: 'cubic-bezier(0, .9, .57, 1)',
-        // Delay every particle with a random value from 0ms to 200ms
-        delay: Math.random() * 100
-    });
-
-    // Same as before
-    // When the animation is finished, remove the element from the DOM
-    animation.onfinish = () => {
-        particle.remove();
-    };
+window.config = {
+    showParticles: true,
 }
 
+// Example usage
+const particleSystem = new ParticleSystem({
+    gravity: 150,  // Pixels/second^2 for visual effect
+    container: document.querySelector('#particles-js'),
+    colors: ['#23161f', "#2d1b28", "#36212d", "#432f3d"]
+});
+
+// Event listener for demonstration
+document.addEventListener('click', (e) => {
+    particleSystem.burst(e.clientX, e.clientY, 20, {
+        angle: -90,
+        speed: 300
+    });
+});
+
 function pop(e) {
+    if (!window.config.showParticles) return
     // Loop to generate 30 particles at once
     for (let i = 0; i < 50; i++) {
         // We pass the mouse coordinates to the createParticle() function
-        createParticle(e.clientX, e.clientY);
+        //createParticle(e.clientX, e.clientY, ['#23161f', "#2d1b28", "#36212d", "#432f3d"], 30); //background colorscheme
     }
 }
 
@@ -60,8 +30,21 @@ addEventListener('click', (e) => {
     pop(e);
 });
 
+//===================================================================================================
 
+addEventListener('DOMContentLoaded', () => {
+    if (!window.config.showParticles) return
+    //every 6-10 seconds
+    setInterval(() => {
+        //sandy colorscheme
+        const posX = Math.random() * window.innerWidth;
+        for (let i = 0; i < 50; i++) {
+            createParticle(posX, -2, ['#f6d7b0', '#f2d2a9', '#eccca2', '#e7c496', '#e1bf92'], 30);
+        }
+    }, 6000 + Math.random() * 4000);
+})
 
+//===================================================================================================
 let currentPage = 0;
 
 function nextPage() {

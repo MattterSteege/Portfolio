@@ -6,11 +6,69 @@
     <div class="next page-button" onclick="prevPage()"></div>
 </div>
 <div class="view" style="transform: translate(100%, 0px);">
-    <div class="view-content"></div>
+    <div class="view-content">
+        <div class="project" onclick="console.log('Domino-Day')">
+            <i class="fa-solid fa-lines-leaning"></i>
+            <p>Domino Day Project</p>
+        </div>
+
+        <div class="project" onclick="console.log('eenzaamheids')">
+            <i class="fa-solid fa-computer"></i>
+            <p>Eenzaamheidsvirus</p>
+        </div>
+
+        <div class="project" onclick="console.log('tiny house')">
+            <i class="fa-solid fa-house"></i>
+            <p>Tiny House Project</p>
+        </div>
+
+        <div class="project" onclick="console.log('tas')">
+            <i class="fa-solid fa-backpack"></i>
+            <p>Project tas</p>
+        </div>
+    </div>
     <div class="back page-button" onclick="nextPage()"></div>
     <div class="next page-button" onclick="prevPage()"></div>
 </div>
 
 <style>
+    .project {
+        background-image: url(../images/UI/Box.png);
+        background-size: calc(100% - 16px);
+        background-position: center;
+        background-repeat: no-repeat;
+        display: grid;
+        grid-template-columns: 7.092% 14.184% 78.724%;
+        grid-template-rows: 16.129% 64.517% 19.354%;
+        container-type: size;
+        transition: transform 0.5s;
+        padding: 8px;
+    }
 
+    .project:hover {
+        transform: scale(1.01);
+        cursor: pointer;
+    }
+
+    .project:hover > p {
+        color: #985244;
+    }
+
+    .project > i {
+        grid-area: 2 / 2 / 3 / 3;
+        color: #985244;
+        align-self: center;
+        justify-self: center;
+        font-size: 10cqmax;
+    }
+
+    .project > p {
+        grid-area: 2 / 3 / 3 / 4;
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 8cqmax;
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        width: calc(100% - 8px);
+    }
 </style>

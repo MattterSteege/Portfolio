@@ -7,24 +7,29 @@
 </div>
 <div class="view" style="transform: translate(100%, 0px);">
     <div class="view-content">
-        <div class="project" onclick="console.log('Domino-Day')">
+        <h1>Projecten (1/2)</h1>
+        <div class="project" onclick="replacePage('./Pages/dominoDay.html')">
             <i class="fa-solid fa-lines-leaning"></i>
             <p>Domino Day Project</p>
+            <selector-border active="true"></selector-border>
         </div>
 
         <div class="project" onclick="console.log('eenzaamheids')">
             <i class="fa-solid fa-computer"></i>
             <p>Eenzaamheidsvirus</p>
+            <selector-border active="true"></selector-border>
         </div>
 
         <div class="project" onclick="console.log('tiny house')">
             <i class="fa-solid fa-house"></i>
             <p>Tiny House Project</p>
+            <selector-border active="true"></selector-border>
         </div>
 
         <div class="project" onclick="console.log('tas')">
             <i class="fa-solid fa-backpack"></i>
             <p>Project tas</p>
+            <selector-border active="true"></selector-border>
         </div>
     </div>
     <div class="back page-button" onclick="nextPage()"></div>
@@ -43,16 +48,24 @@
         container-type: size;
         transition: transform 0.5s;
         padding: 8px;
+        position: relative;
     }
 
     .project:hover {
-        transform: scale(1.01);
         cursor: pointer;
     }
 
     .project:hover > p {
         color: #985244;
     }
+
+    .project > selector-border {
+        display: none;
+    }
+    .project:hover > selector-border {
+        display: block;
+    }
+
 
     .project > i {
         grid-area: 2 / 2 / 3 / 3;
@@ -70,5 +83,16 @@
         text-align: center;
         align-self: center;
         width: calc(100% - 8px);
+    }
+
+    .view-content > h1 {
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 3cqmin;
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+        grid-area: 1 / 1 / 2 / 3;
+        padding-top: 8px;
     }
 </style>

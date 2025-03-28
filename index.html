@@ -9,11 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fa.kronk.tech">
-    <script src="Particle.js"></script>
-    <script src="site.js"></script>
+    <script src="selectorBorder.js"></script>
 </head>
 <body>
-    <div id="particles-js" style="position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1;"></div>
+    <div id="particles-js" style="position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; overflow: hidden"></div>
     <div id="scroll" class="open">
         <div id="left-scroll"></div>
         <div id="middle-scroll-content">
@@ -24,37 +23,8 @@
         <div id="right-scroll"></div>
     </div>
 </body>
+<script src="site.js"></script>
 <script>
-    function replacePage(url) {
-        //close scroll and fetch
-        closeScroll().then(() => {
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    document.querySelector("main").innerHTML = html;
-                    openScroll();
-                });
-        });
-    }
-
-    const animationDuration = 500;
-    const scroll = document.getElementById("scroll");
-    function closeScroll() {
-        return new Promise((resolve) => {
-            scroll.classList.remove("open");
-            scroll.classList.add("close");
-            setTimeout(resolve, animationDuration);
-        });
-    }
-
-    function openScroll() {
-        return new Promise((resolve) => {
-            scroll.classList.remove("close");
-            scroll.classList.add("open");
-            setTimeout(resolve, animationDuration);
-        });
-    }
-
-    replacePage('./Pages/projects.html')
+    replacePage('./Pages/dominoDay.html')
 </script>
 </html>

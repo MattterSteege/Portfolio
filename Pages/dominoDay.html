@@ -1,0 +1,106 @@
+<div class="view">
+    <div class="view-content">
+        <h1>Domino Day</h1>
+
+        <div class="team">
+            <p>Nynke, Wanika en Matt</p>
+            <p>Team: Quattro min Uno</p>
+            <p>Klas: 1VA</p>
+        </div>
+
+        <div class="index">
+            <h2>Inhoud</h2>
+            <ul>
+                <li><a>Sprint 1</a>
+                    <ul>
+                        <li><a>Natuurkunde principes</a></li>
+                        <li><a>Programma van eisen</a></li>
+                    </ul>
+                </li>
+                <li><a>Sprint 2</a>
+                    <ul>
+                        <li><a>Experiment natuurkundige principes</a></li>
+                        <li><a>Schetsen</a></li>
+                    </ul>
+                </li>
+                <li><a>Sprint 3</a>
+                    <ul>
+                        <li><a>Ontwerpvoorstel</a></li>
+                        <li><a>Werktekeningen</a></li>
+                        <li><a>Materiaallijst</a></li>
+                    </ul>
+                </li>
+                <li><a>Sprint 4</a>
+                    <ul>
+                        <li><a>Constructie maken</a></li>
+                        <li><a>Constructie testen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="back page-button" onclick="nextPage()"></div>
+    <div class="next page-button" onclick="prevPage()"></div>
+</div>
+
+<style>
+    .view-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 40px auto auto auto;
+    }
+
+    .view-content > h1 {
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 3cqmin;
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+        grid-area: 1 / 1 / 2 / 3;
+        padding-top: 8px;
+    }
+
+    .team {
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 2cqmin;
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+        grid-area: 2 / 2 / 3 / 2;
+    }
+
+    .index {
+        font-family: 'Pixelify Sans', sans-serif;
+        color: #985244;
+        grid-area: 2 / 1 / 5 / 2;
+        justify-content: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 20px;
+        font-size: 2cqmin;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul > li {
+        font-family: 'Pixelify Sans', sans-serif;
+        color: #985244;
+    }
+
+    ul > li > a {
+        color: #985244;
+        text-decoration: none;
+    }
+
+    ul > li > ul {
+        margin-left: 20px;
+    }
+</style>

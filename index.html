@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matt ter Steege</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fa.kronk.tech">
     <script src="selectorBorder.js"></script>
+    <link rel="stylesheet" href="Fonts/EuclidCircularA/EuclidCircularA.css">
 </head>
 <body>
     <div id="particles-js" style="position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; overflow: hidden"></div>
     <div id="scroll" class="open">
         <div id="left-scroll"></div>
-        <div id="middle-scroll-content">
-            <main class="html-content">
+            <div id="middle-scroll-overflow">
+                <div id="middle-scroll-content">
+                    <main class="html-content">
 
-            </main>
-        </div>
+                    </main>
+                </div>
+            </div>
         <div id="right-scroll"></div>
     </div>
 </body>
 <script src="site.js"></script>
 <script>
-    replacePage('./Pages/dominoDay.html')
+    replacePage('./Pages/main.html')
 </script>
 </html>

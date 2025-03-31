@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Euclid Circular', sans-serif;
     background: url("images/UI/background.png");
     background-size: 144px 96px;
     image-rendering: pixelated;
@@ -29,30 +29,42 @@ h1 {
 /*  Scroll Component    */
 /* ==================== */
 #scroll, #scroll.open {
+    --scroll-width: 68;
+    --scroll-middle-width: 384;
+    --scroll-height: 270;
     position: fixed;
-    width: 80vw;
+    width: 95vw;
+    aspect-ratio: calc((var(--scroll-width) + var(--scroll-middle-width) + var(--scroll-width)) / var(--scroll-height));
+    -o-object-fit: contain;
+    object-fit: contain;
     display: grid;
-    grid-template-columns: 14.166% 71.668% 14.166%;
+    grid-template-columns: calc(var(--scroll-width) / (var(--scroll-width) + var(--scroll-middle-width) + var(--scroll-width)) * 100%) calc(var(--scroll-middle-width) / (var(--scroll-width) + var(--scroll-middle-width) + var(--scroll-width)) * 100%) calc(var(--scroll-width) / (var(--scroll-width) + var(--scroll-middle-width) + var(--scroll-width)) * 100%);
     justify-content: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: grid-template-columns 0.5s;
     z-index: 100;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
 }
 
 #scroll.close {
-    grid-template-columns: 14.166% 0 14.166%;
+     grid-template-columns: 14.166% 0% 14.166%;
 }
 
+#scroll.rotate {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
 
 #scroll > #left-scroll {
     grid-area: 1 / 1 / 2 / 2;
 
     width: 100%;
-    aspect-ratio: 68 / 269;
+    aspect-ratio: 68 / 270;
     image-rendering: pixelated;
-    background-image: url('images/UI/scroll_left_0.png');
+    background-image: url('images/UI/scroll_left.svg');
     background-size: 100% 100%;
 }
 
@@ -60,33 +72,42 @@ h1 {
     grid-area: 1 / 3 / 2 / 4;
 
     width: 100%;
-    aspect-ratio: 68 / 269;
+    aspect-ratio: 68 / 270;
     image-rendering: pixelated;
-    background-image: url('images/UI/scroll_right_0.png');
+    background-image: url('images/UI/scroll_right.svg');
     background-size: 100% 100%;
 }
 
-#scroll > #middle-scroll-content {
+#scroll > #middle-scroll-overflow {
     grid-area: 1 / 2 / 2 / 3;
+    width: 100%;
     height: 100%;
-    image-rendering: pixelated;
-    background-image: url('images/UI/scroll_middle.png');
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
     overflow: hidden;
     position: relative;
 }
 
-#scroll .html-content {
-    position: absolute;
-    aspect-ratio: 396 / 269;
-    height: 82%;
-    top: 11%;
+#scroll > #middle-scroll-overflow > #middle-scroll-content {
+    height: 100%;
+    aspect-ratio: 384 / 270;
+    image-rendering: pixelated;
+    background-image: url('images/UI/scroll_middle.svg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    padding-left: 4%;
+    padding-top: 6cqw;
+    padding-right: 4%;
+    padding-bottom: 3.5cqw;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+#scroll .html-content {
     overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 /* ==================== */
@@ -134,12 +155,12 @@ h1 {
 
 .back {
     grid-area: 2 / 1 / 3 / 2;
-    background-image: url("../images/UI/buttonLeft.png");
+    background-image: url("../images/UI/buttonLeft.svg");
 }
 
 .next {
     grid-area: 2 / 3 / 3 / 4;
-    background-image: url("../images/UI/buttonRight.png");
+    background-image: url("../images/UI/buttonRight.svg");
 }
 
 /* ==================== */

@@ -1,6 +1,6 @@
 <div class="view">
     <div class="view-content">
-        <h1>Eenzaamheidsvirus();</h1>
+        <h1>eenzaamheidsvirus();</h1>
 
         <div class="team">
             <div class="naam">
@@ -44,12 +44,11 @@
             </ul>
         </div>
     </div>
-    <div class="back page-button" onclick="nextPage()"></div>
     <div class="next page-button" onclick="prevPage()"></div>
 </div>
 <div class="view" style="transform: translate(100%, 0px);">
-    <div class="view-content">
-        <h1>Eenzaamheidsvirus();</h1>
+    <div class="view-content" style="--rows: 2;">
+        <h1>veel_tekst();</h1>
 
         <div class="research">
             <h2>Vooronderzoek</h2>
@@ -57,7 +56,7 @@
         </div>
 
         <div class="research">
-            <h2>Vooronderzoek</h2>
+            <h2>Eindproduct</h2>
             <p>Het uiteindelijke product was een platformer (denk aan Nintendo Mario), dit hebben we na een tijd wikken en wegen gekozen, omdat het simpelweg de voorkeur had van de toekomstige spelers. Een paar leuke details uit het spel zijn de namen van de personages in het spel: David of North, Daisy of South, Joel of East en Sunny of … West natuurlijk.</p>
         </div>
 
@@ -75,32 +74,42 @@
     <div class="back page-button" onclick="nextPage()"></div>
     <div class="next page-button" onclick="prevPage()"></div>
 </div>
+<div class="view" style="transform: translate(100%, 0px);">
+    <div class="view-content" style="--rows: 2;">
+        <h1>probeer_zelf();</h1>
+        <div class="frame" style="grid-area: 2 / 1 / 2 / 3; aspect-ratio: 800 / 0; width: 100%; overflow: hidden;">
+            <iframe src="https://turbowarp.org/405875350/embed" width="800" height="600" frameborder="0" style="scale: 0.15; transform-origin: top left; transform: translate(-50%, -50%); position: absolute; top: 50%; left: 50%;"></iframe>
+        </div>
+    </div>
+    <div class="back page-button" onclick="nextPage()"></div>
+</div>
 
 <style>
 
     .view-content {
+        --padding: 2px;
+        --font-size: 3.75px;
+        --rows: 3; /* default*/
+
+        grid-area: 1 / 1 / 2 / 4;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 40px 40px 40px 1fr 1fr;
-
-        --padding: 8px;
-        --font-size: 2cqmin;
+        grid-template-rows: calc(8 * var(--padding)) repeat(var(--rows), auto);
     }
 
     .view-content > h1 {
-        font-size: calc(1.5 * var(--font-size));
+        font-size: calc(2 * var(--font-size));
         color: #985244;
         text-align: center;
         align-self: center;
         justify-self: center;
-        padding-top: var(--padding);
+        grid-area: 1 / 1 / 2 / 3;
     }
 
     /* === TEAM === */
 
     .team {
-        font-size:  var(--font-size);
-        color: #985244;
+        font-size: var(--font-size);
         text-align: center;
         align-self: center;
         justify-self: center;
@@ -118,9 +127,9 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border-right: calc(var(--padding) / 2) solid #cda17f;
+        border-right: calc(var(--padding) / 4) solid #cda17f;
         padding-right: var(--padding);
-        border-top: calc(var(--padding) / 2) solid #cda17f;
+        border-top: calc(var(--padding) / 4) solid #cda17f;
     }
 
     .team > .naam:nth-child(1), .team > .naam:nth-child(2) {
@@ -138,17 +147,26 @@
 
     .team > .naam > p:first-child {
         font-size:  var(--font-size);
+        color: #985244;
     }
 
     .team > .naam > p:last-child {
-        font-size: 0.8em;
+        font-size: calc(0.8 * var(--font-size));
+        color: #985244;
     }
 
     /* === DATE === */
 
     .date {
         display: flex;
-        justify-content: center;
+        justify-content: start;
+        margin: auto;
+    }
+
+    .date > .start::before {
+        content: 'Van: ';
+        color: #985244;
+        font-size:  var(--font-size);
     }
 
     .date > .start, .date > .end {
@@ -157,7 +175,7 @@
     }
 
     .date > .start::after {
-        content: ' t/m ​';
+        content: ' t/m: ​';
     }
 
     /* === CLIENT === */
@@ -165,7 +183,12 @@
     .client {
         color: #985244;
         font-size:  var(--font-size);
-        text-align: center;
+        text-align: start;
+        margin: auto;
+    }
+
+    .client::before {
+        content: 'Opdrachtgever: ';
     }
 
     /* === PROGRAM OF REQUIREMENTS === */
@@ -236,6 +259,10 @@
         height: fit-content;
     }
 
+    .research:hover::before {
+        background-color: #a03e3b;
+    }
+
     .research::before {
         content: '';
         position: absolute;
@@ -254,5 +281,7 @@
     .research > p {
         margin-bottom: calc(var(--padding) / 2);
         position: relative;
+        font-size: calc(var(--font-size)* 0.75);
+        line-height: calc(2* var(--padding));
     }
 </style>

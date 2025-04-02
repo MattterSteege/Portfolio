@@ -29,22 +29,22 @@ class SelectorBorder extends HTMLElement {
             <style>
                 :host {
                     position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
+                    width: 95px;
+                    height: 22px;
+                    left: 2px;
+                    top: 1px;
                     pointer-events: none;
                     animation: 0.5s ease-in-out infinite alternate border-animation;
                     
-                    --distance: -4px;
+                    --distance: 0px;
                 }
                 
                 @keyframes border-animation {
                     0% {
-                        --distance: -4px;
+                        --distance: 0px;
                     }
                     100% {
-                        --distance: -2px;
+                        --distance: 1px;
                     }
                 }
               
@@ -60,8 +60,8 @@ class SelectorBorder extends HTMLElement {
 
                 img {
                     position: absolute;
-                    width: 25px;
-                    height: 25px;
+                    width: 5px;
+                    height: 5px;
                 }
 
                 .corners .top-left {

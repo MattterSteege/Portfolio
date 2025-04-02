@@ -8,16 +8,18 @@
     <link rel="stylesheet" href="https://fa.kronk.tech">
     <script src="selectorBorder.js"></script>
     <link rel="stylesheet" href="Fonts/EuclidCircularA/EuclidCircularA.css">
+    <link rel="stylesheet" href="projects.css">
 </head>
 <body>
     <div id="particles-js" style="position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; overflow: hidden"></div>
-    <div id="scroll" class="open">
+    <div id="scroll" class="close">
         <div id="left-scroll"></div>
             <div id="middle-scroll-overflow">
+                <img id="menu-flag" src="./images/UI/flag.svg" alt="" onclick="backToHome()" style="opacity: 0">
                 <div id="middle-scroll-content">
-                    <main class="html-content">
+                    <main id="html-content">
 
-                    </main>
+                     </main>
                 </div>
             </div>
         <div id="right-scroll"></div>
@@ -34,7 +36,7 @@
     if (window.location.hash) {
         replacePage('./Pages/' + window.location.hash.substring(1) + '.html')
     } else {
-        replacePage('./Pages/eenzaamheidsvirus.html')
+        replacePage('./Pages/main.html')
     }
 </script>
 </html>

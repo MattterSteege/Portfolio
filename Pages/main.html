@@ -1,6 +1,17 @@
 <div class="view">
     <div class="view-content">
+        <h1>Hi, ik ben Matt</h1>
 
+        <div class="project" onclick="replacePage('./Pages/pop.html')">
+            <i class="fa-solid fa-backpack"></i>
+            <p>Persoonlijk ontwikkelplan</p>
+            <selector-border active="true"></selector-border>
+        </div>
+        <div class="project" onclick="console.log('tas')">
+            <i class="fa-solid fa-backpack"></i>
+            <p>Project tas</p>
+            <selector-border active="true"></selector-border>
+        </div>
     </div>
     <div class="back page-button" onclick="nextPage()"></div>
     <div class="next page-button" onclick="prevPage()"></div>
@@ -8,9 +19,9 @@
 <div class="view" style="transform: translate(100%, 0px);">
     <div class="view-content">
         <h1>Projecten (1/2)</h1>
-        <div class="project" onclick="replacePage('./Pages/dominoDay.html')">
+        <div class="project" onclick="replacePage('./Pages/eenzaamheidsvirus.html')">
             <i class="fa-solid fa-lines-leaning"></i>
-            <p>Domino Day Project</p>
+            <p>eenzaamheidsvirus</p>
             <selector-border active="true"></selector-border>
         </div>
 
@@ -38,7 +49,7 @@
 
 <style>
     .project {
-        background-image: url(../images/UI/Box.png);
+        background-image: url(../images/UI/Box.svg);
         background-size: calc(100% - 16px);
         background-position: center;
         background-repeat: no-repeat;

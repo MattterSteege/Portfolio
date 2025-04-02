@@ -36,15 +36,15 @@ class SelectorBorder extends HTMLElement {
                     pointer-events: none;
                     animation: 0.5s ease-in-out infinite alternate border-animation;
                     
-                    --distance: 8px;
+                    --distance: -4px;
                 }
                 
                 @keyframes border-animation {
                     0% {
-                        --distance: 8px;
+                        --distance: -4px;
                     }
                     100% {
-                        --distance: 4px;
+                        --distance: -2px;
                     }
                 }
               
@@ -60,36 +60,40 @@ class SelectorBorder extends HTMLElement {
 
                 img {
                     position: absolute;
-                    width: 50px;
-                    height: 50px;
+                    width: 25px;
+                    height: 25px;
                 }
 
                 .corners .top-left {
                     top: calc(var(--distance) * -1);
                     left: calc(var(--distance) * -1);
+                    rotate: 90deg;
                 }
 
                 .corners .top-right {
                     top: calc(var(--distance) * -1);
                     right: calc(var(--distance) * -1);
+                    rotate: 180deg;
                 }
 
                 .corners .bottom-left {
                     bottom: calc(var(--distance) * -1);
                     left: calc(var(--distance) * -1);
+                    rotate: 0deg;
                 }
 
                 .corners .bottom-right {
                     bottom: calc(var(--distance) * -1);
                     right: calc(var(--distance) * -1);
+                    rotate: 270deg;
                 }
             </style>
             
             <div class="corners">
-                <img src="images/UI/3.png" class="top-right" alt="">
-                <img src="images/UI/4.png" class="top-left" alt="">
-                <img src="images/UI/1.png" class="bottom-left" alt="">
-                <img src="images/UI/2.png" class="bottom-right" alt="">
+                <img src="images/UI/1.svg" class="top-right" alt="">
+                <img src="images/UI/1.svg" class="top-left" alt="">
+                <img src="images/UI/1.svg" class="bottom-left" alt="">
+                <img src="images/UI/1.svg" class="bottom-right" alt="">
             </div>
         `;
     }

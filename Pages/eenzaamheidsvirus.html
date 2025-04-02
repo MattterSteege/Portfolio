@@ -1,0 +1,258 @@
+<div class="view">
+    <div class="view-content">
+        <h1>Eenzaamheidsvirus();</h1>
+
+        <div class="team">
+            <div class="naam">
+                <p>Matt ter Steege</p>
+                <p>Programmeur</p>
+            </div>
+            <div class="naam">
+                <p>Joris Booij</p>
+                <p>Tester</p>
+            </div>
+            <div class="naam">
+                <p>Joep Sorel</p>
+                <p>Samenhang</p>
+            </div>
+            <div class="naam">
+                <p>Sam Timmers</p>
+                <p>Art en Design</p>
+            </div>
+        </div>
+
+        <div class="date">
+            <p class="start">13-02-2020</p>
+            <p class="end">14-04-2020</p>
+        </div>
+
+        <div class="client">
+            (Ex)minister Mark Rutte
+        </div>
+
+        <div class="program-of-requirements">
+            <h2>Programma van eisen</h2>
+            <ul>
+                <li>Bestrijd het eenzaamheidsvirus
+                <li>Het moet op 1,5m afstand te spelen zijn</li>
+                <li>Makkelijk te spelen</li>
+                <li>Duidelijk te lezen</li>
+                <li>Gezellig</li>
+                <li>Goed uitgelegd</li>
+                <li>Je moet het vaker willen spelen</li>
+                <li>Het moet multiplayer zijn</li>
+            </ul>
+        </div>
+    </div>
+    <div class="back page-button" onclick="nextPage()"></div>
+    <div class="next page-button" onclick="prevPage()"></div>
+</div>
+<div class="view" style="transform: translate(100%, 0px);">
+    <div class="view-content">
+        <h1>Eenzaamheidsvirus();</h1>
+
+        <div class="research">
+            <h2>Vooronderzoek</h2>
+            <p>In dit vooronderzoek hebben we allemaal ideeën bedacht en opgezocht. Daarna hebben we allemaal een prototype spel gemaakt van een idee dat je zelf leuk vond. Sam had een Lingo achtig spel, Joris een tekenspel, Joep een Quiz en ik had een bus bestuur spel. We zijn ook op zoek gegaan naar wat andere meningen en ideeën over hoe het spel in elkaar zou moeten komen te zitten. Dat hebben we vervolgens kort en bondig opgeschreven en we zijn zelf punten gaan geven aan de ideeën en zo kwam ons uiteindelijke idee tot leven.</p>
+        </div>
+
+        <div class="research">
+            <h2>Vooronderzoek</h2>
+            <p>Het uiteindelijke product was een platformer (denk aan Nintendo Mario), dit hebben we na een tijd wikken en wegen gekozen, omdat het simpelweg de voorkeur had van de toekomstige spelers. Een paar leuke details uit het spel zijn de namen van de personages in het spel: David of North, Daisy of South, Joel of East en Sunny of … West natuurlijk.</p>
+        </div>
+
+        <div class="research">
+            <h2>Eigen rol</h2>
+            <p>Zoals vast wel bekend hou ik heel veel van programmeren, daarom was dit het perfecte project voor mij. Mijn rol was dan ook programmeur van het spel. Als programmeur van het spel had ik wel veel te zeggen over het project. Niet alles is natuurlijk mogelijk om in zo’n korte tijd te maken, maar na iets te veel vrije tijd er in te hebben gestoken was het af. Het was echt een droom spel, Ik was er erg trots op natuurlijk.</p>
+        </div>
+
+        <div class="research">
+            <h2>Evaluatie</h2>
+            <p>Dit project was al een tijdje geleden en toen heb ik er geen evaluatie van gemaakt, maar als ik er nu op terug kijk zou ik niet veel anders doen. Natuurlijk een dingetje hier en daar, maar niks groots, het project op zich was al op mijn lijf geschreven, dus dan gaat een project sowieso al beter en makkelijker.</p>
+        </div>
+
+    </div>
+    <div class="back page-button" onclick="nextPage()"></div>
+    <div class="next page-button" onclick="prevPage()"></div>
+</div>
+
+<style>
+
+    .view-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 40px 40px 40px 1fr 1fr;
+
+        --padding: 8px;
+        --font-size: 2cqmin;
+    }
+
+    .view-content > h1 {
+        font-size: calc(1.5 * var(--font-size));
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+        padding-top: var(--padding);
+    }
+
+    /* === TEAM === */
+
+    .team {
+        font-size:  var(--font-size);
+        color: #985244;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+        padding: var(--padding);
+        outline: calc(var(--padding) / 2) solid #cda17f;
+        grid-area: 1 / 2 / 5 / 2;
+    }
+
+    .team > .naam {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-right: calc(var(--padding) / 2) solid #cda17f;
+        padding-right: var(--padding);
+        border-top: calc(var(--padding) / 2) solid #cda17f;
+    }
+
+    .team > .naam:nth-child(1), .team > .naam:nth-child(2) {
+        border-top: none;
+    }
+
+    .team > .naam:nth-child(2n) {
+        border-right: none;
+    }
+
+    .team > .naam:nth-child(2n + 1):last-child {
+        grid-column: 1 / span 2;
+        border-right: none;
+    }
+
+    .team > .naam > p:first-child {
+        font-size:  var(--font-size);
+    }
+
+    .team > .naam > p:last-child {
+        font-size: 0.8em;
+    }
+
+    /* === DATE === */
+
+    .date {
+        display: flex;
+        justify-content: center;
+    }
+
+    .date > .start, .date > .end {
+        color: #985244;
+        font-size:  var(--font-size);
+    }
+
+    .date > .start::after {
+        content: ' t/m ​';
+    }
+
+    /* === CLIENT === */
+
+    .client {
+        color: #985244;
+        font-size:  var(--font-size);
+        text-align: center;
+    }
+
+    /* === PROGRAM OF REQUIREMENTS === */
+
+    .program-of-requirements {
+        color: #985244;
+        justify-content: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: auto;
+        margin-left: calc(var(--padding) * 2);
+        font-size:  var(--font-size);
+        position: relative;
+        padding-left: calc(var(--padding) * 2);
+        height: fit-content;
+
+        grid-area: 4 / 1 / 6 / 2;
+    }
+
+    .program-of-requirements::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: calc(var(--padding) / 2);
+        background-color: #cda17f;
+    }
+
+    .program-of-requirements > h2 {
+        font-size:  var(--font-size);
+        position: relative;
+    }
+
+    .program-of-requirements > ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .program-of-requirements > ul > li {
+        margin-bottom: calc(var(--padding) / 2);
+        position: relative;
+        padding-left: calc(var(--padding) * 2);
+    }
+
+    .program-of-requirements > ul > li::before {
+        content: '■';
+        color: #cda17f;
+        position: absolute;
+        left: 0;
+        font-size: 0.5em;
+        height: 100%;
+    }
+
+    /* === RESEARCH === */
+
+    .research {
+        color: #985244;
+        justify-content: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: calc(var(--padding) * 2);
+        font-size:  var(--font-size);
+        position: relative;
+        padding-left: calc(var(--padding) * 2);
+        height: fit-content;
+    }
+
+    .research::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: calc(var(--padding) / 2);
+        background-color: #cda17f;
+    }
+
+    .research > h2 {
+        font-size:  var(--font-size);
+        position: relative;
+    }
+
+    .research > p {
+        margin-bottom: calc(var(--padding) / 2);
+        position: relative;
+    }
+</style>

@@ -25,6 +25,16 @@
 </body>
 <script src="site.js"></script>
 <script>
-    replacePage('./Pages/main.html')
+
+    //if the hash is not empty, load the page
+    //#main -> ./Pages/main.html
+    //#dominoDay -> ./Pages/eenzaamheidsvirus.html
+    //etc.
+
+    if (window.location.hash) {
+        replacePage('./Pages/' + window.location.hash.substring(1) + '.html')
+    } else {
+        replacePage('./Pages/eenzaamheidsvirus.html')
+    }
 </script>
 </html>

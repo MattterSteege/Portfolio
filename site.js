@@ -99,7 +99,18 @@ function prevPage() {
 }
 
 //===================================================================================================
+function backToHome() {
+    hideBackFlag();
+
+    setTimeout(() => {
+        replacePage('./Pages/main.html')
+    }, animationDuration);
+}
+
 function replacePage(url) {
+
+    if (url === "./Pages/main.html") hideBackFlag();
+
     //close scroll and fetch
     closeScroll().then(() => {
         fetch(url)
@@ -107,12 +118,24 @@ function replacePage(url) {
                 if (!response.ok) {
                     document.querySelector("main").innerHTML = "<h1 style='text-align: center; justify-content: center'>De pagina kon niet worden geladen?<br>Meer weet ik ook niet!</h1>";
                     openScroll();
+
+                    setTimeout(() => {
+                        showBackFlag();
+                    }, animationDuration);
+
                     throw new Error("Failed to load page");
                 }
 
                 return response.text();
             })
             .then(html => {
+
+                if (url !== "./Pages/main.html") {
+                    setTimeout(() => {
+                        showBackFlag();
+                    }, animationDuration);
+                }
+
                 document.querySelector("main").innerHTML = html;
                 openScroll();
                 currentPage = 0;
@@ -137,3 +160,33 @@ function openScroll() {
         setTimeout(resolve, animationDuration);
     });
 }
+
+const menuFlag = document.getElementById("menu-flag");
+const showBackFlag = () => {
+    menuFlag.style.opacity = 1;
+    menuFlag.classList.add("animate-in");
+}
+const hideBackFlag = () => {
+    menuFlag.classList.remove("animate-in");
+    setTimeout(() => {
+        menuFlag.style.opacity = 0;
+    }, animationDuration);
+}
+
+
+//===================================================================================================
+
+const middleScrollContent = document.getElementById("middle-scroll-content");
+const htmlContent = document.getElementById("html-content");
+const resizePage = () => {
+    let mscWidth = middleScrollContent.offsetWidth;
+    const targetWidth = 200; //px
+    mscWidth -= mscWidth * 0.08; //-8% (4% left and 4% right)
+    const scale = mscWidth / targetWidth;
+    htmlContent.style.transform = `scale(${scale})`;
+}
+
+addEventListener('resize', () => {
+    resizePage();
+});
+resizePage();

@@ -160,3 +160,63 @@ particle {
     font-weight: bold;
     text-shadow: 0 0 5px #000;
 }
+
+/* ==== */
+
+.project {
+    width: 99px;
+    background-image: url(../images/UI/Box.svg);
+    background-size: calc(100% - 4px);
+    background-position: center;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 7.092% 15.884% 77.024%;
+    grid-template-rows: 16.129% 68.517% 16.354%;
+    container-type: size;
+    transition: transform 0.5s;
+    padding: 2px;
+    position: relative;
+    aspect-ratio: 140 / 34;
+}
+
+.project:hover {
+    cursor: pointer;
+}
+
+.project:hover > p {
+    color: #985244;
+}
+
+.project > selector-border {
+    display: none;
+}
+.project:hover > selector-border {
+    display: block;
+}
+
+
+.project > i {
+    grid-area: 2 / 2 / 3 / 3;
+    color: #985244;
+    align-self: center;
+    justify-self: center;
+    font-size: 10cqmax;
+}
+
+.project > p {
+    grid-area: 2 / 3 / 3 / 4;
+    font-size: 8cqmax;
+    color: #985244;
+    text-align: center;
+    align-self: center;
+    width: calc(100% - 8px);
+}
+
+.view-content > h1 {
+    color: #985244;
+    text-align: center;
+    align-self: center;
+    justify-self: center;
+    grid-area: 1 / 1 / 2 / 3;
+    padding-top: 8px;
+}

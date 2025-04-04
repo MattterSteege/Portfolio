@@ -2,6 +2,15 @@
     <div class="view-content">
         <h1>eenzaamheidsvirus();</h1>
 
+        <div class="client">
+            (oud)Premier Mark Rutte
+        </div>
+
+        <div class="date">
+            <p class="start">13-02-2020</p>
+            <p class="end">14-04-2020</p>
+        </div>
+
         <div class="team">
             <div class="naam">
                 <p>Matt ter Steege</p>
@@ -21,16 +30,8 @@
             </div>
         </div>
 
-        <div class="date">
-            <p class="start">13-02-2020</p>
-            <p class="end">14-04-2020</p>
-        </div>
 
-        <div class="client">
-            (oud)Premier Mark Rutte
-        </div>
-
-        <div class="program-of-requirements">
+        <div class="program-of-requirements" style="grid-row: 2 / span 3">
             <h2>Programma van eisen</h2>
             <ul>
                 <li>Bestrijd het eenzaamheidsvirus
@@ -83,205 +84,3 @@
     </div>
     <div class="back page-button" onclick="nextPage()"></div>
 </div>
-
-<style>
-
-    .view-content {
-        --padding: 2px;
-        --font-size: 3.75px;
-        --rows: 3; /* default*/
-
-        grid-area: 1 / 1 / 2 / 4;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: calc(8 * var(--padding)) repeat(var(--rows), auto);
-    }
-
-    .view-content > h1 {
-        font-size: calc(2 * var(--font-size));
-        color: #985244;
-        text-align: center;
-        align-self: center;
-        justify-self: center;
-        grid-area: 1 / 1 / 2 / 3;
-    }
-
-    /* === TEAM === */
-
-    .team {
-        font-size: var(--font-size);
-        text-align: center;
-        align-self: center;
-        justify-self: center;
-
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(auto-fill, 1fr);
-        padding: var(--padding);
-        outline: calc(var(--padding) / 2) solid #cda17f;
-        grid-area: 1 / 2 / 5 / 2;
-    }
-
-    .team > .naam {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-right: calc(var(--padding) / 4) solid #cda17f;
-        padding-right: var(--padding);
-        border-top: calc(var(--padding) / 4) solid #cda17f;
-    }
-
-    .team > .naam:nth-child(1), .team > .naam:nth-child(2) {
-        border-top: none;
-    }
-
-    .team > .naam:nth-child(2n) {
-        border-right: none;
-    }
-
-    .team > .naam:nth-child(2n + 1):last-child {
-        grid-column: 1 / span 2;
-        border-right: none;
-    }
-
-    .team > .naam > p:first-child {
-        font-size:  var(--font-size);
-        color: #985244;
-    }
-
-    .team > .naam > p:last-child {
-        font-size: calc(0.8 * var(--font-size));
-        color: #985244;
-    }
-
-    /* === DATE === */
-
-    .date {
-        display: flex;
-        justify-content: start;
-        margin: auto;
-    }
-
-    .date > .start::before {
-        content: 'Van: ';
-        color: #985244;
-        font-size:  var(--font-size);
-    }
-
-    .date > .start, .date > .end {
-        color: #985244;
-        font-size:  var(--font-size);
-    }
-
-    .date > .start::after {
-        content: ' t/m: ​';
-    }
-
-    /* === CLIENT === */
-
-    .client {
-        color: #985244;
-        font-size:  var(--font-size);
-        text-align: start;
-        margin: auto;
-    }
-
-    .client::before {
-        content: 'Opdrachtgever: ';
-    }
-
-    /* === PROGRAM OF REQUIREMENTS === */
-
-    .program-of-requirements {
-        color: #985244;
-        justify-content: flex-start;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin: auto;
-        margin-left: calc(var(--padding) * 2);
-        font-size:  var(--font-size);
-        position: relative;
-        padding-left: calc(var(--padding) * 2);
-        height: fit-content;
-
-        grid-area: 4 / 1 / 6 / 2;
-    }
-
-    .program-of-requirements::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: calc(var(--padding) / 2);
-        background-color: #cda17f;
-    }
-
-    .program-of-requirements > h2 {
-        font-size:  var(--font-size);
-        position: relative;
-    }
-
-    .program-of-requirements > ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .program-of-requirements > ul > li {
-        margin-bottom: calc(var(--padding) / 2);
-        position: relative;
-        padding-left: calc(var(--padding) * 2);
-    }
-
-    .program-of-requirements > ul > li::before {
-        content: '■';
-        color: #cda17f;
-        position: absolute;
-        left: 0;
-        font-size: 0.5em;
-        height: 100%;
-    }
-
-    /* === RESEARCH === */
-
-    .research {
-        color: #985244;
-        justify-content: flex-start;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: calc(var(--padding) * 2);
-        font-size:  var(--font-size);
-        position: relative;
-        padding-left: calc(var(--padding) * 2);
-        height: fit-content;
-    }
-
-    .research:hover::before {
-        background-color: #a03e3b;
-    }
-
-    .research::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: calc(var(--padding) / 2);
-        background-color: #cda17f;
-    }
-
-    .research > h2 {
-        font-size:  var(--font-size);
-        position: relative;
-    }
-
-    .research > p {
-        margin-bottom: calc(var(--padding) / 2);
-        position: relative;
-        font-size: calc(var(--font-size)* 0.75);
-        line-height: calc(2* var(--padding));
-    }
-</style>

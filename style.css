@@ -110,6 +110,7 @@ h1 {
     width: 200px;
     position: relative;
     aspect-ratio: 384 / 237;
+    transition: transform 0.25s;
 }
 
 /* ==================== */
@@ -144,7 +145,7 @@ particle {
     width: 100%;
     aspect-ratio: 1 / 1;
     image-rendering: pixelated;
-    background-image: url('images/UI/flag.svg');
+    background-image: url('../images/UI/flag.svg');
     background-size: 100% 100%;
 }
 

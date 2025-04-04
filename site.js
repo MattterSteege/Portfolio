@@ -137,7 +137,10 @@ function replacePage(url) {
                 }
 
                 document.querySelector("main").innerHTML = html;
-                openScroll();
+                openScroll()
+                .then(() => {
+                    resizePage();
+                });
                 currentPage = 0;
             });
     });

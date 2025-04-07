@@ -252,6 +252,10 @@
     grid-template-rows: 1fr 1fr;
 }
 
+.research.no-gap {
+    grid-gap: 0;
+}
+
 .research:has(.image) {
     flex-direction: row;
 }
@@ -304,6 +308,24 @@ research > ul, ul.list {
     margin-bottom: calc(var(--padding) / 4);
     position: relative;
     padding-left: calc(var(--padding) * 1.1);
-    color: black;
+    color: #985244;
+    font-size: calc(var(--font-size)* 0.75);
+}
+
+.research > table {
+    margin-bottom: calc(var(--padding) / 2);
+    position: relative;
+    font-size: calc(var(--font-size)* 0.75);
+    color: #985244;
+}
+
+.research > table > tbody {
+    display: block;
+    overflow: auto;
+    max-height: 200px;
+}
+
+.research > table > tbody > tr > td, .research > table > tbody > tr > th {
+    text-align: start;
     font-size: calc(var(--font-size)* 0.75);
 }

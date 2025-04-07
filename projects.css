@@ -76,7 +76,7 @@
     outline: calc(var(--padding) / 2) solid #cda17f;
 }
 
-.team.single {
+.team.single, .research.single {
     grid-template-columns: 1fr;
 }
 

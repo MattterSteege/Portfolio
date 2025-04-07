@@ -239,11 +239,17 @@
     position: relative;
     padding-left: calc(var(--padding) * 2);
     height: fit-content;
-    grid-gap: 4px;
+    grid-gap: 1px;
 }
 
 .research.wide {
     grid-column: 1 / span 2;
+}
+
+.research.square {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
 
 .research:has(.image) {
@@ -285,6 +291,7 @@
     width: auto;
     margin-bottom: calc(var(--padding) / 2);
     float: right;
+    image-rendering: auto;
 }
 
 research > ul, ul.list {

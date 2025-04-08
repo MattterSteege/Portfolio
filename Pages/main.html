@@ -2,8 +2,15 @@
     <div class="view-content">
         <h1>Hi, ik ben Matt</h1>
 
+        <div class="research wide">
+            <p>Ik ben 17 jaar oud en zit nu in 6 vwo op het Antoniuscollege in Gouda. Deze site is m’n portfolio, vooral gericht op het vak O&O (Onderzoeken & Ontwerpen), maar eerlijk gezegd gooi ik er ook gewoon mijn eigen persoonlijke projecten op – dingen waar ik zelf trots op ben of waar ik gewoon veel tijd in heb gestoken.</p>
+            <p>Je kan lekker door mijn portfolio bladeren door op de projectknoppen te klikken (ja, die hieronder), en als je eenmaal in een project zit kun je verder gaan door te swipen of op de knoppen onderaan te klikken. Simpel zat.</p>
+            <p>Ik hoop oprecht dat je iets vindt wat je interessant vindt – of het nou iets technisch is, iets creatiefs, of gewoon iets waarvan je denkt: “hé, dit is best vet.” Veel plezier met rondkijken!</p>
+            <p>Groetjes, Matt (Duh)!</p>
+        </div>
+
         <div class="project" onclick="replacePage('./Pages/pop.html')" style="margin: auto">
-            <i class="fa-solid fa-backpack"></i>
+            <i class="fa-solid fa-map"></i>
             <p>Persoonlijk ontwikkelplan</p>
             <selector-border active="true"></selector-border>
         </div>
@@ -32,33 +39,51 @@
         </div>
 
         <div class="project" onclick="replacePage('./Pages/aimazing_learning.html')">
-            <i class="fa-solid fa-backpack"></i>
+            <i class="fa-solid fa-robot"></i>
             <p>AImazing Learning</p>
             <selector-border active="true"></selector-border>
         </div>
+
+    </div>
+    <div class="back page-button" onclick="nextPage()"></div>
+    <div class="next page-button" onclick="prevPage()"></div>
+</div>
+<div class="view" style="transform: translate(100%, 0px);">
+    <div class="view-content">
+        <h1>Eigen Projecten</h1>
+
+        <div class="project" onclick="replacePage('./Pages/zermos.html')">
+            <i class="fa-solid fa-mobile"></i>
+            <p>Zermos</p>
+            <selector-border active="true"></selector-border>
+        </div>
+
     </div>
     <div class="back page-button" onclick="nextPage()"></div>
 </div>
 
 <style>
-    .project {
-        width: 99px;
-        background-image: url(../images/UI/box.svg);
-        background-size: calc(100% - 4px);
-        background-position: center;
-        background-repeat: no-repeat;
-        display: grid;
-        grid-template-columns: 7.092% 15.884% 77.024%;
-        grid-template-rows: 16.129% 68.517% 16.354%;
-        container-type: size;
-        transition: transform 0.5s;
-        padding: 2px;
-        position: relative;
-        aspect-ratio: 140 / 34;
-    }
+     .project {
+         width: 99px;
+         background-image: url(../images/UI/box.svg);
+         background-size: calc(100% - 4px);
+         background-position: center;
+         background-repeat: no-repeat;
+         display: grid;
+         grid-template-columns: 7.092% 15.884% 77.024%;
+         grid-template-rows: 16.129% 68.517% 16.354%;
+         container-type: size;
+         transition: transform 0.5s;
+         padding: 2px;
+         position: relative;
+         aspect-ratio: 140 / 34;
+         filter: drop-shadow(0px 2px 0px #924f44);
+     }
 
     .project:hover {
         cursor: pointer;
+        filter: drop-shadow(0px 1px 0px #924f44);
+        translate: 0 1px;
     }
 
     .project:hover > p {

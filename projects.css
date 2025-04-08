@@ -168,6 +168,10 @@
     height: fit-content;
 }
 
+.program-of-requirements.wide {
+    grid-column: 1 / span 2;
+}
+
 .program-of-requirements:hover::before {
     background-color: #a53030;
 }

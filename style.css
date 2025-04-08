@@ -110,7 +110,7 @@ h1 {
     width: 200px;
     position: relative;
     aspect-ratio: 384 / 237;
-    transition: transform 0.25s;
+    transition: transform 0.05s;
 }
 
 /* ==================== */

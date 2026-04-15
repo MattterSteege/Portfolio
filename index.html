@@ -2,40 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <style>
-        body {
-            --x: 190px;
-            --y: 116px;
-            margin: 0;
-            background: #f8f8f8
-        }
-
-        #grid {
-            position: fixed;
-            inset: 0;
-            transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
-        }
-
-        #grid::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0, 0, 0, .07) 1px, #0000 1px), linear-gradient(90deg, rgba(0, 0, 0, .07) 1px, #0000 1px);
-            background-size: 60px 60px;
-            background-position: var(--x) var(--y)
-        }
-
-        #grid::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M52 60h16M60 52v16' stroke='%23000' stroke-opacity='.35' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-size: 120px 120px;
-            background-position: calc(var(--x) + 0.5px) calc(var(--y) + 0.5px);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" defer></script>
 </head>
 <body>
-<div id="grid"></div>
+<div class="overlay"></div>
+<div id="grid">
+    <div class="grid-item" style="background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); --grid-x: 1; --grid-y:1;"></div>
+    <div class="grid-item" style="background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%); --grid-x: 1; --grid-y:-1;"></div>
+    <div class="grid-item" style="background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%); --grid-x: 2; --grid-y: 0;"></div>
+    <div class="grid-item" style="background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%); --grid-x: 0; --grid-y: 0;"></div>
+</div>
 </body>
 </html>

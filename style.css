@@ -1,0 +1,95 @@
+body {
+    --x: 0px;
+    --y: 0px;
+    margin: 0;
+    background: #f8f8f8;
+
+    --cell-size: 60px;
+}
+
+#grid {
+    position: fixed;
+    inset: 0;
+    translate: -50% -50%;
+    transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    will-change: transform, background-position;
+    width: calc(100vw * 2);
+    height: calc(100vh * 3);
+    /*center the grid*/
+    left: 50%;
+    top: 50%;
+    transform-origin: center;
+
+    /* The 2 is because of the perspective distortion, as the grid is rotated by 60 degrees on the X-axis,  */
+    /* the Y-axis is compressed by a factor of cos(60deg) = 0.5,                                            */
+    /* so we need to multiply the Y value by 2 to compensate for this compression.                          */
+    /*--normalized-x: calc(var(--y) * cos(-45deg) * -2 - (var(--x) / cos(60deg)) * sin(-45deg) / 2);*/
+    /*--normalized-y: calc(var(--y) * sin(-45deg) * -2 + (var(--x) / cos(60deg)) * cos(-45deg) / 2);*/
+    --normalized-x: calc(var(--y) * -1.41421356 + var(--x) * 0.70710678);
+    --normalized-y: calc(var(--y) * 1.41421356 + var(--x) * 0.70710678);
+}
+
+#grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, .07) 1px, #0000 1px), linear-gradient(90deg, rgba(0, 0, 0, .07) 1px, #0000 1px);
+    background-size: var(--cell-size) var(--cell-size);
+    background-position: var(--normalized-x) var(--normalized-y);
+    pointer-events: none;
+}
+
+#grid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M52 60h16M60 52v16' stroke='%23000' stroke-opacity='.35' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: calc(var(--cell-size) * 2) calc(var(--cell-size) * 2);
+    background-position: calc(var(--normalized-x) + 0.5px) calc(var(--normalized-y) + 0.5px);
+    pointer-events: none;
+}
+
+#grid .grid-item {
+    --grid-x: 0;
+    --grid-y: 0;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transition: box-shadow 0.3s ease, translate 0.3s ease;
+
+    width: calc(var(--cell-size) * 2);
+    height: calc(var(--cell-size) * 2);
+    translate:
+            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 3px + 5px)
+            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px - 5px);
+
+    box-shadow: -5px 5px 0px rgb(0 0 0 / 30%), -10px 10px 0px rgb(0 0 0 / 0%), -15px 15px 0px rgb(0 0 0 / 0%);
+}
+
+#grid .grid-item:hover {
+    box-shadow: -5px 5px 0px rgb(0 0 0 / 30%), -10px 10px 0px rgb(0 0 0 / 20%), -15px 15px 0px rgb(0 0 0 / 10%);
+
+    translate:
+            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 3px + 15px)
+            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px - 15px);
+}
+
+/* ─── Aesthetics ───────────────────────────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 50%, black 100%);
+    mask-image: radial-gradient(ellipse at center, transparent 50%, black 100%);
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    z-index: 1;
+}

@@ -1,6 +1,8 @@
 body {
     --x: 0px;
     --y: 0px;
+    --rotate: 0deg;
+
     margin: 0;
     background: #f8f8f8;
 
@@ -8,27 +10,56 @@ body {
 }
 
 #grid {
+    --size: max(100vh, 100vw);
     position: fixed;
-    inset: 0;
-    translate: -50% -50%;
-    transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
-    perspective: 1000px;
-    transform-style: preserve-3d;
+    transform:
+            translate(-50%, -50%)
+            skewX(-48deg)
+            skewY(14deg)
+            scaleX(2)
+            scale(0.371484375)
+            rotate(var(--rotate))
+            translateZ(0);
     will-change: transform, background-position;
-    width: calc(100vw * 2);
-    height: calc(100vh * 3);
-    /*center the grid*/
+    width: var(--size);
+    aspect-ratio: 1;
     left: 50%;
     top: 50%;
     transform-origin: center;
 
-    /* The 2 is because of the perspective distortion, as the grid is rotated by 60 degrees on the X-axis,  */
-    /* the Y-axis is compressed by a factor of cos(60deg) = 0.5,                                            */
-    /* so we need to multiply the Y value by 2 to compensate for this compression.                          */
-    /*--normalized-x: calc(var(--y) * cos(-45deg) * -2 - (var(--x) / cos(60deg)) * sin(-45deg) / 2);*/
-    /*--normalized-y: calc(var(--y) * sin(-45deg) * -2 + (var(--x) / cos(60deg)) * cos(-45deg) / 2);*/
-    --normalized-x: calc(var(--y) * -1.41421356 + var(--x) * 0.70710678);
-    --normalized-y: calc(var(--y) * 1.41421356 + var(--x) * 0.70710678);
+    /*
+     * Inverse of: skewX(-48) * skewY(14) * scaleX(2) * scale(s) * rotate(θ)
+     *
+     * Applied right-to-left:
+     *   1. skewX(+48)  →  x' = x + tan48·y,  y' = y
+     *   2. skewY(-14)  →  x' = x,  y' = y - tan14·x
+     *   3. scaleX(0.5) →  x' = 0.5·x
+     *   4. scale(1/s)  →  both axes × (1/s)
+     *
+     * Combined into four constants:
+     *   A = 0.5/s                         = 1.345970
+     *   B = (0.5/s)·tan(48°)              = 1.494851
+     *   C = (1/s)·tan(14°)                = 0.671183
+     *   D = (1/s)·(1 - tan14·tan48)       = 1.946543
+     *
+     *   t4x = A·x + B·y
+     *   t4y = -C·x + D·y
+     *
+     *   5. rotate(-θ) (handles --rotate variable):
+     *   normalized-x =  cos(θ)·t4x + sin(θ)·t4y
+     *   normalized-y = -sin(θ)·t4x + cos(θ)·t4y
+     */
+
+    --A: 1.345970;
+    --B: 1.494851;
+    --C: 0.671183;
+    --D: 1.946543;
+
+    --t4x: calc(var(--A) * var(--x) + var(--B) * var(--y));
+    --t4y: calc(-1 * var(--C) * var(--x) + var(--D) * var(--y));
+
+    --normalized-x: calc(cos(var(--rotate)) * var(--t4x) + sin(var(--rotate)) * var(--t4y));
+    --normalized-y: calc(-1 * sin(var(--rotate)) * var(--t4x) + cos(var(--rotate)) * var(--t4y));
 }
 
 #grid::before {
@@ -37,7 +68,10 @@ body {
     inset: 0;
     background: linear-gradient(rgba(0, 0, 0, .07) 1px, #0000 1px), linear-gradient(90deg, rgba(0, 0, 0, .07) 1px, #0000 1px);
     background-size: var(--cell-size) var(--cell-size);
-    background-position: var(--normalized-x) var(--normalized-y);
+    background-position:
+            calc(50% + var(--normalized-x) + var(--cell-size) / 2)
+            calc(50% + var(--normalized-y) + var(--cell-size) / 2);
+    background-attachment: fixed;
     pointer-events: none;
 }
 
@@ -47,37 +81,33 @@ body {
     inset: 0;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M52 60h16M60 52v16' stroke='%23000' stroke-opacity='.35' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
     background-size: calc(var(--cell-size) * 2) calc(var(--cell-size) * 2);
-    background-position: calc(var(--normalized-x) + 0.5px) calc(var(--normalized-y) + 0.5px);
+    background-position:
+            calc(50% + var(--normalized-x) + var(--cell-size) + 0.5px)
+            calc(50% + var(--normalized-y) + var(--cell-size) + 0.5px);
     pointer-events: none;
+    z-index: -1;
 }
 
 #grid .grid-item {
     --grid-x: 0;
     --grid-y: 0;
-
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transition: box-shadow 0.3s ease, translate 0.3s ease;
-
+    top: 0%;
+    left: 0%;
+    transition: box-shadow 0.3s ease;
     width: calc(var(--cell-size) * 2);
     height: calc(var(--cell-size) * 2);
     translate:
-            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 3px + 5px)
-            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px - 5px);
-
-    box-shadow: -5px 5px 0px rgb(0 0 0 / 30%), -10px 10px 0px rgb(0 0 0 / 0%), -15px 15px 0px rgb(0 0 0 / 0%);
+            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 5px + var(--size) / 2)
+            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px + var(--size) / 2);
+    box-shadow: 5px 5px 0px rgb(0 0 0 / 10%);
 }
 
 #grid .grid-item:hover {
-    box-shadow: -5px 5px 0px rgb(0 0 0 / 30%), -10px 10px 0px rgb(0 0 0 / 20%), -15px 15px 0px rgb(0 0 0 / 10%);
-
-    translate:
-            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 3px + 15px)
-            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px - 15px);
+    box-shadow: 5px 5px 0px rgb(0 0 0 / 30%);
 }
 
-/* ─── Aesthetics ───────────────────────────────────────────────────────────── */
+/* Aesthetics */
 .overlay {
     position: fixed;
     background: radial-gradient(ellipse at center, transparent 50%, rgba(255, 255, 255, 0.8) 100%);

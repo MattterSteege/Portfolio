@@ -32,3 +32,33 @@ window.addEventListener("mouseup", () => {
 window.addEventListener("mouseleave", () => {
   isDragging = false;
 });
+
+//when the user loads this page, the --rotate value on the grid should start at 0 and then animate to 360 degrees over the course of 5 seconds. that is the loading screen
+window.addEventListener("load", () => {
+  grid.style.setProperty("--rotate", "-90deg");
+  setTimeout(() => {
+    ease(-90, 0, 1000, (value) => {
+      grid.style.setProperty("--rotate", `${value}deg`);
+    });
+  }, 100); // Start the animation after a short delay
+});
+
+//ease-in-out
+function ease(start, end, duration, callback) {
+  const startTime = performance.now();
+
+  function animate() {
+    const currentTime = performance.now();
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easedProgress = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress; // Ease-in-out formula
+    const value = start + (end - start) * easedProgress;
+    callback(value);
+
+    if (elapsed < duration) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}

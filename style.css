@@ -6,9 +6,6 @@
 }
 
 body {
-    --x: 0px;
-    --y: 0px;
-    --rotate: 0deg;
     --size: max(300vh, 300vw);
     --cell-size: 60px;
 
@@ -33,7 +30,6 @@ p {
             skewY(14deg)
             scaleX(2)
             scale(0.371484375)
-            rotate(var(--rotate))
             translateZ(0);
     will-change: transform, background-position;
     width: var(--size);
@@ -42,39 +38,9 @@ p {
     top: 50%;
     transform-origin: center;
 
-    /*
-     * Inverse of: skewX(-48) * skewY(14) * scaleX(2) * scale(s) * rotate(θ)
-     *
-     * Applied right-to-left:
-     *   1. skewX(+48)  →  x' = x + tan48·y,  y' = y
-     *   2. skewY(-14)  →  x' = x,  y' = y - tan14·x
-     *   3. scaleX(0.5) →  x' = 0.5·x
-     *   4. scale(1/s)  →  both axes × (1/s)
-     *
-     * Combined into four constants:
-     *   A = 0.5/s                         = 1.345970
-     *   B = (0.5/s)·tan(48°)              = 1.494851
-     *   C = (1/s)·tan(14°)                = 0.671183
-     *   D = (1/s)·(1 - tan14·tan48)       = 1.946543
-     *
-     *   t4x = A·x + B·y
-     *   t4y = -C·x + D·y
-     *
-     *   5. rotate(-θ) (handles --rotate variable):
-     *   normalized-x =  cos(θ)·t4x + sin(θ)·t4y
-     *   normalized-y = -sin(θ)·t4x + cos(θ)·t4y
-     */
-
-    --A: 1.345970;
-    --B: 1.494851;
-    --C: 0.671183;
-    --D: 1.946543;
-
-    --t4x: calc(var(--A) * var(--x) + var(--B) * var(--y));
-    --t4y: calc(-1 * var(--C) * var(--x) + var(--D) * var(--y));
-
-    --normalized-x: calc(cos(var(--rotate)) * var(--t4x) + sin(var(--rotate)) * var(--t4y));
-    --normalized-y: calc(-1 * sin(var(--rotate)) * var(--t4x) + cos(var(--rotate)) * var(--t4y));
+    /* Set by JS â€” plain pixel values, no calc chain */
+    --normalized-x: 0px;
+    --normalized-y: 0px;
 }
 
 #grid::before {
@@ -112,9 +78,6 @@ p {
     transition: box-shadow 0.3s ease;
     width: calc(var(--cell-size) * 2);
     height: calc(var(--cell-size) * 2);
-    translate:
-            calc(var(--grid-x) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-x) - 5px + var(--size) / 2)
-            calc(var(--grid-y) * 2 * var(--cell-size) - var(--cell-size) + var(--normalized-y) - 5px + var(--size) / 2);
 }
 
 #grid .grid-item.oXt {
@@ -249,4 +212,39 @@ p {
         backdrop-filter: blur(0);
         background-color: transparent;
     }
+}
+
+/* ======================================================================== */
+/*                                 Tooltip                                  */
+/* ======================================================================== */
+#tooltip {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    pointer-events: none;
+    z-index: 999;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+#tooltip.visible {
+    opacity: 1;
+}
+
+#tooltip svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+#tooltip .tooltip-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #222;
+    top: -12px;
+    position: relative;
 }

@@ -6,9 +6,104 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-<div class="overlay"></div>
+<div id="loading-animation">
+    <div class="circle-load"></div>
+</div>
+<div class="overlay">
+    <p class="help-text">Press <kbd>R</kbd> to recenter</p>
+</div>
 <div id="grid" style="--x: 0px; --y: 0px; --rotate: 0deg;">
-    <div class="grid-item" style="background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%); --grid-x: 0; --grid-y: 0;"></div>
+
+    <!-- MATT NAME -->
+    <!-- M -->
+    <div class="grid-item letter-container" style="--grid-x: -3; --grid-y: 0;">
+        <div class="letter tl"></div>
+        <div class="letter c"></div>
+        <div class="letter c"></div>
+        <div class="letter c"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: -3; --grid-y: 1;">
+        <div class="letter br"></div>
+        <div class="letter br"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: -2; --grid-y: 0;">
+        <div class="letter tr"></div>
+        <div></div>
+        <div class="letter c"></div>
+        <div></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: -2; --grid-y: 1;">
+        <div class="letter br"></div>
+    </div>
+
+    <!-- A -->
+    <div class="grid-item letter-container" style="--grid-x: -1; --grid-y: -0.5;">
+        <div class="letter tl"></div>
+        <div class="letter c"></div>
+        <div class="letter c"></div>
+        <div></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: -1; --grid-y: 0.5;">
+        <div class="letter bl"></div>
+        <div class="letter c"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 0; --grid-y: -0.5;">
+        <div class="letter tr"></div>
+        <div></div>
+        <div class="letter c"></div>
+        <div></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 0; --grid-y: 0.5;">
+        <div class="letter bl"></div>
+    </div>
+
+    <!-- T -->
+    <div class="grid-item letter-container" style="--grid-x: 1; --grid-y: -0.5;">
+        <div></div>
+        <div></div>
+        <div class="letter c"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 1; --grid-y: 0.5;">
+        <div class="letter c"></div>
+        <div class="letter c"></div>
+        <div class="letter c"></div>
+        <div></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 1; --grid-y: 1.5;">
+        <div class="letter bl"></div>
+        <div class="letter tr"></div>
+    </div>
+
+    <!-- T -->
+    <div class="grid-item letter-container" style="--grid-x: 2; --grid-y: -1;">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div class="letter c"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 2; --grid-y: 0;">
+        <div></div>
+        <div class="letter c"></div>
+        <div></div>
+        <div class="letter c"></div>
+        <div></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 2; --grid-y: 1;">
+        <div></div>
+        <div class="letter bl"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 3; --grid-y: 0;">
+        <div class="letter c"></div>
+    </div>
+    <div class="grid-item letter-container" style="--grid-x: 3; --grid-y: 1;">
+        <div class="letter tr"></div>
+    </div>
+
+    <!-- squares -->
+    <div class="grid-item square tXo" style="--grid-x: 0;--grid-y: 4; background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%);">
+        <p style="width: 100%; text-align: center; margin-top: 20px; font-weight: bold;">Eigen Projecten</p>
+        <p style="width: 100%; text-align: center; font-size: 40px">↓</p>
+    </div>
 </div>
 </body>
 </html>

@@ -33,14 +33,40 @@ window.addEventListener("mouseleave", () => {
   isDragging = false;
 });
 
-//when the user loads this page, the --rotate value on the grid should start at 0 and then animate to 360 degrees over the course of 5 seconds. that is the loading screen
-window.addEventListener("load", () => {
-  grid.style.setProperty("--rotate", "-90deg");
-  setTimeout(() => {
-    ease(-90, 0, 1000, (value) => {
-      grid.style.setProperty("--rotate", `${value}deg`);
+document.querySelectorAll('.grid-item .letter').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        const hue = Math.floor(Math.random() * 360);
+        el.style.background = `hsl(${hue}, 100%, 50%)`;
     });
-  }, 100); // Start the animation after a short delay
+
+    el.addEventListener('mouseleave', () => {
+        el.style.background = 'white';
+    });
+});
+
+//keybinds
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'r') {
+        //reset the background position to center (250px/second)
+        const currentX = parseFloat(getComputedStyle(grid).getPropertyValue("--x")) || 0;
+        const currentY = parseFloat(getComputedStyle(grid).getPropertyValue("--y")) || 0;
+        ease(currentX, 0, 500, (value) => {
+            grid.style.setProperty("--x", `${value}px`);
+        });
+        ease(currentY, 0, 500, (value) => {
+            grid.style.setProperty("--y", `${value}px`);
+        });
+    }
+});
+
+//when loading the page, after a second start ease the --grid-size from 120px to 60px in 0.5s
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const currentSize = 120; //initial size
+        ease(currentSize, 60, 500, (value) => {
+            grid.style.setProperty("--cell-size", `${value}px`);
+        });
+    }, 1000);
 });
 
 //ease-in-out

@@ -1,0 +1,1 @@
+De berekeningen voor de background position moeten naar JS toe, CSS is te langzaam.

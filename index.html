@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <script src="index.js" defer></script>
 </head>
 <body>
 <div id="loading-animation">
@@ -99,11 +98,45 @@
         <div class="letter tr"></div>
     </div>
 
-    <!-- squares -->
-    <div class="grid-item square tXo" style="--grid-x: 0;--grid-y: 4; background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 100%);" data-tooltip="Eigen Projecten">
-        <p style="width: 100%; text-align: center; margin-top: 20px; font-weight: bold;">Eigen Projecten</p>
-        <p style="width: 100%; text-align: center; font-size: 40px">↓</p>
+    <!-- wires -->
+    <div class="grid-item" style="--grid-x: -1; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 16);">
+        <svg width="400" height="800" viewBox="0 0 400 1600" id="mainSVG">
+            <defs>
+                <!-- glow filter -->
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <g id="wire1"></g>
+        </svg>
     </div>
+
+    <!-- titles -->
+    <div class="grid-item title" style="--grid-x: -0.5; --grid-y: 10;">
+        <span>PROJECTEN</span>
+    </div>
+
+    <!-- Projects -->
+    <div class="grid-item area" style="--grid-x: -6; --grid-y: 9.2; width: calc(var(--cell-size) * 24); height: calc(var(--cell-size) * 20);"></div>
+
+    <div class="grid-item square" style="--grid-x: -3; --grid-y: 12; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
+        <div class="image-text">
+            <img src="images/zermos_logo.png" height="192" width="192"/>
+            Zermos
+        </div>
+    </div>
+
 </div>
 </body>
+<script src="index.js"></script>
+<script defer>
+    const wire1Container = document.getElementById('wire1');
+    const pathD = "M130 0C125 60 94 86 109 143S205 242 200 317 114 439 68 387 153 130 224 135 265 395 239 447 52 515 122 718 241 656 306 739-28 1030 52 1143 92 1096 219 1056 368 1208 310 1335 153 1486 186 1375 153 1215 102 1281 186 1517 196 1543 200 1585 200 1600";
+    wire1Container.appendChild(createWire(pathD, '#cdcdcd'));
+</script>
 </html>

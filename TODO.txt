@@ -1,1 +1,1 @@
-De berekeningen voor de background position moeten naar JS toe, CSS is te langzaam.
+turn the html elements into a canvas to draw on, since it is even faster

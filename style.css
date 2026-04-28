@@ -78,26 +78,13 @@ p {
     transition: box-shadow 0.3s ease;
     width: calc(var(--cell-size) * 2);
     height: calc(var(--cell-size) * 2);
-}
-
-#grid .grid-item.oXt {
-    width: calc(var(--cell-size) * 2);
-    height: calc(var(--cell-size) * 4);
-}
-
-#grid .grid-item.tXo {
-    width: calc(var(--cell-size) * 4);
-    height: calc(var(--cell-size) * 2);
-}
-
-#grid .grid-item.tXt {
-    width: calc(var(--cell-size) * 4);
-    height: calc(var(--cell-size) * 4);
+    z-index: 1;
 }
 
 #grid .grid-item.square {
     box-shadow: 5px 5px 0px rgb(0 0 0 / 10%);
     border-radius: 20px;
+    background: white;
 }
 
 #grid .grid-item.square:hover {
@@ -108,6 +95,33 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+#grid .grid-item > svg {
+    width: 100%;
+    height: 100%;
+}
+
+#grid .grid-item > .image-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+
+}
+
+#grid .grid-item > .image-text > img {
+    height: 80%;
+    width: auto;
+    aspect-ratio: 1;
+    margin-right: 5px;
+}
+
+#grid .grid-item > .image-text > span {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
 }
 
 .grid-item.letter-container {
@@ -146,6 +160,24 @@ p {
 }
 .grid-item .br {
     border-bottom-right-radius: 75%;
+}
+
+.grid-item.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-item.title > span {
+    font-size: 100px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.grid-item.area {
+    border-radius: 20px;
+    border: 5px solid black;
 }
 
 /* ======================================================================== */
@@ -248,3 +280,48 @@ p {
     top: -12px;
     position: relative;
 }
+
+/* ======================================================================== */
+/*                                   Wire                                   */
+/* ======================================================================== */
+.wire-shadow {
+    stroke: rgba(0,0,0,0.6);
+    stroke-width: 8;
+    fill: none;
+    stroke-linecap: round;
+    filter: url(#shadow-filter);
+}
+
+.wire-core {
+    stroke: #1a1a1a;
+    stroke-width: 10;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.wire-highlight {
+    stroke: rgba(255,255,255,0.4);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    filter: url(#glow);
+}
+
+.wire-pulse {
+    /*stroke: var(--wire-color, #ff0000);*/
+    /*stroke-width: 3;*/
+    fill: none;
+
+    /*stroke-dasharray: 100 500;*/
+    /*stroke-dashoffset: 0;*/
+
+    /*animation: pulse 2s linear infinite;*/
+
+    /*filter: url(#glow);*/
+}
+
+/*@keyframes pulse {*/
+/*    to {*/
+/*        stroke-dashoffset: -600;*/
+/*    }*/
+/*}*/

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .wire-shadow {
+            stroke: rgba(0,0,0,0.6);
+            stroke-width: 8;
+            fill: none;
+            stroke-linecap: round;
+            filter: url(#shadow-filter);
+        }
+
+        .wire-core {
+            stroke: #1a1a1a;
+            stroke-width: 10;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        .wire-highlight {
+            stroke: rgba(255,255,255,0.4);
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            filter: url(#glow);
+        }
+
+        .wire-pulse {
+            stroke: var(--wire-color);
+            stroke-width: 3;
+            fill: none;
+
+            stroke-dasharray: 20 60;
+            stroke-dashoffset: 0;
+
+            animation: pulse 2s linear infinite;
+
+            filter: url(#glow);
+        }
+
+        @keyframes pulse {
+            to {
+                stroke-dashoffset: -80;
+            }
+        }
+    </style>
+    <script>
+        /**
+         * Generates a wire SVG group element
+         * @param {string} pathD - SVG path definition for the wire core (e.g., "M50 100 C150 20, 250 180, 350 100")
+         * @param {string} color - Wire color for the pulse effect (default: #00e0ff)
+         * @param {number} wireWidth - Width of the main wire core (default: 10)
+         * @param {number} offsetAmount - Offset distance for shadow and highlight (default: 6)
+         * @returns {SVGGElement} - Group containing all wire elements
+         */
+        function createWire(pathD, color = '#00e0ff', wireWidth = 10, offsetAmount = 6) {
+            // Create the main group
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('class', 'wire');
+            group.setAttribute('style', `--wire-color:${color}`);
+
+            // Helper function to offset a path perpendicular to its direction
+            function offsetPath(pathD, offset) {
+                // This is a simplified offset - for complex paths, you might want to use a library
+                // For now, we'll apply a transform offset (not true perpendicular offset, but works for most cases)
+                return pathD;
+            }
+
+            // Helper function to create a path element
+            function createPathElement(pathD, className) {
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('class', className);
+                path.setAttribute('d', pathD);
+                return path;
+            }
+
+            // Create shadow (offset down and darkened)
+            const shadowPath = createPathElement(pathD, 'wire-shadow');
+            // For shadow, we apply a transform to offset it
+            const shadowGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            shadowGroup.setAttribute('transform', `translate(0, ${offsetAmount})`);
+            shadowGroup.appendChild(shadowPath);
+            group.appendChild(shadowGroup);
+
+            // Create main wire core (dark black)
+            group.appendChild(createPathElement(pathD, 'wire-core'));
+
+            // Create highlight (offset up and brightened)
+            const highlightPath = createPathElement(pathD, 'wire-highlight');
+            const highlightGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            highlightGroup.setAttribute('transform', `translate(0, -${offsetAmount})`);
+            highlightGroup.appendChild(highlightPath);
+            group.appendChild(highlightGroup);
+
+            // Create pulsing glow
+            group.appendChild(createPathElement(pathD, 'wire-pulse'));
+
+            return group;
+        }
+
+        /**
+         * Generates a wire from an array of 2D coordinates
+         * @param {Array<[number, number]>} points - Array of [x, y] coordinates
+         * @param {string} color - Wire color (default: #00e0ff)
+         * @param {number} wireWidth - Width of the main wire core (default: 10)
+         * @returns {SVGGElement} - Group containing all wire elements
+         */
+        function createWireFromPoints(points, color = '#00e0ff', wireWidth = 10) {
+            // Convert points to a smooth Catmull-Rom spline path
+            const pathD = pointsToSmoothPath(points);
+            return createWire(pathD, color, wireWidth);
+        }
+
+        /**
+         * Converts an array of points to a smooth SVG path using Catmull-Rom spline interpolation
+         * @param {Array<[number, number]>} points - Array of [x, y] coordinates
+         * @returns {string} - SVG path definition
+         */
+        function pointsToSmoothPath(points) {
+            if (points.length < 2) return '';
+            if (points.length === 2) {
+                return `M${points[0][0]} ${points[0][1]} L${points[1][0]} ${points[1][1]}`;
+            }
+
+            let path = `M${points[0][0]} ${points[0][1]}`;
+
+            // For each segment, create a cubic Bezier curve
+            for (let i = 0; i < points.length - 1; i++) {
+                const p0 = points[Math.max(i - 1, 0)];
+                const p1 = points[i];
+                const p2 = points[i + 1];
+                const p3 = points[Math.min(i + 2, points.length - 1)];
+
+                // Calculate control points using Catmull-Rom formula
+                const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+                const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+                const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+                const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+
+                path += ` C${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2[0]} ${p2[1]}`;
+            }
+
+            return path;
+        }
+    </script>
+<body>
+    <svg width="600" height="200" viewBox="0 0 600 200" id="mainSVG">
+        <defs>
+            <!-- glow filter -->
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <!-- Example 1: Wire from SVG path -->
+        <g id="wire1"></g>
+
+        <!-- Example 2: Wire from points array -->
+        <g id="wire2"></g>
+    </svg>
+
+    <script>
+        // Example 1: Create a wire from a path definition
+        const wire1Container = document.getElementById('wire1');
+        const pathD = "M50 100 C150 20, 250 180, 350 100";
+        wire1Container.appendChild(createWire(pathD, '#ff3b3b'));
+
+        // Example 2: Create a wire from an array of points
+        const wire2Container = document.getElementById('wire2');
+        const points = [
+            [400, 100],
+            [420, 60],
+            [450, 80],
+            [480, 40],
+            [510, 90],
+            [550, 50]
+        ];
+        wire2Container.appendChild(createWireFromPoints(points, '#00ff88'));
+    </script>
+</body>
+</html>

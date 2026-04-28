@@ -119,3 +119,57 @@ function ease(start, end, duration, callback) {
         if (p < 1) requestAnimationFrame(animate);
     })();
 }
+
+// ─── WIRE ─────────────────────────────────────────────────────────────
+/**
+ * Generates a wire SVG group element
+ * @param {string} pathD - SVG path definition for the wire core (e.g., "M50 100 C150 20, 250 180, 350 100")
+ * @param {string} color - Wire color for the pulse effect (default: #00e0ff)
+ * @param {number} wireWidth - Width of the main wire core (default: 10)
+ * @param {number} offsetAmount - Offset distance for shadow and highlight (default: 6)
+ * @returns {SVGGElement} - Group containing all wire elements
+ */
+function createWire(pathD, color = '#00e0ff', wireWidth = 10, offsetAmount = 6) {
+    // Create the main group
+    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    group.setAttribute('class', 'wire');
+    group.setAttribute('style', `--wire-color:${color}`);
+
+    // Helper function to offset a path perpendicular to its direction
+    function offsetPath(pathD, offset) {
+        // This is a simplified offset - for complex paths, you might want to use a library
+        // For now, we'll apply a transform offset (not true perpendicular offset, but works for most cases)
+        return pathD;
+    }
+
+    // Helper function to create a path element
+    function createPathElement(pathD, className) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', className);
+        path.setAttribute('d', pathD);
+        return path;
+    }
+
+    // Create shadow (offset down and darkened)
+    const shadowPath = createPathElement(pathD, 'wire-shadow');
+    // For shadow, we apply a transform to offset it
+    const shadowGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    shadowGroup.setAttribute('transform', `translate(6, ${offsetAmount})`);
+    shadowGroup.appendChild(shadowPath);
+    group.appendChild(shadowGroup);
+
+    // Create main wire core (dark black)
+    group.appendChild(createPathElement(pathD, 'wire-core'));
+
+    // Create highlight (offset up and brightened)
+    const highlightPath = createPathElement(pathD, 'wire-highlight');
+    const highlightGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    highlightGroup.setAttribute('transform', `translate(6, -${offsetAmount})`);
+    highlightGroup.appendChild(highlightPath);
+    group.appendChild(highlightGroup);
+
+    // Create pulsing glow
+    group.appendChild(createPathElement(pathD, 'wire-pulse'));
+
+    return group;
+}

@@ -12,6 +12,7 @@
     <p class="help-text">Klik <kbd data-tooltip="Toetsenbord bedoel ik hoor">R</kbd> om te centreren</p>
 </div>
 <div id="grid" style="--x: 0px; --y: 0px; --rotate: 0deg;">
+<!--    <div class="grid-item square" style="background: red; &#45;&#45;grid-x: -0; &#45;&#45;grid-y: 0; z-index: 100;"></div>-->
 
     <!-- MATT NAME -->
     <!-- M -->
@@ -99,8 +100,8 @@
     </div>
 
     <!-- wires -->
-    <div class="grid-item" style="--grid-x: -1; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 16);">
-        <svg width="400" height="800" viewBox="0 0 400 1600" id="mainSVG">
+    <div class="grid-item" style="--grid-x: -1; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 15.65);">
+        <svg width="400" height="800" viewBox="0 0 400 1600" id="mainSVG1">
             <defs>
                 <!-- glow filter -->
                 <filter id="glow">
@@ -116,18 +117,59 @@
         </svg>
     </div>
 
-    <!-- titles -->
+    <div class="grid-item" style="--grid-x: 2; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 14); height: calc(var(--cell-size) * 6);">
+        <svg width="1400" height="600" viewBox="0 0 1400 600" id="mainSVG2">
+            <defs>
+                <!-- glow filter -->
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <g id="wire2"></g>
+        </svg>
+    </div>
+
+    <!-- Contact -->
+    <div class="grid-item area" style="--grid-x: 9; --grid-y: -2; width: calc(var(--cell-size) * 12.1); height: calc(var(--cell-size) * 14.1);">
+        <div class="power-box" style="top: 68%;transform: translateY(-50%) rotateZ(-90deg);left: -30px;"></div>
+    </div>
+
+    <div class="grid-item title" style="--grid-x: 11.5; --grid-y: -2;">
+        <span>CONTACT</span>
+    </div>
+
+    <div class="grid-item square" style="--grid-x: 10; --grid-y: 0; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
+        <a class="image-text" href="https://github.com/matttersteege" target="_blank">
+            <img src="images/GitHub_Invertocat_Black_Clearspace.svg" height="192" width="192"/>
+            <span>Github</span>
+        </a>
+    </div>
+
+    <div class="grid-item square" style="--grid-x: 12; --grid-y: 1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
+        <a class="image-text" href="mailto:matttersteege@gmail.com" target="_blank">
+            <img src="images/email-icon.svg" height="192" width="192"/>
+            <span>Email</span>
+        </a>
+    </div>
+
+    <!-- Projects -->
+    <div class="grid-item area" style="--grid-x: -6; --grid-y: 9; width: calc(var(--cell-size) * 24.1); height: calc(var(--cell-size) * 20.1);">
+        <div class="power-box" style="left: 50%; translate: -50% 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;"></div>
+    </div>
+
     <div class="grid-item title" style="--grid-x: -0.5; --grid-y: 10;">
         <span>PROJECTEN</span>
     </div>
 
-    <!-- Projects -->
-    <div class="grid-item area" style="--grid-x: -6; --grid-y: 9.2; width: calc(var(--cell-size) * 24); height: calc(var(--cell-size) * 20);"></div>
-
     <div class="grid-item square" style="--grid-x: -3; --grid-y: 12; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
         <div class="image-text">
             <img src="images/zermos_logo.png" height="192" width="192"/>
-            Zermos
+            <span>Zermos</span>
         </div>
     </div>
 
@@ -136,7 +178,11 @@
 <script src="index.js"></script>
 <script defer>
     const wire1Container = document.getElementById('wire1');
-    const pathD = "M130 0C125 60 94 86 109 143S205 242 200 317 114 439 68 387 153 130 224 135 265 395 239 447 52 515 122 718 241 656 306 739-28 1030 52 1143 92 1096 219 1056 368 1208 310 1335 153 1486 186 1375 153 1215 102 1281 186 1517 196 1543 200 1585 200 1600";
-    wire1Container.appendChild(createWire(pathD, '#cdcdcd'));
+    const pathD1 = "M130 0C125 60 94 86 109 143S205 242 200 317 114 439 68 387 153 130 224 135 265 395 239 447 52 515 122 718 241 656 306 739-28 1030 52 1143 92 1096 219 1056 368 1208 310 1335 153 1486 186 1375 153 1215 102 1281 186 1517 196 1543 200 1585 200 1600";
+    wire1Container.appendChild(createWire(pathD1, '#8e8e8e'));
+
+    const wire2Container = document.getElementById('wire2');
+    const pathD2 = "M0 100C26 101 55 82 67 141S-16 378 89 423 291 433 309 366 231 166 466 98 1035 252 881 389 719.6667 255 565 231 278 418 423 495 910 593 979 474 966 141 1183 162 1213 279 1400 300";
+    wire2Container.appendChild(createWire(pathD2, '#8e8e8e'));
 </script>
 </html>

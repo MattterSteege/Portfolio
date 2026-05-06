@@ -91,17 +91,18 @@ a::after {
     width: calc(var(--cell-size) * 2);
     height: calc(var(--cell-size) * 2);
     z-index: 1;
+    will-change: transform; /* hint browsers to promote these to their own layer for transforms */
 }
 
 #grid .grid-item.square {
-    box-shadow: 5px 5px 0px rgb(0 0 0 / 10%);
+    box-shadow: 3px 3px 0px rgb(0 0 0 / 8%);
     border-radius: 20px;
     background: white;
 }
 
 #grid .grid-item.square:hover {
-    box-shadow: 5px 5px 0px rgb(0 0 0 / 30%);
-    translate: 2px 2px;
+    box-shadow: 4px 4px 0px rgb(0 0 0 / 14%);
+    transform: translate3d(2px,2px,0);
 }
 
 #grid .grid-item.square > img {
@@ -156,11 +157,11 @@ a::after {
     background: white;
     width: var(--cell-size);
     height: var(--cell-size);
-    outline: 10px solid black;
-    outline-offset: -5px;
+    outline: 6px solid black; /* reduced outline thickness */
+    outline-offset: -3px;
     box-shadow: 15px 30px black;
-    filter: drop-shadow(5px 5px 0px rgb(0 0 0 / 10%));
-    transition: background 0.3s ease;
+    filter: none; /* avoid drop-shadow on individual tiles */
+    transition: background 0.25s ease, transform 0.12s ease;
 }
 
 .grid-item .tl {
@@ -270,25 +271,68 @@ a::after {
 /* ======================================================================== */
 /*                                Animations                                */
 /* ======================================================================== */
-#loading-animation {
-    width: 100vw;
-    height: 100vh;
+#splash-container {
+    --splash-duration: 2s;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns:1fr;
+    grid-template-rows:30% 1fr 30%;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
     position: fixed;
-    z-index: 100;
-    background-color: white;
-    transition: background-color 0.5s ease, filter 0.5s ease;
-    backdrop-filter: blur(20px);
-    pointer-events: none;
-    animation: loading-blur 1s ease-out forwards;
-    animation-delay: 1s;
+    z-index: 100000;
+    background: white;
+    animation: fade var(--splash-duration) forwards;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    /*rounded font type*/
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-@keyframes loading-blur {
-    100% {
-        backdrop-filter: blur(0);
-        background-color: transparent;
+.outer_z, .inner_z {
+    grid-area: 2 / 1 / 3 / 3;
+    width: 100%;
+    height: 100%
+}
+
+.outer_z text {
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    animation: draw var(--splash-duration) forwards
+}
+
+@keyframes draw {
+    66.66% {
+        stroke-dashoffset: 0
     }
 }
+
+@keyframes fade {
+    0%, 75% {
+        translate: 0% 0%
+    }
+    100% {
+        translate: 0% -100%
+    }
+}
+
+svg + .inner_z {
+    animation: fadeIn;
+    animation-duration: var(--splash-duration)
+}
+
+@keyframes fadeIn {
+    0%, 53.33% {
+        opacity: 0
+    }
+    66.66% {
+        opacity: 1
+    }
+    100% {
+        opacity: 1
+    }
+}
+
 
 /* ======================================================================== */
 /*                                 Tooltip                                  */
@@ -330,25 +374,25 @@ a::after {
 /* ======================================================================== */
 .wire-shadow {
     stroke: rgba(0,0,0,0.6);
-    stroke-width: 8;
+    stroke-width: 6;
     fill: none;
     stroke-linecap: round;
-    filter: url(#shadow-filter);
+    filter: none; /* avoid heavy shadow filters */
 }
 
 .wire-core {
     stroke: #1a1a1a;
-    stroke-width: 10;
+    stroke-width: 8;
     fill: none;
     stroke-linecap: round;
 }
 
 .wire-highlight {
     stroke: rgba(255,255,255,0.4);
-    stroke-width: 3;
+    stroke-width: 2.5;
     fill: none;
     stroke-linecap: round;
-    filter: url(#glow);
+    filter: none; /* remove glow filter */
 }
 
 .wire-pulse {
@@ -356,16 +400,34 @@ a::after {
     stroke-width: 3;
     fill: none;
 
-    stroke-dasharray: 100 500;
+    /* smaller dasharray and animate opacity instead of dashoffset to reduce repaint cost */
+    stroke-dasharray: 20 80;
     stroke-dashoffset: 0;
 
-    animation: pulse 2s linear infinite;
+    animation: pulse-opacity 2.5s linear infinite;
 
-    filter: url(#glow);
+    filter: none;
+    will-change: opacity;
 }
 
-@keyframes pulse {
-    to {
-        stroke-dashoffset: -600;
-    }
+@keyframes pulse-opacity {
+    0% { stroke-opacity: 0.0; }
+    50% { stroke-opacity: 1; }
+    100% { stroke-opacity: 0.0; }
+}
+
+/* Low-power overrides: disable expensive visuals */
+.low-power .wire-pulse,
+.low-power .wire-highlight,
+.low-power .wire-shadow {
+    display: none !important;
+}
+.low-power .overlay { display: none !important; }
+.low-power #loading-animation { display: none !important; }
+.low-power .grid-item .letter.c,
+.low-power .grid-item .letter.tl,
+.low-power .grid-item .letter.tr,
+.low-power .grid-item .letter.bl,
+.low-power .grid-item .letter.br {
+    transition: none;
 }

@@ -6,6 +6,11 @@ let offsetX = 0, offsetY = 0;
 let currentRotate = 0; // radians — extend this if you add rotation
 let cellSize = 60;
 
+// Low-power heuristic: avoid heavy work on weak devices
+const isLowPower = (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+if (isLowPower) document.documentElement.classList.add('low-power');
+
 // ── Inverse-isometric matrix constants ───────────────────────────────────────
 // Derived from: skewX(-48) * skewY(14) * scaleX(2) * scale(0.371484375)
 const A = 1.345970, B = 1.494851, C = 0.671183, D = 1.946543;
@@ -30,23 +35,27 @@ function updatePositions() {
     grid.style.setProperty('--normalized-x', `${nx}px`);
     grid.style.setProperty('--normalized-y', `${ny}px`);
 
-    // Translate each grid item with a single pre-computed value — no CSS calc at all.
+    // Translate each grid item using GPU-friendly transforms (translate3d)
     const half = Math.max(window.innerHeight, window.innerWidth) * 1.5; // == --size / 2
     for (const { el, gx, gy } of gridItems) {
-        el.style.translate =
-            `${gx * 2 * cellSize - cellSize + nx - 5 + half}px ` +
-            `${gy * 2 * cellSize - cellSize + ny - 5 + half}px`;
+        const x = gx * 2 * cellSize - cellSize + nx - 5 + half;
+        const y = gy * 2 * cellSize - cellSize + ny - 5 + half;
+        el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     }
 }
 
-// ── Drag ──────────────────────────────────────────────────────────────────────
-window.addEventListener("mousedown", (e) => {
+// ── Drag (pointer events + rAF throttling) ─────────────────────────────────
+let pointerCaptureId = null;
+window.addEventListener('pointerdown', (e) => {
+    // Only start dragging for primary button
+    if (e.button !== undefined && e.button !== 0) return;
     isDragging = true;
     lastX = e.clientX;
     lastY = e.clientY;
+    try { e.target.setPointerCapture?.(e.pointerId); pointerCaptureId = e.pointerId; } catch (err) {}
 });
 
-window.addEventListener("mousemove", (e) => {
+window.addEventListener('pointermove', (e) => {
     if (!isDragging) return;
     offsetX += e.clientX - lastX;
     offsetY += e.clientY - lastY;
@@ -57,29 +66,25 @@ window.addEventListener("mousemove", (e) => {
         rafPending = true;
         requestAnimationFrame(() => { updatePositions(); rafPending = false; });
     }
-});
+}, { passive: true });
 
-window.addEventListener("mouseup",    () => { isDragging = false; });
-window.addEventListener("mouseleave", () => { isDragging = false; });
-
-// ── Letter hover colours ──────────────────────────────────────────────────────
-document.querySelectorAll('.grid-item .letter').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        el.style.background = `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
-    });
-    el.addEventListener('mouseleave', () => { el.style.background = 'white'; });
+window.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    try { e.target.releasePointerCapture?.(pointerCaptureId); } catch (err) {}
+    pointerCaptureId = null;
 });
+window.addEventListener('pointercancel', () => { isDragging = false; pointerCaptureId = null; });
 
 // ── Keybinds ──────────────────────────────────────────────────────────────────
 window.addEventListener('keydown', (e) => {
-    if (e.key === 'r') {
+    if (e.key === 'r' || e.key === 'R') {
         const sx = offsetX, sy = offsetY;
         ease(sx, 0, 500, v => { offsetX = v; updatePositions(); });
         ease(sy, 0, 500, v => { offsetY = v; updatePositions(); });
     }
 });
 
-// ── Init & resize ─────────────────────────────────────────────────────────────
+// ── Init & resize (defer wire creation; debounce resize) ─────────────────────
 window.addEventListener('load', () => {
     updatePositions();
     setTimeout(() => {
@@ -89,9 +94,19 @@ window.addEventListener('load', () => {
             updatePositions();
         });
     }, 1000);
+
+    // Defer heavy wire generation until idle or a short timeout — skip on low-power
+    if (!isLowPower) {
+        if ('requestIdleCallback' in window) requestIdleCallback(() => { generateWiresDeferred(); });
+        else setTimeout(generateWiresDeferred, 600);
+    }
 });
 
-window.addEventListener('resize', updatePositions);
+let resizeRaf = null;
+window.addEventListener('resize', () => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => { updatePositions(); resizeRaf = null; });
+}, { passive: true });
 
 // ── Tooltip ───────────────────────────────────────────────────────────────────
 const tooltip = document.createElement('div');
@@ -135,13 +150,6 @@ function createWire(pathD, color = '#00e0ff', wireWidth = 10, offsetAmount = 6) 
     group.setAttribute('class', 'wire');
     group.setAttribute('style', `--wire-color:${color}`);
 
-    // Helper function to offset a path perpendicular to its direction
-    function offsetPath(pathD, offset) {
-        // This is a simplified offset - for complex paths, you might want to use a library
-        // For now, we'll apply a transform offset (not true perpendicular offset, but works for most cases)
-        return pathD;
-    }
-
     // Helper function to create a path element
     function createPathElement(pathD, className) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -173,3 +181,22 @@ function createWire(pathD, color = '#00e0ff', wireWidth = 10, offsetAmount = 6) 
 
     return group;
 }
+
+// Deferred wire generation wrapper — small helper to create wires when idle
+function generateWiresDeferred() {
+    try {
+        const wire1Container = document.getElementById('wire1');
+        const pathD1 = "M130 0C125 60 94 86 109 143S205 242 200 317 114 439 68 387 153 130 224 135 265 395 239 447 52 515 122 718 241 656 306 739-28 1030 52 1143 92 1096 219 1056 368 1208 310 1335 153 1486 186 1375 153 1215 102 1281 186 1517 196 1543 200 1585 200 1600";
+        wire1Container.appendChild(createWire(pathD1, '#8e8e8e', 10, 6));
+
+        const wire2Container = document.getElementById('wire2');
+        const pathD2 = "M0 100C26 101 55 82 67 141S-16 378 89 423 291 433 309 366 231 166 466 98 1035 252 881 389 719.6667 255 565 231 278 418 423 495 910 593 979 474 966 141 1183 162 1213 279 1400 300";
+        wire2Container.appendChild(createWire(pathD2, '#8e8e8e', 10, 6));
+    } catch (err) {
+        // Fail silently if SVG containers are missing
+        console.warn('Wire generation skipped', err);
+    }
+}
+
+// Expose for debugging if needed
+window.__generateWires = generateWiresDeferred;

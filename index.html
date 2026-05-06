@@ -5,8 +5,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="loading-animation">
-    <div class="circle-load"></div>
+<div id="splash-container">
+    <svg class="outer_z" width="500" height="500">
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="none" stroke="#222" stroke-width="1" font-size="50">MATT TER STEEGE</text>
+    </svg>
+    <svg class="inner_z" width="500" height="500">
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#222" stroke="#222" stroke-width="1" font-size="50">MATT TER STEEGE</text>
+    </svg>
 </div>
 <div class="overlay">
     <p class="help-text">Klik <kbd>R</kbd> om te centreren</p>
@@ -103,9 +108,9 @@
     <div class="grid-item" style="--grid-x: -1; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 15.65);">
         <svg width="400" height="800" viewBox="0 0 400 1600" id="mainSVG1">
             <defs>
-                <!-- glow filter -->
+                <!-- glow filter (reduced) -->
                 <filter id="glow">
-                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feGaussianBlur stdDeviation="0.8" result="blur"/>
                     <feMerge>
                         <feMergeNode in="blur"/>
                         <feMergeNode in="SourceGraphic"/>
@@ -120,9 +125,9 @@
     <div class="grid-item" style="--grid-x: 2; --grid-y: 1.2; z-index: -1; width: calc(var(--cell-size) * 14); height: calc(var(--cell-size) * 6);">
         <svg width="1400" height="600" viewBox="0 0 1400 600" id="mainSVG2">
             <defs>
-                <!-- glow filter -->
+                <!-- glow filter (reduced) -->
                 <filter id="glow">
-                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feGaussianBlur stdDeviation="0.8" result="blur"/>
                     <feMerge>
                         <feMergeNode in="blur"/>
                         <feMergeNode in="SourceGraphic"/>
@@ -150,7 +155,7 @@
         </a>
     </div>
 
-    <div class="grid-item square" style="--grid-x: 12; --grid-y: 1; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
+    <div class="grid-item square" style="--grid-x: 12; --grid-y: 0; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
         <a class="image-text" href="mailto:matttersteege@gmail.com" target="_blank">
             <img src="images/email-icon.svg" height="192" width="192"/>
             <span>Email</span>
@@ -167,22 +172,20 @@
     </div>
 
     <div class="grid-item square" style="--grid-x: -3; --grid-y: 12; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
-        <div class="image-text">
+        <a class="image-text" href="https://github.com/MattterSteege/Zermos-Archive" target="_blank">
             <img src="images/zermos_logo.png" height="192" width="192"/>
             <span>Zermos</span>
-        </div>
+        </a>
+    </div>
+
+    <div class="grid-item square" style="--grid-x: 0; --grid-y: 12; width: calc(var(--cell-size) * 4); height: calc(var(--cell-size) * 2);">
+        <a class="image-text" href="https://github.com/MattterSteege/Prism-Simulation" target="_blank">
+            <span style="padding-left: 10px" >Prism Simulation</span>
+        </a>
     </div>
 
 </div>
 </body>
 <script src="index.js"></script>
-<script defer>
-    const wire1Container = document.getElementById('wire1');
-    const pathD1 = "M130 0C125 60 94 86 109 143S205 242 200 317 114 439 68 387 153 130 224 135 265 395 239 447 52 515 122 718 241 656 306 739-28 1030 52 1143 92 1096 219 1056 368 1208 310 1335 153 1486 186 1375 153 1215 102 1281 186 1517 196 1543 200 1585 200 1600";
-    wire1Container.appendChild(createWire(pathD1, '#8e8e8e'));
-
-    const wire2Container = document.getElementById('wire2');
-    const pathD2 = "M0 100C26 101 55 82 67 141S-16 378 89 423 291 433 309 366 231 166 466 98 1035 252 881 389 719.6667 255 565 231 278 418 423 495 910 593 979 474 966 141 1183 162 1213 279 1400 300";
-    wire2Container.appendChild(createWire(pathD2, '#8e8e8e'));
-</script>
+<!-- wires are now created deferred from index.js (generateWiresDeferred) to avoid blocking initial render -->
 </html>

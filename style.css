@@ -1,234 +1,41 @@
+/* Fullscreen canvas scene */
 * {
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
-    user-select: none;
+    padding: 0;
 }
 
-body {
-    --size: max(300vh, 300vw);
-    --cell-size: 60px;
-
-    margin: 0;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background: #f8f8f8;
-
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-p {
-    font-size: 24px;
-    color: #333;
-    pointer-events: none;
-    z-index: 2;
-}
-
-a {
-    text-decoration: none;
-}
-
-a::after {
-    font-size: inherit;
-    content: '🗗';
-    margin-left: 5px;
-    color: #333;
-    text-decoration: none;
-}
-
-#grid {
+#scene {
     position: fixed;
-    transform:
-            translate(-50%, -50%)
-            skewX(-48deg)
-            skewY(14deg)
-            scaleX(2)
-            scale(0.371484375)
-            translateZ(0);
-    will-change: transform, background-position;
-    width: var(--size);
-    aspect-ratio: 1;
-    left: 50%;
-    top: 50%;
-    transform-origin: center;
-
-    /* Set by JS â€” plain pixel values, no calc chain */
-    --normalized-x: 0px;
-    --normalized-y: 0px;
-}
-
-#grid::before {
-    content: '';
-    position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(0, 0, 0, .07) 1px, #0000 1px), linear-gradient(90deg, rgba(0, 0, 0, .07) 1px, #0000 1px);
-    background-size: var(--cell-size) var(--cell-size);
-    background-position:
-            calc(50% + var(--normalized-x) + var(--cell-size) / 2)
-            calc(50% + var(--normalized-y) + var(--cell-size) / 2);
-    background-attachment: fixed;
-    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    cursor: grab;
+    touch-action: none;
+    border-radius: 24px;
 }
 
-#grid::after {
+body::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M52 60h16M60 52v16' stroke='%23000' stroke-opacity='.35' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-size: calc(var(--cell-size) * 2) calc(var(--cell-size) * 2);
-    background-position:
-            calc(50% + var(--normalized-x) + var(--cell-size) + 0.5px)
-            calc(50% + var(--normalized-y) + var(--cell-size) + 0.5px);
-    pointer-events: none;
-    z-index: -1;
-}
-
-#grid .grid-item {
-    --grid-x: 0;
-    --grid-y: 0;
     position: fixed;
-    top: 0%;
-    left: 0%;
-    transition: box-shadow 0.3s ease;
-    width: calc(var(--cell-size) * 2);
-    height: calc(var(--cell-size) * 2);
-    z-index: 1;
-    will-change: transform; /* hint browsers to promote these to their own layer for transforms */
-}
-
-#grid .grid-item.square {
-    box-shadow: 3px 3px 0px rgb(0 0 0 / 8%);
-    border-radius: 20px;
-    background: white;
-}
-
-#grid .grid-item.square:hover {
-    box-shadow: 4px 4px 0px rgb(0 0 0 / 14%);
-    transform: translate3d(2px,2px,0);
-}
-
-#grid .grid-item.square > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#grid .grid-item > svg {
-    width: 100%;
-    height: 100%;
-}
-
-#grid .grid-item.image > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#grid .grid-item > .image-text {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 100%;
-    font-size: 30px;
-    font-weight: bold;
-    color: #333;
-}
-
-#grid .grid-item > .image-text > img {
-    height: 80%;
-    width: auto;
-    aspect-ratio: 1;
-    margin-right: 5px;
-}
-
-.grid-item.letter-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    width: 100%;
-    height: 100%;
-}
-
-/* LETTER */
-.grid-item .letter.c,
-.grid-item .letter.tl,
-.grid-item .letter.tr,
-.grid-item .letter.bl,
-.grid-item .letter.br {
-    background: white;
-    width: var(--cell-size);
-    height: var(--cell-size);
-    outline: 6px solid black; /* reduced outline thickness */
-    outline-offset: -3px;
-    box-shadow: 15px 30px black;
-    filter: none; /* avoid drop-shadow on individual tiles */
-    transition: background 0.25s ease, transform 0.12s ease;
-}
-
-.grid-item .tl {
-    border-top-left-radius: 75%;
-}
-.grid-item .tr {
-    border-top-right-radius: 75%;
-}
-.grid-item .bl {
-    border-bottom-left-radius: 75%;
-}
-.grid-item .br {
-    border-bottom-right-radius: 75%;
-}
-
-.grid-item.title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.grid-item.title > span {
-    font-size: 100px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-}
-
-.grid-item.area {
-    border-radius: 20px;
-    border: 5px solid black;
-}
-
-.grid-item.area .power-box {
-    position: absolute;
-    width: 80px;
-    height: 30px;
-    overflow: hidden;
-    background: transparent;
-    pointer-events: none;
-    will-change: opacity, transform;
-    z-index: 2;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-/* Use a pseudo-element with a stable radial gradient and animate its opacity/transform for smoothness */
-.grid-item.area .power-box::before {
-    content: "";
-    position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% -50%, rgb(0, 0, 0) 0%, rgb(30, 30, 30) 60%, rgb(0, 0, 0) 100%);
-    opacity: 1;
-    transform-origin: center;
-    animation: powerpulse 2s ease-in-out infinite;
+    pointer-events: none;
 }
 
-@keyframes powerpulse {
-    0%   { opacity: 1; transform: scaleY(1); }
-    25%  { opacity: 0.6; transform: scaleY(0.98); }
-    50% { opacity: 1; transform: scaleY(1); }
+#scene:active {
+    cursor: grabbing;
 }
 
-/* ======================================================================== */
-/*                                Aesthetics                                */
-/* ======================================================================== */
-.overlay {
+#overlay {
     position: fixed;
     background: radial-gradient(ellipse at center, transparent 50%, rgba(255, 255, 255, 0.8) 100%);
     -webkit-mask-image: radial-gradient(ellipse at center, transparent 50%, black 100%);
@@ -242,192 +49,4 @@ a::after {
     -webkit-user-select: none;
     user-select: none;
     z-index: 1;
-}
-
-/*<p class="help-text">Press <kbd>R</kbd> to recenter</p>*/
-
-.overlay .help-text {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.8);
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-family: sans-serif;
-    font-size: 14px;
-    color: #333;
-    pointer-events: none;
-}
-
-.overlay .help-text kbd {
-    background: #333;
-    color: white;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 12px;
-}
-
-/* ======================================================================== */
-/*                                Animations                                */
-/* ======================================================================== */
-#splash-container {
-    --splash-duration: 2s;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns:1fr;
-    grid-template-rows:30% 1fr 30%;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-    position: fixed;
-    z-index: 100000;
-    background: white;
-    animation: fade var(--splash-duration) forwards;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    /*rounded font type*/
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.outer_z, .inner_z {
-    grid-area: 2 / 1 / 3 / 3;
-    width: 100%;
-    height: 100%
-}
-
-.outer_z text {
-    stroke-dasharray: 300;
-    stroke-dashoffset: 300;
-    animation: draw var(--splash-duration) forwards
-}
-
-@keyframes draw {
-    66.66% {
-        stroke-dashoffset: 0
-    }
-}
-
-@keyframes fade {
-    0%, 75% {
-        translate: 0% 0%
-    }
-    100% {
-        translate: 0% -100%
-    }
-}
-
-svg + .inner_z {
-    animation: fadeIn;
-    animation-duration: var(--splash-duration)
-}
-
-@keyframes fadeIn {
-    0%, 53.33% {
-        opacity: 0
-    }
-    66.66% {
-        opacity: 1
-    }
-    100% {
-        opacity: 1
-    }
-}
-
-
-/* ======================================================================== */
-/*                                 Tooltip                                  */
-/* ======================================================================== */
-#tooltip {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    pointer-events: none;
-    z-index: 999;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: opacity 0.15s ease;
-}
-
-#tooltip.visible {
-    opacity: 1;
-}
-
-#tooltip svg {
-    display: block;
-    flex-shrink: 0;
-}
-
-#tooltip .tooltip-text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: #222;
-    top: -12px;
-    position: relative;
-}
-
-/* ======================================================================== */
-/*                                   Wire                                   */
-/* ======================================================================== */
-.wire-shadow {
-    stroke: rgba(0,0,0,0.6);
-    stroke-width: 6;
-    fill: none;
-    stroke-linecap: round;
-    filter: none; /* avoid heavy shadow filters */
-}
-
-.wire-core {
-    stroke: #1a1a1a;
-    stroke-width: 8;
-    fill: none;
-    stroke-linecap: round;
-}
-
-.wire-highlight {
-    stroke: rgba(255,255,255,0.4);
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    filter: none; /* remove glow filter */
-}
-
-.wire-pulse {
-    stroke: var(--wire-color, #ff0000);
-    stroke-width: 3;
-    fill: none;
-
-    /* smaller dasharray and animate opacity instead of dashoffset to reduce repaint cost */
-    stroke-dasharray: 20 80;
-    stroke-dashoffset: 0;
-
-    animation: pulse-opacity 2.5s linear infinite;
-
-    filter: none;
-    will-change: opacity;
-}
-
-@keyframes pulse-opacity {
-    0% { stroke-opacity: 0.0; }
-    50% { stroke-opacity: 1; }
-    100% { stroke-opacity: 0.0; }
-}
-
-/* Low-power overrides: disable expensive visuals */
-.low-power .wire-pulse,
-.low-power .wire-highlight,
-.low-power .wire-shadow {
-    display: none !important;
-}
-.low-power .overlay { display: none !important; }
-.low-power #loading-animation { display: none !important; }
-.low-power .grid-item .letter.c,
-.low-power .grid-item .letter.tl,
-.low-power .grid-item .letter.tr,
-.low-power .grid-item .letter.bl,
-.low-power .grid-item .letter.br {
-    transition: none;
 }

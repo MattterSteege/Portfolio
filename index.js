@@ -15,14 +15,16 @@ const state = {
     dpr: Math.min(window.devicePixelRatio || 1, 2),
     camera: { x: 0, y: 0 },
     zoom: 1,
-    cellSize: 80,
-    crossThickness: 0.4,
+    cellSize: 40,
+    crossThickness: 0.6,
     isDragging: false,
     lastPointer: { x: 0, y: 0 },
+    showSubgrid: true,
+    debugImages: false, // toggle visual debug for image boxes
 };
 
 // Isometric projection (2x2 matrix)
-const BASE_ISO = { a: 0.8660254, b: -0.8660254, c: 0.5, d: 0.5 };
+const BASE_ISO = { a: 1, b: -0.5, c: 0.3, d: 0.5 };
 const ISO = { a: BASE_ISO.a, b: BASE_ISO.b, c: BASE_ISO.c, d: BASE_ISO.d };
 const ISO_INV = invert2x2(ISO);
 
@@ -76,6 +78,7 @@ const gridProgram = createProgram(
         gl_Position = vec4(a_position, 0.0, 1.0);
     }`,
     `#version 300 es
+    #extension GL_OES_standard_derivatives : enable
     precision highp float;
     uniform vec2 u_viewport;
     uniform vec4 u_invIso;
@@ -96,23 +99,48 @@ const gridProgram = createProgram(
     void main() {
         vec2 screen = vec2(gl_FragCoord.x, u_viewport.y - gl_FragCoord.y);
         vec2 world = screenToWorld(screen);
-        world += vec2(u_cellSize * 0.5, u_cellSize * 0.5);
 
-        vec2 local = abs(fract(world / u_cellSize));
-        vec2 distToLine = min(local, 1.0 - local) * u_cellSize;
-        vec2 fw = fwidth(world / u_cellSize) * u_cellSize;
-        float lineWidth = max(fw.x, fw.y) * u_crossThickness;
-        float halfLen = u_cellSize * 0.2;
+        float subCell  = u_cellSize;
+        float mainCell = u_cellSize * 2.0;
 
-        float vLine = 1.0 - smoothstep(lineWidth, lineWidth * 2.0, distToLine.x);
-        float hLine = 1.0 - smoothstep(lineWidth, lineWidth * 2.0, distToLine.y);
-        float vSegment = vLine * (1.0 - smoothstep(halfLen, halfLen + lineWidth, distToLine.y));
-        float hSegment = hLine * (1.0 - smoothstep(halfLen, halfLen + lineWidth, distToLine.x));
-        float cross = clamp(max(vSegment, hSegment), 0.0, 1.0);
+        // Pixel footprint in world space — used to set line widths in world units
+        vec2 fw = fwidth(world);
+        float pixelSize = max(fw.x, fw.y);
 
-        vec3 bg = vec3(0.9725); // #f8f8f8
-        vec3 crossColor = mix(bg, vec3(0.86), cross * 0.7);
-        outColor = vec4(crossColor, 1.0);
+        // ---- Sub-grid: continuous thin lines at every cellSize ----
+        // Distance to nearest grid line along each axis, in world units
+        vec2 subCoord  = world / subCell;
+        vec2 subDist   = abs(fract(subCoord + 0.5) - 0.5) * subCell;
+
+        float subLineWidth = pixelSize * 1.2;   // ~1.2 pixels wide
+        float subH = 1.0 - smoothstep(0.0, subLineWidth, subDist.x);
+        float subV = 1.0 - smoothstep(0.0, subLineWidth, subDist.y);
+        float subGrid = clamp(max(subH, subV), 0.0, 1.0);
+
+        // ---- Main grid: short crosses at every 2*cellSize intersection ----
+        vec2 mainCoord = world / mainCell;
+        vec2 mainDist  = abs(fract(mainCoord + 0.5) - 0.5) * mainCell;
+
+        float crossLineWidth = pixelSize * u_crossThickness * 3.0;
+        float crossArmLen    = mainCell * 0.04;   // arm half-length
+
+        // Each arm: thin along its own axis, length-limited along the other
+        float hArm = (1.0 - smoothstep(0.0, crossLineWidth, mainDist.y))
+                   * (1.0 - smoothstep(crossArmLen, crossArmLen + crossLineWidth * 2.0, mainDist.x));
+        float vArm = (1.0 - smoothstep(0.0, crossLineWidth, mainDist.x))
+                   * (1.0 - smoothstep(crossArmLen, crossArmLen + crossLineWidth * 2.0, mainDist.y));
+        float crossMark = clamp(max(hArm, vArm), 0.0, 1.0);
+
+        // ---- Compose ----
+        vec3 bg         = vec3(0.9725);           // #f8f8f8
+        vec3 subColor   = vec3(0.80);             // light gray lines
+        vec3 crossColor = vec3(0.50);             // darker cross marks
+
+        vec3 col = bg;
+        col = mix(col, subColor,   subGrid   * 0.55);
+        col = mix(col, crossColor, crossMark * 0.90);
+
+        outColor = vec4(col, 1.0);
     }`
 );
 
@@ -139,10 +167,15 @@ Promise.all([
     loadTexture('images/zermos_logo.png'),
     loadTexture('images/GitHub_Invertocat_Black_Clearspace.svg'),
     loadTexture('images/email-icon.svg'),
-]).then(([logo, github, email]) => {
+    // rasterize SVG for predictable aspect/size
+    loadSvgAsTexture('images/matt_logo.svg', 1600),
+]).then(([logo, github, email, matt]) => {
     assets.textures.logo = logo;
     assets.textures.github = github;
     assets.textures.email = email;
+    assets.textures.matt = matt; // register matt logo texture (object with texture,width,height)
+
+    console.log('Loaded matt logo texture:', matt);
 
     assets.texts.title = createTextTexture('PORTFOLIO', 84, '#333', 'Segoe UI');
     assets.texts.subtitle = createTextTexture('Drag to explore. Press R to recenter.', 18, '#555', 'Segoe UI');
@@ -237,15 +270,47 @@ function drawTiles() {
 
     for (const tile of scene.tiles) {
         if (tile.shadow) {
-            drawRect(tile.x + 6, tile.y + 6, tile.w / 2, tile.h /2, [0, 0, 0, 0.08]);
+            drawRect(tile.x + 6, tile.y + 6, tile.w / 2, tile.h / 2, [0, 0, 0, 0.08]);
         }
-        drawRect(tile.x, tile.y, tile.w / 2, tile.h /2, tile.color);
+        drawRect(tile.x, tile.y, tile.w / 2, tile.h / 2, tile.color);
     }
 
     for (const image of scene.images) {
-        const tex = assets.textures[image.textureKey];
-        if (tex) {
-            drawTexture(image.x, image.y, image.w / 2, image.h / 2, tex, [1, 1, 1, 1]);
+        const texInfo = assets.textures[image.textureKey];
+        if (texInfo) {
+            // texInfo may be either a WebGLTexture (old) or an object {texture, width, height}
+            const tex = texInfo.texture ? texInfo.texture : texInfo;
+
+            // requested box (drawTexture previously used image.w/2, image.h/2)
+            const boxW = image.w / 2;
+            const boxH = image.h / 2;
+
+            let finalW = boxW;
+            let finalH = boxH;
+
+            if (texInfo.width && texInfo.height) {
+                const aspect = texInfo.width / texInfo.height;
+                // Fit the image inside boxW x boxH, preserving aspect
+                if (boxW / boxH > aspect) {
+                    // box is wider than image aspect -> limit by height
+                    finalH = boxH;
+                    finalW = boxH * aspect;
+                } else {
+                    // limit by width
+                    finalW = boxW;
+                    finalH = boxW / aspect;
+                }
+            }
+
+            // debug overlays: show requested box (red) and final fitted box (green)
+            if (state.debugImages) {
+                // requested area
+                drawRect(image.x, image.y, boxW, boxH, [1, 0, 0, 0.12]);
+                // fitted area
+                drawRect(image.x, image.y, finalW, finalH, [0, 1, 0, 0.12]);
+            }
+
+            drawTexture(image.x, image.y, finalW, finalH, tex, [1, 1, 1, 1]);
         }
     }
 
@@ -277,40 +342,22 @@ function buildScene() {
     return {
         tiles: [
             // { id: 'title', x: 0, y: 0, w: tile * 2, h: tile, color: [1, 1, 1, 1], shadow: true },
-            { id: 'logo', x: 0, y: 0, w: tile, h: tile, color: [1, 1, 1, 1], shadow: true },
+            // { id: 'logo', x: 0, y: 0, w: tile, h: tile, color: [1, 1, 1, 1], shadow: true },
             // { id: 'github', x: tile * 1.5, y: -tile * 0.5, w: tile, h: tile, color: [1, 1, 1, 1], shadow: true },
             // { id: 'email', x: tile * 1.5, y: tile * 1.2, w: tile, h: tile, color: [1, 1, 1, 1], shadow: true, href: LINKS.email },
         ],
         images: [
-            { x: 0, y: 0, w: tile * 0.9, h: tile * 0.9, textureKey: 'logo' },
+            // { x: 0, y: 0, w: tile * 0.9, h: tile * 0.9, textureKey: 'logo' },
+            // Example: matt logo sized to 13/2 by 5/2 tiles.
+            // drawTexture uses image.w/2, image.h/2 when drawing, so stored w/h must be twice the desired final size.
+            // Desired final width = tile * (13/2) => stored w = desired * 2 = tile * 13
+            // Desired final height = tile * (5/2)  => stored h = desired * 2 = tile * 5
+            { x: 0.3 * tile, y: 0.25 * tile, w: tile * 13.5, h: tile * 5 * 1.16307, textureKey: 'matt' },
             // { x: tile * 1.5, y: -tile * 0.5, w: tile * 0.75, h: tile * 0.75, textureKey: 'github' },
             // { x: tile * 1.5, y: tile * 1.2, w: tile * 0.75, h: tile * 0.75, textureKey: 'email' },
         ],
-        text: [
-            // { x: 0, y: 0, textKey: 'title' },
-            // { x: 0, y: tile * 0.8, textKey: 'subtitle' },
-            // { x: tile * 1.5, y: -tile * 0.5 + tile * 0.35, textKey: 'github' },
-            // { x: tile * 1.5, y: tile * 1.2 + tile * 0.35, textKey: 'email' },
-        ],
-        wires: [
-            // {
-            //     color: [0.1, 0.1, 0.1, 0.7],
-            //     points: [
-            //         [-tile * 1.5, -tile * 0.1],
-            //         [-tile * 0.7, -tile * 0.4],
-            //         [tile * 0.2, -tile * 0.3],
-            //         [tile * 1.2, -tile * 0.6],
-            //     ],
-            // },
-            // {
-            //     color: [0.2, 0.2, 0.2, 0.6],
-            //     points: [
-            //         [-tile * 0.8, tile * 0.8],
-            //         [tile * 0.1, tile * 0.6],
-            //         [tile * 0.9, tile * 1.0],
-            //     ],
-            // },
-        ],
+        text: [],
+        wires: [],
     };
 }
 
@@ -378,6 +425,8 @@ function drawTexture(x, y, w, h, texture, tint) {
     setQuadVertices(x0, y0, x1, y1);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
+    // set sampler to texture unit 0
+    if (quadProgram.uniforms.u_texture) gl.uniform1i(quadProgram.uniforms.u_texture, 0);
     gl.uniform1f(quadProgram.uniforms.u_useTexture, 1.0);
     gl.uniform4f(quadProgram.uniforms.u_color, tint[0], tint[1], tint[2], tint[3]);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -425,11 +474,93 @@ function loadTexture(src) {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-            resolve(texture);
+            // return both the WebGL texture and the natural image size to preserve aspect ratio
+            resolve({ texture, width: image.naturalWidth || image.width, height: image.naturalHeight || image.height });
         };
         image.onerror = reject;
         image.src = src;
     });
+}
+
+// Rasterize an SVG into an offscreen canvas and upload as a WebGL texture.
+// src: URL to SVG
+// maxPixelWidth: requested raster width in pixels (keeps aspect)
+function loadSvgAsTexture(src, maxPixelWidth = 1024) {
+    return fetch(src)
+        .then(res => {
+            if (!res.ok) throw new Error(`Failed to fetch SVG: ${res.status}`);
+            return res.text();
+        })
+        .then(svgText => {
+            // Try to extract intrinsic width/height or viewBox from the SVG markup
+            let iw = null, ih = null;
+            const viewBoxMatch = svgText.match(/viewBox\s*=\s*"([^"]+)"/i);
+            if (viewBoxMatch) {
+                const parts = viewBoxMatch[1].trim().split(/\s+/).map(Number);
+                if (parts.length === 4 && parts.every(n => !isNaN(n))) {
+                    // viewBox = minX minY width height
+                    iw = parts[2];
+                    ih = parts[3];
+                }
+            }
+            if (!iw || !ih) {
+                // try width/height attributes (may include px)
+                const widthMatch = svgText.match(/width\s*=\s*"([^"]+)"/i);
+                const heightMatch = svgText.match(/height\s*=\s*"([^"]+)"/i);
+                if (widthMatch && heightMatch) {
+                    const parseNum = (s) => parseFloat(s.replace(/px$/i, '')) || null;
+                    iw = parseNum(widthMatch[1]);
+                    ih = parseNum(heightMatch[1]);
+                }
+            }
+            // fallback to square if nothing found
+            if (!iw || !ih || iw <= 0 || ih <= 0) {
+                iw = iw || maxPixelWidth;
+                ih = ih || maxPixelWidth;
+            }
+
+            const aspect = iw / ih;
+            const w = Math.min(maxPixelWidth, Math.max(1, Math.floor(maxPixelWidth)));
+            const h = Math.max(1, Math.floor(w / aspect));
+
+            // Create a Blob URL so the browser rasterizes with correct SVG content
+            const svgBlob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    try {
+                        const canvasOff = document.createElement('canvas');
+                        canvasOff.width = w;
+                        canvasOff.height = h;
+                        const ctx = canvasOff.getContext('2d');
+                        ctx.clearRect(0, 0, w, h);
+                        ctx.drawImage(img, 0, 0, w, h);
+
+                        const texture = gl.createTexture();
+                        gl.bindTexture(gl.TEXTURE_2D, texture);
+                        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvasOff);
+
+                        URL.revokeObjectURL(url);
+                        resolve({ texture, width: w, height: h });
+                    } catch (err) {
+                        URL.revokeObjectURL(url);
+                        reject(err);
+                    }
+                };
+                img.onerror = (e) => {
+                    URL.revokeObjectURL(url);
+                    reject(new Error('SVG image failed to load'));
+                };
+                img.src = url;
+            });
+        });
 }
 
 function createTextTexture(text, size, color, font) {
@@ -548,3 +679,4 @@ function animate(duration, onUpdate) {
 // Enable blending for textures
 gl.enable(gl.BLEND);
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+

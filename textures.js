@@ -138,20 +138,32 @@ function rasteriseSvg(gl, svgText, w, h) {
  */
 export function createTextTexture(gl, text, size, color, font) {
     const padding    = 8;
+    const dpr        = (window.devicePixelRatio || 1) * 5;
     const offscreen  = document.createElement('canvas');
     const ctx        = offscreen.getContext('2d');
 
-    ctx.font = `${size}px ${font}`;
+    // Use the scaled font size for measurement
+    const scaledSize = size * dpr;
+    ctx.font = `${scaledSize}px ${font}`;
     const metrics     = ctx.measureText(text);
-    offscreen.width   = Math.ceil(metrics.width + padding * 2);
-    offscreen.height  = Math.ceil(size + padding * 2);
 
-    // Re-set font after resize (canvas reset clears the context state)
-    ctx.font         = `${size}px ${font}`;
+    // Canvas size in CSS pixels
+    const cssWidth   = Math.ceil(metrics.width / dpr + padding * 2);
+    const cssHeight  = Math.ceil(size + padding * 2);
+
+    // Actual pixel dimensions
+    offscreen.width   = cssWidth * dpr;
+    offscreen.height  = cssHeight * dpr;
+
+    // Scale context to match device pixel ratio
+    ctx.scale(dpr / 5, dpr / 5);
+
+    // Re-set font after resize
+    ctx.font         = `${scaledSize}px ${font}`;
     ctx.textBaseline = 'top';
     ctx.fillStyle    = color;
     ctx.fillText(text, padding, padding);
 
     const texture = uploadTexture(gl, offscreen);
-    return { texture, width: offscreen.width, height: offscreen.height };
+    return { texture, width: cssWidth, height: cssHeight };
 }

@@ -49,19 +49,23 @@ const assets = { textures: {}, texts: {} };
 
 Promise.all([
     loadTexture(gl,      'images/zermos_logo.png'),
-    loadTexture(gl,      'images/GitHub_Invertocat_Black_Clearspace.svg'),
-    loadTexture(gl,      'images/email-icon.svg'),
+    loadTexture(gl,      'images/uu.png'),
+    loadTexture(gl,      'images/github.png'),
+    loadTexture(gl,      'images/email.png'),
     loadSvgAsTexture(gl, 'images/matt_logo.svg', 1600),
-]).then(([logo, github, email, matt]) => {
+]).then(([logo, uu, github, email, matt]) => {
     assets.textures.logo   = logo;
     assets.textures.github = github;
     assets.textures.email  = email;
     assets.textures.matt   = matt;
+    assets.textures.uu   = uu;
 
     assets.texts.title    = createTextTexture(gl, 'PORTFOLIO', 84, '#333', 'Segoe UI');
     assets.texts.subtitle = createTextTexture(gl, 'Drag to explore. Press R to recenter.', 18, '#555', 'Segoe UI');
     assets.texts.github   = createTextTexture(gl, 'GitHub', 28, '#333', 'Segoe UI');
     assets.texts.email    = createTextTexture(gl, 'Email',  28, '#333', 'Segoe UI');
+    assets.texts.contact    = createTextTexture(gl, 'Contact',  28, '#333', 'Segoe UI');
+    assets.texts.contact_gray    = createTextTexture(gl, 'Contact',  28, '#999', 'Segoe UI');
 
     requestAnimationFrame(renderLoop);
 });
@@ -240,6 +244,8 @@ canvas.addEventListener('pointermove', (e) => {
     canvas.style.cursor = hovered
         ? 'pointer'
         : (state.isDragging ? 'grabbing' : 'grab');
+
+    //based on hovered, show a simple tooltip at the mouse showing what it is
 });
 
 canvas.addEventListener('pointerup', (e) => {

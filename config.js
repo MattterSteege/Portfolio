@@ -5,10 +5,17 @@
 export const LINKS = {
     github: 'https://github.com/',
     email:  'mailto:hello@example.com',
+    uu:     '/uu',
 };
 
-// Isometric projection matrix (world → screen-iso)
-export const ISO = { a: 1, b: -0.5, c: 0.3, d: 0.5 };
+// semi-Isometric projection matrix (world → screen-iso)
+//export const ISO = { a: 1, b: -0.5, c: 0.3, d: 0.5 };
+
+//full Isometric projection matrix (world → screen-iso)
+//export const ISO = { a: 1, b: -1, c: 0.5, d: 0.5 };
+
+//no rotation projection matrix (world → screen-iso)
+export const ISO = { a: 1, b: 0, c: 0, d: 1 };
 
 /**
  * Runtime state. Everything that can change lives here.

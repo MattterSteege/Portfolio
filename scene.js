@@ -49,6 +49,7 @@ export function buildScene() {
             { x: tile * 6, y: 0, w: tile / 2, h: tile / 2, textureKey: 'github' },
             { x: tile * 7.5, y:  0, w: tile / 2, h: tile / 2, textureKey: 'email' },
             { x: 0, y: 5 * tile, w: tile, h: tile, textureKey: 'uu' },
+            { x: 7 * tile, y: -tile, w: 2 * tile, h: tile, textureKey: 'contact' },
         ],
 
         /**
@@ -57,8 +58,8 @@ export function buildScene() {
          * The renderer looks up the texture size automatically.
          */
         text: [
-            { x: 6.95 * tile, y: -1.2 * tile , textKey: 'contact_gray' },
-            { x: 6.9 * tile, y: -1.25 * tile , textKey: 'contact' },
+            // { x: 6.95 * tile, y: -1.2 * tile , textKey: 'contact_gray' },
+            // { x: 6.9 * tile, y: -1.25 * tile , textKey: 'contact' },
         ],
 
         /**

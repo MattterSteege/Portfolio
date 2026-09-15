@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7ac43b78-06bc-4c4a-bc0e-a3ec521882f1" name="Changes" comment="feat: Implement SVG rasterization for logo and enhance grid rendering with sub-grid lines">
+      <change beforePath="$PROJECT_DIR$/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scene.js" beforeDir="false" afterPath="$PROJECT_DIR$/scene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures.js" beforeDir="false" afterPath="$PROJECT_DIR$/textures.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Matt/WebstormProjects/Portfolio" value="3COfmisYOGVxKVJWV4sCa4e6roL" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;MattterSteege&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/MattterSteege/Portfolio.git&quot;,
+    &quot;accountId&quot;: &quot;07d3ed08-c7e9-481e-9381-47e02e2ed769&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3COfmisYOGVxKVJWV4sCa4e6roL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;isometric&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Matt/WebstormProjects/Portfolio/images&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Matt\WebstormProjects\Portfolio\images" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.30387.83" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7ac43b78-06bc-4c4a-bc0e-a3ec521882f1" name="Changes" comment="" />
+      <created>1776261698186</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776261698186</updated>
+      <workItem from="1776261699463" duration="2875000" />
+      <workItem from="1776766343794" duration="108000" />
+      <workItem from="1777461210646" duration="28000" />
+      <workItem from="1777547934646" duration="82000" />
+      <workItem from="1780254156513" duration="5525000" />
+      <workItem from="1780490449608" duration="1309000" />
+      <workItem from="1781554560187" duration="10000" />
+      <workItem from="1782484658315" duration="1778000" />
+      <workItem from="1782486680700" duration="83000" />
+      <workItem from="1789030604137" duration="8000" />
+      <workItem from="1789457221630" duration="271000" />
+    </task>
+    <task id="LOCAL-00001" summary="Refactor index.html to enhance grid layout and remove unused elements">
+      <option name="closed" value="true" />
+      <created>1776263143225</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1776263143225</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: Add help text overlay to canvas for user guidance">
+      <option name="closed" value="true" />
+      <created>1780255043519</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1780255043519</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: Implement SVG rasterization for logo and enhance grid rendering with sub-grid lines">
+      <option name="closed" value="true" />
+      <created>1780259128226</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1780259128226</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Refactor index.html to enhance grid layout and remove unused elements" />
+    <MESSAGE value="feat: Add help text overlay to canvas for user guidance" />
+    <MESSAGE value="feat: Implement SVG rasterization for logo and enhance grid rendering with sub-grid lines" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement SVG rasterization for logo and enhance grid rendering with sub-grid lines" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

@@ -50,18 +50,19 @@ const assets = { textures: {}, texts: {} };
 Promise.all([
     loadTexture(gl,      'images/zermos_logo.png'),
     loadTexture(gl,      'images/uu.png'),
+    loadTexture(gl,      'images/contact.png'),
     loadTexture(gl,      'images/github.png'),
     loadTexture(gl,      'images/email.png'),
     loadSvgAsTexture(gl, 'images/matt_logo.svg', 1600),
-]).then(([logo, uu, github, email, matt]) => {
+]).then(([logo, uu, contact, github, email, matt]) => {
     assets.textures.logo   = logo;
     assets.textures.github = github;
     assets.textures.email  = email;
     assets.textures.matt   = matt;
     assets.textures.uu   = uu;
+    assets.textures.contact   = contact;
 
-    assets.texts.title    = createTextTexture(gl, 'PORTFOLIO', 84, '#333', 'Segoe UI');
-    assets.texts.subtitle = createTextTexture(gl, 'Drag to explore. Press R to recenter.', 18, '#555', 'Segoe UI');
+    // assets.texts.contact    = createTextTexture(gl, 'CONTACT', 12, '#333', 'Segoe UI');
     assets.texts.github   = createTextTexture(gl, 'GitHub', 28, '#333', 'Segoe UI');
     assets.texts.email    = createTextTexture(gl, 'Email',  28, '#333', 'Segoe UI');
     assets.texts.contact    = createTextTexture(gl, 'Contact',  28, '#333', 'Segoe UI');

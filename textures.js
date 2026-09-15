@@ -12,15 +12,36 @@
 
 // --- Internal helpers --------------------------------------------------------
 
-function uploadTexture(gl, source) {
+function uploadTexture(gl, image) {
     const texture = gl.createTexture();
+
     gl.bindTexture(gl.TEXTURE_2D, texture);
+
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+
+    gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        image
+    );
+
+    // Pixel-art settings
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+    // Prevent edge bleeding when using sprite sheets
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+
+    // Don't generate mipmaps unless you specifically need them
+    // (only works for power-of-two textures anyway)
+    // gl.generateMipmap(gl.TEXTURE_2D);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
     return texture;
 }
 
@@ -31,18 +52,21 @@ function uploadTexture(gl, source) {
  */
 export function loadTexture(gl, src) {
     return new Promise((resolve, reject) => {
-        const image     = new Image();
-        image.decoding  = 'async';
-        image.onload    = () => {
+        const image = new Image();
+        image.decoding = 'async';
+
+        image.onload = () => {
             const texture = uploadTexture(gl, image);
+
             resolve({
                 texture,
-                width:  image.naturalWidth  || image.width,
+                width: image.naturalWidth || image.width,
                 height: image.naturalHeight || image.height,
             });
         };
+
         image.onerror = reject;
-        image.src     = src;
+        image.src = src;
     });
 }
 

@@ -3,8 +3,8 @@
 // =============================================================================
 
 export const LINKS = {
-    github: 'https://github.com/',
-    email:  'mailto:hello@example.com',
+    github: 'https://github.com/matttersteege',
+    email:  'mailto:me@kronk.tech',
     uu:     '/uu',
 };
 

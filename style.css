@@ -1,0 +1,318 @@
+/*GENERAL STYLES*/
+:root {
+    font-family: "Noto Sans", sans-serif;
+    font-weight: bolder;
+
+    --padding: 15px;
+
+    /*--cursor: <svg xmlns="http://www.w3.org/2000/svg" viewBox="39 14 71 92"><path d="M42 20 42 100 68 76 68 76 102 76Z" stroke="#000000" stroke-width="6" fill="#fff"/></svg>*/
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='39 14 71 92'%3E%3Cpath d='M42 20 42 100 68 76 68 76 102 76Z' stroke='%23000000' stroke-width='10' fill='%23ffffff'/%3E%3C/svg%3E") 0 0, auto;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    margin: 0;
+    list-style-type: none;
+}
+
+ul > li {
+    text-indent: 1px;
+}
+
+ul > li:before {
+    content: "- ";
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+}
+
+/*UI CSS*/
+
+.paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url(paper_texture.jpg) repeat fixed 0 0;
+    background-size: 200px;
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.box {
+    position: fixed;
+    overflow: hidden;
+    z-index: 1;
+    border: 6px solid black;
+    border-radius: 6px;
+    padding: var(--padding);
+    background: #ffe3c1;
+}
+
+.box > * {
+    position: relative;
+}
+
+.box > h1 {
+    font-weight: bolder;
+}
+
+/*pause button*/
+.hamburger {
+    background-color: black;
+    width: 100%;
+    border-radius: 999px;
+    height: 6px;
+    position: relative;
+    margin: auto;
+}
+
+/*==========================================*/
+.play-area {
+    background-color: #b9e8be;
+    position: fixed;
+    margin: calc(3 * var(--padding));
+    margin-top: calc(6 * var(--padding));
+    width: calc(100% - 6 * var(--padding));
+    height: calc(100% - 9 * var(--padding));
+}
+
+/*<editor-fold desc="FENCES">*/
+
+/*BOTTOM*/
+.fence-bottom {
+    width: 100%;
+    height: 30px;
+    background-color: #ffffff;
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    display: flex;
+    justify-content: space-between;
+    bottom: 10px;
+    position: absolute;
+}
+
+.fence-bottom .fence-pole {
+    width: 50px;
+    height: 70px;
+    background-color: #ffffff;
+    transform: translate(0, -20px);
+    border-radius: 25px 25px 5px 5px;
+    border: 3px solid black;
+    z-index: 1;
+}
+
+.fence-bottom .fence-pole:first-child {
+    width: 25px;
+    border-top-left-radius: 0;
+    border-left: none;
+    border-bottom-left-radius: 0;
+}
+
+
+.fence-bottom .fence-pole:last-child {
+    width: 25px;
+    border-top-right-radius: 0;
+    border-right: none;
+    border-bottom-right-radius: 0;
+}
+
+.fence-bottom::after, .fence-top::after {
+    content: '';
+    background: #d9d9d9;
+    width: 100%;
+    height: 18px;
+    bottom: 0;
+    position: absolute;
+    z-index: 0;
+}
+
+.fence-bottom .fence-pole::after {
+    content: '';
+    background: #d9d9d9;
+    width: 100%;
+    height: 56px;
+    display: block;
+    bottom: 0;
+    position: absolute;
+    border-radius: 99px 99px 0 0;
+}
+
+.fence-bottom .fence-pole:first-child::after {
+    border-radius: 0 99px 0 0;
+}
+
+.fence-bottom .fence-pole:last-child::after {
+    border-radius: 99px 0 0 0;
+}
+
+/*RIGHT*/
+.fence-right {
+    width: 15px;
+    height: calc(100% + 78px);
+    transform: translate(0, -65px);
+    background-color: #ffffff;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    z-index: -1;
+}
+
+.fence-right .fence-pole {
+    width: 15px;
+    height: 70px;
+    background-color: #ffffff;
+    transform: translate(9px, 0);
+    border-radius: 8px 8px 5px 0px;
+    border: 3px solid black;
+}
+
+.fence-right .fence-pole:first-child {
+    border-top-left-radius: 0;
+    border-left: none;
+    transform: translate(9px, -5px);
+}
+
+.fence-right .fence-pole:last-child {
+    border-top-left-radius: 0;
+}
+
+.fence-right .fence-pole::after {
+    content: '';
+    background: #d9d9d9;
+    width: 100%;
+    height: 56px;
+    display: block;
+    bottom: 0;
+    position: absolute;
+    border-radius: 99px 99px 0 0;
+}
+
+.fence-right .fence-pole:first-child::after,
+.fence-right .fence-pole:last-child::after {
+    border-radius: 0 99px 0 0;
+}
+
+/*TOP*/
+.fence-top {
+    width: 100%;
+    height: 30px;
+    background-color: #ffffff;
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    display: flex;
+    justify-content: space-between;
+    top: -53px;
+    position: absolute;
+}
+
+.fence-top .fence-pole {
+    width: 50px;
+    height: 70px;
+    background-color: #ffffff;
+    transform: translate(0, -20px);
+    border-radius: 25px 25px 5px 5px;
+    border: 3px solid black;
+    z-index: -1;
+}
+
+.fence-top .fence-pole:first-child {
+    width: 25px;
+    border-top-left-radius: 0;
+    border-left: none;
+    border-bottom-left-radius: 0;
+    z-index: 1;
+}
+
+.fence-top .fence-pole:last-child {
+    width: 25px;
+    border-top-right-radius: 0;
+    border-right: none;
+    border-bottom-right-radius: 0;
+    opacity: 1;
+    z-index: 1;
+}
+
+.fence-top .fence-pole::after {
+    content: '';
+    background: #d9d9d9;
+    width: 100%;
+    height: 56px;
+    display: block;
+    bottom: 0;
+    position: absolute;
+    border-radius: 99px 99px 0 0;
+}
+
+.fence-top .fence-pole:first-child::after {
+    border-radius: 0 99px 0 0;
+}
+
+.fence-top .fence-pole:last-child::after {
+    border-radius: 99px 0 0 0;
+}
+
+/*LEFT*/
+.fence-left {
+    width: 15px;
+    height: calc(100% + 78px);
+    transform: translate(0, -65px);
+    background-color: #ffffff;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    z-index: -1;
+}
+
+.fence-left .fence-pole {
+    width: 15px;
+    height: 70px;
+    background-color: #ffffff;
+    transform: translate(-15px, 0);
+    border-radius: 8px 8px 0px 5px;
+    border: 3px solid black;
+}
+
+.fence-left .fence-pole:first-child {
+    border-top-right-radius: 0;
+    border-right: none;
+    transform: translate(-15px, -5px);
+}
+
+.fence-left .fence-pole:last-child {
+    border-top-right-radius: 0;
+}
+
+.fence-left .fence-pole::after {
+    content: '';
+    background: #d9d9d9;
+    width: 100%;
+    height: 56px;
+    display: block;
+    bottom: 0;
+    position: absolute;
+    border-radius: 99px 99px 0 0;
+}
+
+.fence-left .fence-pole:first-child::after,
+.fence-left .fence-pole:last-child::after {
+    border-radius: 99px 0 0 0;
+}
+/*</editor-fold>*/

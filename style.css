@@ -90,6 +90,24 @@ main {
     height: calc(100% - 9 * var(--padding));
 }
 
+.play-area .static-object {
+    position: fixed;
+    z-index: 1;
+}
+
+.play-area .static-object::after {
+    content: '';
+    background-color: black;
+    opacity: 0.2;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 100%;
+    z-index: -1;
+    transition: transform 0.2s ease-in-out;
+    transform: translate(0, 30%) scaleY(0.2);
+}
+
 .play-area .object {
     position: fixed;
     z-index: 1;
